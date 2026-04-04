@@ -20,31 +20,27 @@ const firebaseConfig = {
   firestoreDatabaseId: getEnv('VITE_FIREBASE_DATABASE_ID'),
 };
 
-// Fallback to hardcoded config if env vars are missing
-import fallbackConfig from '../firebase-applet-config.json';
+// Check if critical environment variables are missing
+const isConfigMissing = !firebaseConfig.apiKey || !firebaseConfig.projectId;
 
-// Use env config only if at least apiKey and projectId are provided
-const isEnvConfigValid = !!(firebaseConfig.apiKey && firebaseConfig.projectId);
-const finalConfig = isEnvConfigValid ? firebaseConfig : fallbackConfig;
-
-if (!isEnvConfigValid) {
-  console.warn("Firebase: Using fallback configuration from firebase-applet-config.json because environment variables are missing or incomplete.");
+if (isConfigMissing) {
+  console.error("Firebase: Critical environment variables (VITE_FIREBASE_API_KEY or VITE_FIREBASE_PROJECT_ID) are missing. Please check your environment configuration.");
 }
 
 // Log configuration (excluding sensitive data)
 console.log("Firebase: Initializing with config:", {
-  projectId: finalConfig.projectId,
-  authDomain: finalConfig.authDomain,
-  storageBucket: finalConfig.storageBucket,
-  databaseURL: (finalConfig as any).databaseURL,
-  firestoreDatabaseId: finalConfig.firestoreDatabaseId || '(default)',
-  usingEnv: isEnvConfigValid
+  projectId: firebaseConfig.projectId,
+  authDomain: firebaseConfig.authDomain,
+  storageBucket: firebaseConfig.storageBucket,
+  databaseURL: (firebaseConfig as any).databaseURL,
+  firestoreDatabaseId: firebaseConfig.firestoreDatabaseId || '(default)',
+  usingEnv: !isConfigMissing
 });
 
-const app = initializeApp(finalConfig);
+const app = initializeApp(firebaseConfig);
 
 // Initialize Firestore with the correct database ID
-const dbId = finalConfig.firestoreDatabaseId;
+const dbId = firebaseConfig.firestoreDatabaseId;
 export const db = (dbId && dbId !== '(default)' && dbId !== '')
   ? getFirestore(app, dbId)
   : getFirestore(app);

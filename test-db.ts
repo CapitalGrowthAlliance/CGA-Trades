@@ -1,6 +1,13 @@
 import { initializeApp } from 'firebase-admin/app';
 import { getFirestore } from 'firebase-admin/firestore';
-import firebaseConfig from './firebase-applet-config.json' assert { type: 'json' };
+import dotenv from 'dotenv';
+
+dotenv.config();
+
+const firebaseConfig = {
+  projectId: process.env.VITE_FIREBASE_PROJECT_ID || process.env.FIREBASE_PROJECT_ID,
+  firestoreDatabaseId: process.env.VITE_FIREBASE_DATABASE_ID || process.env.FIREBASE_DATABASE_ID,
+};
 
 async function test() {
   console.log('Testing Firestore connection...');
@@ -8,11 +15,15 @@ async function test() {
   console.log('Database ID:', firebaseConfig.firestoreDatabaseId);
 
   try {
+    if (!firebaseConfig.projectId) {
+      throw new Error('VITE_FIREBASE_PROJECT_ID or FIREBASE_PROJECT_ID is missing');
+    }
+
     const app = initializeApp({
       projectId: firebaseConfig.projectId,
     }, 'test-app-' + Date.now());
 
-    const dbId = "(default)";
+    const dbId = firebaseConfig.firestoreDatabaseId || "(default)";
     const db = (dbId && dbId !== '(default)') ? getFirestore(app, dbId) : getFirestore(app);
 
     console.log('Attempting to fetch plans...');

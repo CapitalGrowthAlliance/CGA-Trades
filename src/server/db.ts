@@ -1,5 +1,4 @@
-import { adminDb, setAdminDb } from './firebase-admin';
-import firebaseConfig from '../../firebase-applet-config.json';
+import { adminDb, setAdminDb, firebaseConfig } from './firebase-admin';
 
 export const db = adminDb;
 

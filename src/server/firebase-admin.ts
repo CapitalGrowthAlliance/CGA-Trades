@@ -1,7 +1,6 @@
 import { initializeApp, getApps, getApp } from 'firebase-admin/app';
 import { getFirestore } from 'firebase-admin/firestore';
 import { getStorage } from 'firebase-admin/storage';
-import fallbackConfig from '../../firebase-applet-config.json';
 
 const getEnv = (keys: string[]) => {
   for (const key of keys) {
@@ -11,9 +10,9 @@ const getEnv = (keys: string[]) => {
   return null;
 };
 
-const firebaseConfig = {
-  projectId: getEnv(['VITE_FIREBASE_PROJECT_ID', 'FIREBASE_PROJECT_ID']) || fallbackConfig.projectId,
-  firestoreDatabaseId: getEnv(['VITE_FIREBASE_DATABASE_ID', 'FIREBASE_DATABASE_ID']) || fallbackConfig.firestoreDatabaseId,
+export const firebaseConfig = {
+  projectId: getEnv(['VITE_FIREBASE_PROJECT_ID', 'FIREBASE_PROJECT_ID']),
+  firestoreDatabaseId: getEnv(['VITE_FIREBASE_DATABASE_ID', 'FIREBASE_DATABASE_ID']),
 };
 
 // Lazy app initialization

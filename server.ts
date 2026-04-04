@@ -10,8 +10,6 @@ import adminRoutes from './src/server/routes/admin';
 import { initDb } from './src/server/db';
 import { adminDb } from './src/server/firebase-admin';
 import dotenv from 'dotenv';
-import fallbackConfig from './firebase-applet-config.json';
-
 dotenv.config();
 
 const getEnv = (keys: string[]) => {
@@ -23,8 +21,8 @@ const getEnv = (keys: string[]) => {
 };
 
 const firebaseConfig = {
-  projectId: getEnv(['VITE_FIREBASE_PROJECT_ID', 'FIREBASE_PROJECT_ID']) || fallbackConfig.projectId,
-  firestoreDatabaseId: getEnv(['VITE_FIREBASE_DATABASE_ID', 'FIREBASE_DATABASE_ID']) || fallbackConfig.firestoreDatabaseId,
+  projectId: getEnv(['VITE_FIREBASE_PROJECT_ID', 'FIREBASE_PROJECT_ID']),
+  firestoreDatabaseId: getEnv(['VITE_FIREBASE_DATABASE_ID', 'FIREBASE_DATABASE_ID']),
 };
 
 // Handle __dirname in ESM
