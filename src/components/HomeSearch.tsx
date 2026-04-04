@@ -108,7 +108,12 @@ export default function HomeSearch({ variant = 'default' }: { variant?: 'default
       const { systemInstruction } = contextRes.data;
 
       // 2. Check for API key
-      let apiKey = (process.env as any).GEMINI_API_KEY;
+      let apiKey: string | undefined;
+      try {
+        apiKey = (process.env as any).GEMINI_API_KEY || import.meta.env.VITE_GEMINI_API_KEY;
+      } catch (e) {
+        apiKey = import.meta.env.VITE_GEMINI_API_KEY;
+      }
       
       // If no key in env, check if user needs to select one
       if (!apiKey && (window as any).aistudio) {

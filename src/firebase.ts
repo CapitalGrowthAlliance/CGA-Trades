@@ -37,7 +37,15 @@ console.log("Firebase: Initializing with config:", {
   usingEnv: !isConfigMissing
 });
 
-const app = initializeApp(firebaseConfig);
+let app;
+try {
+  app = initializeApp(firebaseConfig);
+  console.log("Firebase: App initialized successfully");
+} catch (error) {
+  console.error("Firebase: Failed to initialize app:", error);
+  // Create a dummy app to prevent further crashes, though the app will likely fail
+  app = initializeApp({ apiKey: 'dummy', projectId: 'dummy' }, 'dummy-fallback');
+}
 
 // Initialize Firestore with the correct database ID
 const dbId = firebaseConfig.firestoreDatabaseId;

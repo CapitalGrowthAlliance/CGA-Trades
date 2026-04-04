@@ -72,7 +72,10 @@ export function SiteProvider({ children }: { children: React.ReactNode }) {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    console.log("SiteContext: Initializing snapshots");
+    
     const unsubSettings = onSnapshot(doc(db, 'settings', 'general'), (doc) => {
+      console.log("SiteContext: Settings snapshot received", doc.exists());
       if (doc.exists()) {
         const data = doc.data() as Settings;
         setSettings(data);
@@ -86,37 +89,50 @@ export function SiteProvider({ children }: { children: React.ReactNode }) {
           document.title = data.siteName;
         }
       }
+    }, (error) => {
+      console.error("SiteContext: Settings error", error);
     });
 
     const unsubUI = onSnapshot(doc(db, 'ui_content', 'homepage'), (doc) => {
       if (doc.exists()) {
         setUiContent(doc.data() as UIContent);
       }
+    }, (error) => {
+      console.error("SiteContext: UI error", error);
     });
 
     const unsubPlans = onSnapshot(collection(db, 'investment_plans'), (snapshot) => {
       const plans = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() } as InvestmentPlan));
       setInvestmentPlans(plans.filter(p => p.isActive));
+    }, (error) => {
+      console.error("SiteContext: Plans error", error);
     });
 
     const unsubToggles = onSnapshot(doc(db, 'feature_toggles', 'general'), (doc) => {
       if (doc.exists()) {
         setFeatureToggles(doc.data() as FeatureToggles);
       }
+    }, (error) => {
+      console.error("SiteContext: Toggles error", error);
     });
 
     const unsubWallets = onSnapshot(collection(db, 'wallets'), (snapshot) => {
       const w = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() } as Wallet));
       setWallets(w.filter(wallet => wallet.isActive));
+    }, (error) => {
+      console.error("SiteContext: Wallets error", error);
     });
 
     const unsubBank = onSnapshot(doc(db, 'bank_details', 'general'), (doc) => {
       if (doc.exists()) {
         setBankDetails(doc.data() as BankDetails);
       }
+    }, (error) => {
+      console.error("SiteContext: Bank error", error);
     });
 
     setLoading(false);
+    console.log("SiteContext: Loading set to false");
 
     return () => {
       unsubSettings();

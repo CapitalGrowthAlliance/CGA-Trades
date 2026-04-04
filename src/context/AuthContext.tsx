@@ -45,13 +45,19 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   };
 
   useEffect(() => {
+    console.log("AuthContext: Setting up onAuthStateChanged");
     const unsubscribe = onAuthStateChanged(auth, async (currentUser) => {
+      console.log("AuthContext: Auth state changed", currentUser?.uid || "No user");
       setUser(currentUser);
       if (currentUser) {
         await fetchUserData(currentUser.uid);
       } else {
         setUserData(null);
       }
+      setLoading(false);
+      console.log("AuthContext: Loading set to false");
+    }, (error) => {
+      console.error("AuthContext: onAuthStateChanged error", error);
       setLoading(false);
     });
 
@@ -60,7 +66,13 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   return (
     <AuthContext.Provider value={{ user, userData, loading, refreshUserData }}>
-      {!loading && children}
+      {loading ? (
+        <div className="min-h-screen bg-[#0B1D3A] flex items-center justify-center">
+          <div className="w-12 h-12 border-4 border-[#c8ff00] border-t-transparent rounded-full animate-spin"></div>
+        </div>
+      ) : (
+        children
+      )}
     </AuthContext.Provider>
   );
 };

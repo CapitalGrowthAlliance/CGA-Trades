@@ -150,7 +150,8 @@ const MarketsPage = () => {
 
   // --- API Integration ---
   const fetchPrice = async () => {
-    const apiKey = process.env.REACT_APP_API_KEY;
+    // Use environment variable or fallback
+    const apiKey = import.meta.env.VITE_MARKETS_API_KEY;
     if (!apiKey || apiKey === 'demo') {
       // Mock price if no API key
       const mockPrice = (Math.random() * 1000 + 40000).toFixed(2);

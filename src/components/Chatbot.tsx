@@ -39,7 +39,17 @@ export default function Chatbot() {
   const [chatSession, setChatSession] = useState<any>(null);
 
   // Initialize Gemini API
-  const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
+  const getApiKey = () => {
+    // In Vite, process.env.GEMINI_API_KEY is defined in vite.config.ts
+    // but we should access it safely.
+    try {
+      return (process.env as any).GEMINI_API_KEY || import.meta.env.VITE_GEMINI_API_KEY;
+    } catch (e) {
+      return import.meta.env.VITE_GEMINI_API_KEY;
+    }
+  };
+
+  const ai = new GoogleGenAI({ apiKey: getApiKey() });
 
   const fetchFaqs = () => {
     fetch('/api/chat/faqs')
