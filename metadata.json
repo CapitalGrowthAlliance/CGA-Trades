@@ -1,0 +1,5 @@
+{
+  "name": "Capital Growth Alliance",
+  "description": "A modern full-stack authentication system with user-specific storage, built with React, Express, and SQLite.",
+  "requestFramePermissions": []
+}

@@ -1,0 +1,184 @@
+{
+  "entities": {
+    "User": {
+      "title": "User",
+      "description": "User profile and financial data",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "username": { "type": "string" },
+        "fullName": { "type": "string" },
+        "email": { "type": "string" },
+        "phone": { "type": "string" },
+        "profilePicture": { "type": "string" },
+        "walletBalance": { "type": "number" },
+        "activeInvestments": { "type": "number" },
+        "withdrawableProfits": { "type": "number" },
+        "balance": { "type": "number" },
+        "totalInvestments": { "type": "number" },
+        "totalEarnings": { "type": "number" },
+        "roiEarnings": { "type": "number" },
+        "referralBonus": { "type": "number" },
+        "roiPercentage": { "type": "number" },
+        "referralCode": { "type": "string" },
+        "referralEarnings": { "type": "number" },
+        "referredBy": { "type": "string" },
+        "referralCount": { "type": "integer" },
+        "referrals": { "type": "array", "items": { "type": "string" } },
+        "activeReferralsCount": { "type": "integer" },
+        "isKYCVerified": { "type": "integer" },
+        "isEmailVerified": { "type": "integer" },
+        "role": { "type": "string" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["id", "fullName", "email"]
+    },
+    "Transaction": {
+      "title": "Transaction",
+      "description": "Deposit, withdrawal, or investment transaction",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "userId": { "type": "string" },
+        "type": { "type": "string" },
+        "currency": { "type": "string" },
+        "amount": { "type": "number" },
+        "fee": { "type": "number" },
+        "planName": { "type": "string" },
+        "withdrawalMethod": { "type": "string" },
+        "paymentMethod": { "type": "string" },
+        "depositProof": { "type": "string" },
+        "status": { "type": "string" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["id", "userId", "type", "amount"]
+    },
+    "WithdrawalMethod": {
+      "title": "Withdrawal Method",
+      "description": "Saved withdrawal details for a user",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "userId": { "type": "string" },
+        "type": { "type": "string" },
+        "bankName": { "type": "string" },
+        "accountNumber": { "type": "string" },
+        "accountName": { "type": "string" },
+        "walletAddress": { "type": "string" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["id", "userId", "type"]
+    },
+    "Investment": {
+      "title": "Investment",
+      "description": "Active or past investment plan",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "userId": { "type": "string" },
+        "planId": { "type": "string" },
+        "planName": { "type": "string" },
+        "amount": { "type": "number" },
+        "currency": { "type": "string" },
+        "status": { "type": "string" },
+        "activationTime": { "type": "string", "format": "date-time" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["id", "userId", "planId", "amount"]
+    },
+    "Plan": {
+      "title": "Plan",
+      "description": "Investment plan details",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "name": { "type": "string" },
+        "roi": { "type": "number" },
+        "duration": { "type": "string" },
+        "minInvestment": { "type": "number" }
+      },
+      "required": ["id", "name", "roi", "duration", "minInvestment"]
+    },
+    "FAQ": {
+      "title": "FAQ",
+      "description": "Frequently asked questions",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "question": { "type": "string" },
+        "answer": { "type": "string" }
+      },
+      "required": ["id", "question", "answer"]
+    },
+    "SupportTicket": {
+      "title": "Support Ticket",
+      "description": "User support request",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "name": { "type": "string" },
+        "email": { "type": "string" },
+        "message": { "type": "string" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["id", "name", "email", "message"]
+    },
+    "SupportRequest": {
+      "title": "Support Request",
+      "description": "Detailed user support request",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "fullName": { "type": "string" },
+        "username": { "type": "string" },
+        "accountId": { "type": "string" },
+        "email": { "type": "string" },
+        "phone": { "type": "string" },
+        "country": { "type": "string" },
+        "category": { "type": "string" },
+        "subject": { "type": "string" },
+        "message": { "type": "string" },
+        "attachments": { "type": "array", "items": { "type": "string" } },
+        "status": { "type": "string" },
+        "ticketId": { "type": "string" },
+        "userId": { "type": "string" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["id", "fullName", "username", "accountId", "email", "country", "category", "subject", "message", "status", "ticketId"]
+    }
+  },
+  "firestore": {
+    "/users/{userId}": {
+      "schema": "User",
+      "description": "User documents"
+    },
+    "/transactions/{transactionId}": {
+      "schema": "Transaction",
+      "description": "Transaction records"
+    },
+    "/withdrawal_methods/{methodId}": {
+      "schema": "WithdrawalMethod",
+      "description": "User withdrawal methods"
+    },
+    "/investments/{investmentId}": {
+      "schema": "Investment",
+      "description": "Investment records"
+    },
+    "/plans/{planId}": {
+      "schema": "Plan",
+      "description": "Available investment plans"
+    },
+    "/faqs/{faqId}": {
+      "schema": "FAQ",
+      "description": "FAQ entries"
+    },
+    "/support_tickets/{ticketId}": {
+      "schema": "SupportTicket",
+      "description": "Support tickets"
+    },
+    "/support_requests/{requestId}": {
+      "schema": "SupportRequest",
+      "description": "Detailed support requests"
+    }
+  }
+}
