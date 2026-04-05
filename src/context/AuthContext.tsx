@@ -1,7 +1,7 @@
 import React, { createContext, useContext, useEffect, useState } from 'react';
 import { auth, db } from '../firebase';
 import { onAuthStateChanged, User } from 'firebase/auth';
-import { doc, getDoc } from 'firebase/firestore';
+import { doc, onSnapshot } from 'firebase/firestore';
 
 interface AuthContextType {
   user: User | null;
@@ -24,44 +24,48 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const [userData, setUserData] = useState<any | null>(null);
   const [loading, setLoading] = useState(true);
 
-  const fetchUserData = async (uid: string) => {
-    try {
-      const userDoc = await getDoc(doc(db, 'users', uid));
-      if (userDoc.exists()) {
-        setUserData(userDoc.data());
-      } else {
-        setUserData(null);
-      }
-    } catch (error) {
-      console.error('Error fetching user data:', error);
-      setUserData(null);
-    }
-  };
-
   const refreshUserData = async () => {
-    if (user) {
-      await fetchUserData(user.uid);
-    }
+    // This is now handled by onSnapshot, but we keep it for compatibility
   };
 
   useEffect(() => {
     console.log("AuthContext: Setting up onAuthStateChanged");
-    const unsubscribe = onAuthStateChanged(auth, async (currentUser) => {
+    let unsubscribeSnapshot: (() => void) | null = null;
+
+    const unsubscribeAuth = onAuthStateChanged(auth, (currentUser) => {
       console.log("AuthContext: Auth state changed", currentUser?.uid || "No user");
       setUser(currentUser);
+      
+      if (unsubscribeSnapshot) {
+        unsubscribeSnapshot();
+        unsubscribeSnapshot = null;
+      }
+
       if (currentUser) {
-        await fetchUserData(currentUser.uid);
+        unsubscribeSnapshot = onSnapshot(doc(db, 'users', currentUser.uid), (doc) => {
+          if (doc.exists()) {
+            setUserData(doc.data());
+          } else {
+            setUserData(null);
+          }
+          setLoading(false);
+        }, (error) => {
+          console.error('Error fetching user data snapshot:', error);
+          setLoading(false);
+        });
       } else {
         setUserData(null);
+        setLoading(false);
       }
-      setLoading(false);
-      console.log("AuthContext: Loading set to false");
     }, (error) => {
       console.error("AuthContext: onAuthStateChanged error", error);
       setLoading(false);
     });
 
-    return () => unsubscribe();
+    return () => {
+      unsubscribeAuth();
+      if (unsubscribeSnapshot) unsubscribeSnapshot();
+    };
   }, []);
 
   return (

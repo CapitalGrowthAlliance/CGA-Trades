@@ -18,7 +18,7 @@ import {
 import { motion } from 'motion/react';
 import { Link } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
-import { collection, query, where, getDocs } from 'firebase/firestore';
+import { collection, query, where, getDocs, onSnapshot } from 'firebase/firestore';
 import { db } from '../firebase';
 
 interface DashboardData {
@@ -46,11 +46,16 @@ export default function DashboardPage() {
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    const fetchDashboard = async () => {
-      if (!user || !userData) return;
+    if (!user || !userData) return;
+
+    const q = query(
+      collection(db, 'investments'), 
+      where('userId', '==', user.uid), 
+      where('status', '==', 'active')
+    );
+
+    const unsubscribe = onSnapshot(q, (querySnapshot) => {
       try {
-        const q = query(collection(db, 'investments'), where('userId', '==', user.uid), where('status', '==', 'active'));
-        const querySnapshot = await getDocs(q);
         const investments = querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() })) as any[];
 
         const dashboardData: DashboardData = {
@@ -71,15 +76,19 @@ export default function DashboardPage() {
           }))
         };
         setData(dashboardData);
+        setLoading(false);
       } catch (err: any) {
-        console.error('Error fetching dashboard:', err);
-        setError(err.message || 'Failed to load dashboard data. Please try again later.');
-      } finally {
+        console.error('Error processing dashboard data:', err);
+        setError('Failed to process dashboard data.');
         setLoading(false);
       }
-    };
+    }, (err) => {
+      console.error('Error fetching dashboard snapshot:', err);
+      setError('Failed to load real-time dashboard data.');
+      setLoading(false);
+    });
 
-    fetchDashboard();
+    return () => unsubscribe();
   }, [user, userData]);
 
   const formatCurrency = (amount: number | undefined | null, currency: string = 'USD') => {

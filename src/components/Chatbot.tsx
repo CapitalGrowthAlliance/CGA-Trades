@@ -121,10 +121,15 @@ If the answer to a question is not in the FAQ, you MUST call the \`createSupport
   const [isBubbleVisible, setIsBubbleVisible] = useState(false);
   const [hasShown, setHasShown] = useState(false);
 
+  const [hasFetchedFaqs, setHasFetchedFaqs] = useState(false);
+
   useEffect(() => {
-    // Fetch FAQs on load
-    fetchFaqs();
-  }, []);
+    // Fetch FAQs only when the chatbot is opened for the first time
+    if (isOpen && !hasFetchedFaqs) {
+      fetchFaqs();
+      setHasFetchedFaqs(true);
+    }
+  }, [isOpen, hasFetchedFaqs]);
 
   useEffect(() => {
     const isHomepage = location.pathname === '/' || location.pathname === '/home';

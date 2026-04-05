@@ -3,7 +3,7 @@ import { motion } from 'motion/react';
 import { Wallet, DollarSign, TrendingUp, Bot, CheckCircle2, Coins, Landmark } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
-import { collection, query, where, getDocs } from 'firebase/firestore';
+import { collection, query, where, getDocs, onSnapshot } from 'firebase/firestore';
 import { db } from '../firebase';
 
 export default function HomeDashboard() {
@@ -19,22 +19,18 @@ export default function HomeDashboard() {
   const [activePlans, setActivePlans] = useState<any[]>([]);
 
   useEffect(() => {
-    if (isAuthenticated && authUser) {
-      fetchInvestments();
-    }
-  }, [isAuthenticated, authUser]);
+    if (!isAuthenticated || !authUser) return;
 
-  const fetchInvestments = async () => {
-    if (!authUser) return;
-    try {
-      const q = query(collection(db, 'investments'), where('userId', '==', authUser.uid));
-      const querySnapshot = await getDocs(q);
+    const q = query(collection(db, 'investments'), where('userId', '==', authUser.uid));
+    const unsubscribe = onSnapshot(q, (querySnapshot) => {
       const data = querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
       setInvestments(data);
-    } catch (error) {
-      console.error('Failed to fetch investments', error);
-    }
-  };
+    }, (error) => {
+      console.error('Failed to fetch investments snapshot', error);
+    });
+
+    return () => unsubscribe();
+  }, [isAuthenticated, authUser]);
 
   useEffect(() => {
     const active = investments.filter(inv => inv.status === 'active' && inv.activationTime);

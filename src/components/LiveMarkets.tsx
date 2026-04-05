@@ -158,8 +158,27 @@ export default function LiveMarkets() {
     }
   };
 
+  const [isVisible, setIsVisible] = useState(false);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        setIsVisible(entry.isIntersecting);
+      },
+      { threshold: 0.1 }
+    );
+
+    if (marketContainerRef.current) {
+      observer.observe(marketContainerRef.current);
+    }
+
+    return () => observer.disconnect();
+  }, []);
+
   // Fetch Crypto Data (CoinGecko for initial snapshot + sparklines)
   useEffect(() => {
+    if (!isVisible) return;
+
     const fetchCryptoSnapshot = async () => {
       try {
         const response = await fetch(`https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=100&page=1&sparkline=true&price_change_percentage=1h,24h,7d`);
@@ -193,10 +212,12 @@ export default function LiveMarkets() {
     // Refresh snapshot every 5 minutes
     const interval = setInterval(fetchCryptoSnapshot, 5 * 60 * 1000);
     return () => clearInterval(interval);
-  }, []);
+  }, [isVisible]);
 
   // Binance WebSocket for real-time crypto prices
   useEffect(() => {
+    if (!isVisible) return;
+
     const ws = new WebSocket(`wss://stream.binance.com:9443/ws/!ticker@arr`);
 
     ws.onmessage = (event) => {
@@ -224,10 +245,12 @@ export default function LiveMarkets() {
     };
 
     return () => ws.close();
-  }, []);
+  }, [isVisible]);
 
   // Simulated Forex Updates (since free real-time forex WebSockets are rare)
   useEffect(() => {
+    if (!isVisible) return;
+
     const interval = setInterval(() => {
       setForexData(prev => prev.map(pair => {
         const volatility = pair.bid * 0.0001;
@@ -247,7 +270,7 @@ export default function LiveMarkets() {
       }));
     }, 3000);
     return () => clearInterval(interval);
-  }, []);
+  }, [isVisible]);
 
   const filteredCrypto = useMemo(() => {
     let result = cryptoData.filter(c => 

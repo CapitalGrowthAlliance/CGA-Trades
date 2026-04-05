@@ -24,42 +24,41 @@ const DepositPage = lazy(() => import('./pages/DepositPage'));
 const WithdrawalPage = lazy(() => import('./pages/WithdrawalPage'));
 const FundPage = lazy(() => import('./pages/FundPage'));
 
-import HomePage from './pages/HomePage';
-import AboutPage from './pages/AboutPage';
-import FAQPage from './pages/FAQPage';
-import AIInsightPage from './pages/AIInsightPage';
-import AIInsightsPage from './pages/AIInsightsPage';
-import InteractiveTerminalPage from './pages/InteractiveTerminalPage';
-import MarketsPage from './pages/MarketsPage';
-import NotificationsPage from './pages/Notifications';
-import TopInvestorsPage from './pages/TopInvestorsPage';
-import HowItWorksPage from './pages/HowItWorksPage';
-import SupportPage from './pages/SupportPage';
-import TeamPage from './pages/TeamPage';
-import HelpGuidePage from './pages/HelpGuidePage';
-import SecurityPage from './pages/SecurityPage';
-import BlogPage from './pages/BlogPage';
-import BlogPostPage from './pages/BlogPostPage';
-import OurPartnersPage from './pages/OurPartnersPage';
-import CGATokenPage from './pages/CGATokenPage';
-import GiftCardExchangePage from './pages/GiftCardExchangePage';
-import Chatbot from './components/Chatbot';
-import TelegramPopup from './components/TelegramPopup';
-import MobileBottomNav from './components/MobileBottomNav';
-import AnimatedBackground from './components/AnimatedBackground';
-import { isDev } from './config/env';
+// Lazy loaded public pages
+const HomePage = lazy(() => import('./pages/HomePage'));
+const AboutPage = lazy(() => import('./pages/AboutPage'));
+const FAQPage = lazy(() => import('./pages/FAQPage'));
+const AIInsightPage = lazy(() => import('./pages/AIInsightPage'));
+const AIInsightsPage = lazy(() => import('./pages/AIInsightsPage'));
+const InteractiveTerminalPage = lazy(() => import('./pages/InteractiveTerminalPage'));
+const MarketsPage = lazy(() => import('./pages/MarketsPage'));
+const NotificationsPage = lazy(() => import('./pages/Notifications'));
+const TopInvestorsPage = lazy(() => import('./pages/TopInvestorsPage'));
+const HowItWorksPage = lazy(() => import('./pages/HowItWorksPage'));
+const SupportPage = lazy(() => import('./pages/SupportPage'));
+const TeamPage = lazy(() => import('./pages/TeamPage'));
+const HelpGuidePage = lazy(() => import('./pages/HelpGuidePage'));
+const SecurityPage = lazy(() => import('./pages/SecurityPage'));
+const BlogPage = lazy(() => import('./pages/BlogPage'));
+const BlogPostPage = lazy(() => import('./pages/BlogPostPage'));
+const OurPartnersPage = lazy(() => import('./pages/OurPartnersPage'));
+const CGATokenPage = lazy(() => import('./pages/CGATokenPage'));
+const GiftCardExchangePage = lazy(() => import('./pages/GiftCardExchangePage'));
+const InvestmentGuidePage = lazy(() => import('./pages/InvestmentGuidePage'));
 
-import InvestmentGuidePage from './pages/InvestmentGuidePage';
+// Lazy loaded components
+const Chatbot = lazy(() => import('./components/Chatbot'));
+const TelegramPopup = lazy(() => import('./components/TelegramPopup'));
+const MobileBottomNav = lazy(() => import('./components/MobileBottomNav'));
+const AnimatedBackground = lazy(() => import('./components/AnimatedBackground'));
+const HomeActivityNotifications = lazy(() => import('./components/HomeActivityNotifications'));
 
-import LandingPage from './pages/LandingPage';
-import SignInPage from './pages/SignInPage';
-import SignUpPage from './pages/SignUpPage';
-import ForgotPasswordPage from './pages/ForgotPasswordPage';
-import CompleteProfilePage from './pages/CompleteProfilePage';
+const LandingPage = lazy(() => import('./pages/LandingPage'));
+const ForgotPasswordPage = lazy(() => import('./pages/ForgotPasswordPage'));
+const CompleteProfilePage = lazy(() => import('./pages/CompleteProfilePage'));
 import ProtectedRoute from './components/ProtectedRoute';
 import PublicRoute from './components/PublicRoute';
-
-import HomeActivityNotifications from './components/HomeActivityNotifications';
+import { isDev } from './config/env';
 
 // Placeholder components for new routes
 const PlaceholderPage = ({ title }: { title: string }) => (
@@ -91,7 +90,7 @@ const GlobalOverlays = () => {
   }
 
   return (
-    <>
+    <Suspense fallback={null}>
       <AnimatedBackground primaryColor="#c8ff00" />
       {user && (
         <>
@@ -101,7 +100,7 @@ const GlobalOverlays = () => {
       )}
       <TelegramPopup />
       <Chatbot />
-    </>
+    </Suspense>
   );
 };
 
