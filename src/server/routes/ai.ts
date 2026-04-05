@@ -1,23 +1,21 @@
 import express from 'express';
-import { db } from '../db';
 
 const router = express.Router();
 
 router.get('/context', async (req, res) => {
   try {
-    // Fetch some context from DB to help Gemini
-    let faqs: any[] = [];
-    let plans: any[] = [];
-    try {
-      const [faqsSnapshot, plansSnapshot] = await Promise.all([
-        db.collection('faqs').get(),
-        db.collection('plans').get()
-      ]);
-      faqs = faqsSnapshot.docs.map(doc => doc.data());
-      plans = plansSnapshot.docs.map(doc => doc.data());
-    } catch (dbError: any) {
-      console.error('[AI Context] Database fetch failed:', dbError.message);
-    }
+    // Hardcoded context for Capital Growth Alliance
+    const plans = [
+      { name: 'Starter', roi: 1.5, duration: '30 days', minInvestment: 100 },
+      { name: 'Premium', roi: 2.5, duration: '60 days', minInvestment: 1000 },
+      { name: 'Elite', roi: 4.0, duration: '90 days', minInvestment: 5000 }
+    ];
+
+    const faqs = [
+      { question: 'What is Capital Growth Alliance?', answer: 'Capital Growth Alliance is a premium fintech investment platform designed to help you grow your wealth securely.' },
+      { question: 'How do I deposit funds?', answer: 'You can deposit funds by navigating to the Profile and clicking on the "Deposit" action card.' },
+      { question: 'What is the minimum investment?', answer: 'Our Starter plan requires a minimum investment of $100.' }
+    ];
 
     const systemInstruction = `
       You are the Capital Growth Alliance (CGA) AI Assistant. 
@@ -32,14 +30,11 @@ router.get('/context', async (req, res) => {
       ${faqs.map(f => `Q: ${f.question}\nA: ${f.answer}`).join('\n')}
       
       Navigation Structure (Help users find pages):
-      - Market Indices: /market/indices (S&P 500, NASDAQ 100, Dow Jones, etc.)
-      - Stocks: /market/stocks (Apple, Tesla, Google, Meta, Amazon)
-      - Crypto: /market/crypto (Bitcoin, Ethereum, Solana, BNB)
-      - Futures: /market/futures (Gold, Oil, Silver)
-      - Forex: /market/forex (EURUSD, GBPUSD, USDJPY, etc.)
-      - Products: 
-        - Global News: /products/global-news
-        - Fundamental Graphs: /products/fundamental-graphs
+      - Market Indices: /market/indices
+      - Stocks: /market/stocks
+      - Crypto: /market/crypto
+      - Futures: /market/futures
+      - Forex: /market/forex
       - Dashboard: /dashboard
       - Profile: /profile
       - Support: /support

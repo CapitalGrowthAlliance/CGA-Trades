@@ -2,6 +2,9 @@ import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { X, Upload, CheckCircle2, AlertCircle } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
+import { useAuth } from '../context/AuthContext';
+import { doc, updateDoc, serverTimestamp } from 'firebase/firestore';
+import { db } from '../firebase';
 
 interface KYCModalProps {
   isOpen: boolean;
@@ -11,7 +14,7 @@ interface KYCModalProps {
 
 export default function KYCModal({ isOpen, onClose, onSuccess }: KYCModalProps) {
   const { t } = useTranslation();
-  const token = 'mock-token';
+  const { user } = useAuth();
   const [step, setStep] = useState(1);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
@@ -28,31 +31,32 @@ export default function KYCModal({ isOpen, onClose, onSuccess }: KYCModalProps) 
       return;
     }
 
+    if (!user) {
+      setError(t('kyc.error_auth', 'You must be logged in to submit KYC'));
+      return;
+    }
+
     setLoading(true);
     setError('');
 
     try {
-      if (!token) throw new Error('Not authenticated');
-
       // In a real app, we would upload the file to storage and save the URL
-      // For this demo, we'll just simulate a successful KYC submission
-      const res = await fetch('/api/user/kyc', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${token}`
-        },
-        body: JSON.stringify(formData)
+      // For this demo, we'll just update the user document with the KYC details
+      const userRef = doc(db, 'users', user.uid);
+      await updateDoc(userRef, {
+        kycStatus: 'PENDING',
+        kycDetails: {
+          ...formData,
+          submittedAt: serverTimestamp(),
+          // In a real app, we'd add the file URL here
+          documentProof: file.name 
+        }
       });
 
-      if (res.ok) {
-        setStep(3);
-        onSuccess();
-      } else {
-        const data = await res.json();
-        setError(data.error || t('kyc.error_failed', 'KYC submission failed'));
-      }
-    } catch (err) {
+      setStep(3);
+      onSuccess();
+    } catch (err: any) {
+      console.error('KYC Submission Error:', err);
       setError(t('kyc.error_occurred', 'An error occurred during KYC submission'));
     } finally {
       setLoading(false);

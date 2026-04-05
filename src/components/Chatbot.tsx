@@ -4,6 +4,8 @@ import { MessageSquare, X, Send, User, Bot, Loader2, RefreshCw } from 'lucide-re
 import { GoogleGenAI, Type, FunctionDeclaration } from '@google/genai';
 import { useTranslation } from 'react-i18next';
 import { useLocation } from 'react-router-dom';
+import { collection, getDocs, addDoc, serverTimestamp } from 'firebase/firestore';
+import { db } from '../firebase';
 
 interface FAQ {
   id: string;
@@ -40,8 +42,6 @@ export default function Chatbot() {
 
   // Initialize Gemini API
   const getApiKey = () => {
-    // In Vite, process.env.GEMINI_API_KEY is defined in vite.config.ts
-    // but we should access it safely.
     try {
       return (process.env as any).GEMINI_API_KEY || import.meta.env.VITE_GEMINI_API_KEY;
     } catch (e) {
@@ -51,21 +51,52 @@ export default function Chatbot() {
 
   const ai = new GoogleGenAI({ apiKey: getApiKey() });
 
-  const fetchFaqs = () => {
-    fetch('/api/chat/faqs')
-      .then(res => res.json())
-      .then(data => {
-        if (Array.isArray(data)) {
-          setFaqs(data);
-          
-          // Initialize chat session once FAQs are loaded
-          const faqContext = data.map(f => `Q: ${f.question}\nA: ${f.answer}`).join('\n\n');
-          const createSupportTicketDeclaration: FunctionDeclaration = {
-            name: "createSupportTicket",
-            description: "Call this function to initiate the process of creating a support ticket when the user's question cannot be answered by the FAQ, or when they explicitly ask to contact support.",
-          };
-          
-          const systemInstruction = `You are a helpful customer support chatbot for Capital Growth Alliance. 
+  const fetchFaqs = async () => {
+    try {
+      const faqsSnapshot = await getDocs(collection(db, 'faqs'));
+      let data = faqsSnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() })) as FAQ[];
+      
+      if (data.length === 0) {
+        // Fallback to default FAQs if collection is empty
+        data = [
+          {
+            id: "faq_1",
+            question: "What is Capital Growth Alliance?",
+            answer: "Capital Growth Alliance is a premium fintech investment platform designed to help you grow your wealth securely."
+          },
+          {
+            id: "faq_2",
+            question: "How do I deposit funds?",
+            answer: 'You can deposit funds by navigating to the Profile and clicking on the "Deposit" action card. Follow the instructions to complete your transfer.'
+          },
+          {
+            id: "faq_3",
+            question: "What is the minimum investment?",
+            answer: "Our Starter plan requires a minimum investment of $100."
+          },
+          {
+            id: "faq_4",
+            question: "How long does withdrawal take?",
+            answer: "Withdrawals are typically processed within 24-48 business hours."
+          },
+          {
+            id: "faq_5",
+            question: "Is my money safe?",
+            answer: "Yes, your funds are protected by industry-leading security protocols and cold storage solutions."
+          }
+        ];
+      }
+
+      setFaqs(data);
+      
+      // Initialize chat session once FAQs are loaded
+      const faqContext = data.map(f => `Q: ${f.question}\nA: ${f.answer}`).join('\n\n');
+      const createSupportTicketDeclaration: FunctionDeclaration = {
+        name: "createSupportTicket",
+        description: "Call this function to initiate the process of creating a support ticket when the user's question cannot be answered by the FAQ, or when they explicitly ask to contact support.",
+      };
+      
+      const systemInstruction = `You are a helpful customer support chatbot for Capital Growth Alliance. 
 You can exchange basic greetings. 
 For any questions, you must answer based ONLY on the following FAQ context:
 
@@ -73,18 +104,18 @@ ${faqContext}
 
 If the answer to a question is not in the FAQ, you MUST call the \`createSupportTicket\` function. Do not attempt to answer questions outside the FAQ. Keep your answers concise and friendly.`;
 
-          const session = ai.chats.create({
-            model: "gemini-3-flash-preview",
-            config: {
-              systemInstruction,
-              tools: [{ functionDeclarations: [createSupportTicketDeclaration] }],
-              temperature: 0.2,
-            },
-          });
-          setChatSession(session);
-        }
-      })
-      .catch(err => console.error('Failed to fetch FAQs:', err));
+      const session = ai.chats.create({
+        model: "gemini-3-flash-preview",
+        config: {
+          systemInstruction,
+          tools: [{ functionDeclarations: [createSupportTicketDeclaration] }],
+          temperature: 0.2,
+        },
+      });
+      setChatSession(session);
+    } catch (err) {
+      console.error('Failed to fetch FAQs:', err);
+    }
   };
 
   const [isBubbleVisible, setIsBubbleVisible] = useState(false);
@@ -211,24 +242,21 @@ If the answer to a question is not in the FAQ, you MUST call the \`createSupport
       const finalData = { ...ticketData, message: text };
       setTicketData(finalData);
       
-      // Submit ticket to backend
+      // Submit ticket directly to Firestore
       try {
         setIsTyping(true);
-        const res = await fetch('/api/chat/ticket', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(finalData)
+        
+        await addDoc(collection(db, 'support_tickets'), {
+          ...finalData,
+          status: 'open',
+          createdAt: serverTimestamp()
         });
         
         setIsTyping(false);
-        if (res.ok) {
-          setMessages(prev => [...prev, { id: Date.now().toString(), text: t('chatbot.ticket_success', "Thank you! Your support ticket has been submitted. Our team will get back to you at {{email}} soon.", { email: finalData.email }), sender: 'bot' }]);
-        } else {
-          setMessages(prev => [...prev, { id: Date.now().toString(), text: t('chatbot.ticket_error', "Sorry, there was an error submitting your ticket. Please try again later."), sender: 'bot' }]);
-        }
+        setMessages(prev => [...prev, { id: Date.now().toString(), text: t('chatbot.ticket_success', "Thank you! Your support ticket has been submitted. Our team will get back to you at {{email}} soon.", { email: finalData.email }), sender: 'bot' }]);
       } catch (err) {
         setIsTyping(false);
-        setMessages(prev => [...prev, { id: Date.now().toString(), text: t('chatbot.ticket_network_error', "Sorry, there was a network error submitting your ticket."), sender: 'bot' }]);
+        setMessages(prev => [...prev, { id: Date.now().toString(), text: t('chatbot.ticket_error', "Sorry, there was an error submitting your ticket. Please try again later."), sender: 'bot' }]);
       }
 
       // Reset mode

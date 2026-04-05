@@ -3,17 +3,21 @@ import { motion } from 'motion/react';
 import { ArrowUpRight, ArrowDownLeft, RefreshCcw, Gift } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 
+import { useAuth } from '../context/AuthContext';
+import { collection, query, where, orderBy, getDocs, limit } from 'firebase/firestore';
+import { db } from '../firebase';
+
 interface Transaction {
   id: string;
   type: string;
   amount: number;
   status: string;
-  createdAt: string;
+  createdAt: any;
 }
 
 export default function TransactionTable({ previewMode = false }: { previewMode?: boolean }) {
   const { t } = useTranslation();
-  const token = 'mock-token';
+  const { user } = useAuth();
   const [transactions, setTransactions] = useState<Transaction[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -24,37 +28,64 @@ export default function TransactionTable({ previewMode = false }: { previewMode?
       return;
     }
 
-    if (!token) return;
+    if (!user) {
+      setLoading(false);
+      return;
+    }
 
-    fetch('/api/user/transactions', {
-      headers: { Authorization: `Bearer ${token}` }
-    })
-      .then(res => res.json())
-      .then(data => {
+    const fetchTransactions = async () => {
+      try {
+        const q = query(
+          collection(db, 'transactions'),
+          where('userId', '==', user.uid),
+          orderBy('createdAt', 'desc'),
+          limit(20)
+        );
+        const querySnapshot = await getDocs(q);
+        const data = querySnapshot.docs.map(doc => ({ 
+          id: doc.id, 
+          ...doc.data() 
+        })) as Transaction[];
         setTransactions(data);
+      } catch (err) {
+        console.error('Error fetching transactions:', err);
+      } finally {
         setLoading(false);
-      })
-      .catch(err => {
-        console.error(err);
-        setLoading(false);
-      });
-  }, [previewMode, token]);
+      }
+    };
+
+    fetchTransactions();
+  }, [previewMode, user]);
+
+  const formatDate = (createdAt: any) => {
+    if (!createdAt) return 'N/A';
+    const date = createdAt.toDate ? createdAt.toDate() : new Date(createdAt);
+    return date.toLocaleDateString();
+  };
 
   const getIcon = (type: string) => {
-    switch (type) {
-      case 'deposit': return <ArrowDownLeft className="w-4 h-4 text-emerald-600 dark:text-emerald-400" />;
-      case 'withdrawal': return <ArrowUpRight className="w-4 h-4 text-rose-600 dark:text-rose-400" />;
-      case 'investment': return <RefreshCcw className="w-4 h-4 text-blue-600 dark:text-blue-400" />;
-      case 'referral_bonus': return <Gift className="w-4 h-4 text-purple-600 dark:text-purple-400" />;
-      default: return null;
-    }
+    const lowerType = type.toLowerCase();
+    if (lowerType.includes('deposit')) return <ArrowDownLeft className="w-4 h-4 text-emerald-600 dark:text-emerald-400" />;
+    if (lowerType.includes('withdrawal')) return <ArrowUpRight className="w-4 h-4 text-rose-600 dark:text-rose-400" />;
+    if (lowerType.includes('investment')) return <RefreshCcw className="w-4 h-4 text-blue-600 dark:text-blue-400" />;
+    if (lowerType.includes('referral')) return <Gift className="w-4 h-4 text-purple-600 dark:text-purple-400" />;
+    return null;
   };
 
   const getStatusColor = (status: string) => {
-    switch (status) {
-      case 'completed': return 'bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border-emerald-500/20';
-      case 'pending': return 'bg-amber-500/10 text-amber-600 dark:text-amber-400 border-amber-500/20';
-      default: return 'bg-gray-500/10 text-gray-600 dark:text-gray-400 border-gray-500/20';
+    const lowerStatus = status.toLowerCase();
+    switch (lowerStatus) {
+      case 'completed': 
+      case 'approved':
+      case 'success':
+        return 'bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border-emerald-500/20';
+      case 'pending': 
+        return 'bg-amber-500/10 text-amber-600 dark:text-amber-400 border-amber-500/20';
+      case 'failed':
+      case 'rejected':
+        return 'bg-rose-500/10 text-rose-600 dark:text-rose-400 border-rose-500/20';
+      default: 
+        return 'bg-gray-500/10 text-gray-600 dark:text-gray-400 border-gray-500/20';
     }
   };
 
@@ -63,7 +94,7 @@ export default function TransactionTable({ previewMode = false }: { previewMode?
   }
 
   return (
-    <div className="bg-bg-card border border-border-light rounded-2xl p-6 shadow-light my-8 overflow-hidden">
+    <div className="bg-bg-card border border-border-light rounded-2xl p-6 shadow-light my-8 overflow-hidden transition-colors duration-300">
       <h3 className="text-xl font-bold text-text-primary mb-6">{t('transactions.title', 'Recent Transactions')}</h3>
       
       <div className="overflow-x-auto">
@@ -102,7 +133,7 @@ export default function TransactionTable({ previewMode = false }: { previewMode?
                     ${tx.amount.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
                   </td>
                   <td className="py-4 text-text-muted text-sm">
-                    {new Date(tx.createdAt).toLocaleDateString()}
+                    {formatDate(tx.createdAt)}
                   </td>
                   <td className="py-4 text-right">
                     <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium border ${getStatusColor(tx.status)}`}>

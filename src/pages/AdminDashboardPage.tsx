@@ -1,42 +1,83 @@
 import React, { useEffect, useState } from 'react';
 import { Users, Search, Edit2, Ban, CheckCircle, LogOut, DollarSign, Activity, Shield, XCircle } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
+import { db, auth } from '../firebase';
+import { collection, getDocs, doc, updateDoc, query, where, orderBy, runTransaction, serverTimestamp } from 'firebase/firestore';
 
 export default function AdminDashboardPage() {
-  // Mock admin for UI consistency without auth
-  const user = { fullName: 'Admin' };
-  const isAdmin = true;
-  const token = 'mock-admin-token';
   const navigate = useNavigate();
   const [users, setUsers] = useState<any[]>([]);
   const [deposits, setDeposits] = useState<any[]>([]);
   const [investments, setInvestments] = useState<any[]>([]);
   const [searchQuery, setSearchQuery] = useState('');
   const [loading, setLoading] = useState(true);
+  const [isAdmin, setIsAdmin] = useState(false);
 
   useEffect(() => {
-    fetchData();
-  }, [isAdmin, navigate, token]);
+    const checkAdmin = async () => {
+      const user = auth.currentUser;
+      if (!user) {
+        navigate('/signin');
+        return;
+      }
+      // Simple admin check - in production use custom claims or a dedicated admin collection
+      if (user.email === 'contact.cga.usa@gmail.com') {
+        setIsAdmin(true);
+      } else {
+        // Check if user has admin role in Firestore
+        const userDoc = await getDocs(query(collection(db, 'users'), where('uid', '==', user.uid)));
+        if (!userDoc.empty && userDoc.docs[0].data().role === 'admin') {
+          setIsAdmin(true);
+        } else {
+          navigate('/dashboard');
+        }
+      }
+    };
+    checkAdmin();
+  }, [navigate]);
+
+  useEffect(() => {
+    if (isAdmin) {
+      fetchData();
+    }
+  }, [isAdmin]);
 
   const fetchData = async () => {
-    if (!token) return;
     setLoading(true);
     try {
-      const usersRes = await axios.get('/api/admin/users', {
-        headers: { Authorization: `Bearer ${token}` }
-      });
-      setUsers(usersRes.data || []);
+      // Fetch Users
+      const usersSnapshot = await getDocs(collection(db, 'users'));
+      const usersList: any[] = usersSnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+      setUsers(usersList);
 
-      const depositsRes = await axios.get('/api/admin/deposits', {
-        headers: { Authorization: `Bearer ${token}` }
-      });
-      setDeposits(depositsRes.data);
+      // Fetch Deposits (Transactions with type WALLET_DEPOSIT)
+      const depositsSnapshot = await getDocs(query(collection(db, 'transactions'), where('type', '==', 'WALLET_DEPOSIT')));
+      const depositsList = await Promise.all(depositsSnapshot.docs.map(async (d) => {
+        const data = d.data();
+        // Try to find user info
+        const user = usersList.find((u: any) => u.uid === data.userId || u.id === data.userId);
+        return {
+          id: d.id,
+          ...data,
+          fullName: user?.fullName || user?.full_name || 'Unknown',
+          email: user?.email || 'Unknown'
+        };
+      }));
+      setDeposits(depositsList);
 
-      const investmentsRes = await axios.get('/api/admin/investments', {
-        headers: { Authorization: `Bearer ${token}` }
-      });
-      setInvestments(investmentsRes.data);
+      // Fetch Investments
+      const investmentsSnapshot = await getDocs(collection(db, 'investments'));
+      const investmentsList = await Promise.all(investmentsSnapshot.docs.map(async (inv) => {
+        const data = inv.data();
+        const user = usersList.find((u: any) => u.uid === data.userId || u.id === data.userId);
+        return {
+          id: inv.id,
+          ...data,
+          fullName: user?.fullName || user?.full_name || 'Unknown',
+          email: user?.email || 'Unknown'
+        };
+      }));
+      setInvestments(investmentsList);
 
     } catch (error) {
       console.error('Error fetching admin data', error);
@@ -47,9 +88,7 @@ export default function AdminDashboardPage() {
   const toggleUserStatus = async (userId: string, currentStatus: string) => {
     const newStatus = currentStatus === 'active' ? 'suspended' : 'active';
     try {
-      await axios.post(`/api/admin/users/${userId}/status`, { status: newStatus }, {
-        headers: { Authorization: `Bearer ${token}` }
-      });
+      await updateDoc(doc(db, 'users', userId), { status: newStatus });
       setUsers(users.map(u => u.id === userId ? { ...u, status: newStatus } : u));
     } catch (error) {
       console.error('Error updating user status:', error);
@@ -68,9 +107,7 @@ export default function AdminDashboardPage() {
     }
 
     try {
-      await axios.post(`/api/admin/users/${userId}/balance`, { balance: newBalance }, {
-        headers: { Authorization: `Bearer ${token}` }
-      });
+      await updateDoc(doc(db, 'users', userId), { balance: newBalance });
       setUsers(users.map(u => u.id === userId ? { ...u, balance: newBalance } : u));
     } catch (error) {
       console.error('Error updating balance:', error);
@@ -78,11 +115,45 @@ export default function AdminDashboardPage() {
     }
   };
 
-  const handleDepositAction = async (id: string, action: 'approve' | 'reject') => {
+  const handleDepositAction = async (transactionId: string, action: 'approve' | 'reject') => {
     try {
-      await axios.post(`/api/admin/deposits/${id}/${action}`, {}, {
-        headers: { Authorization: `Bearer ${token}` }
+      const transaction = deposits.find(d => d.id === transactionId);
+      if (!transaction) return;
+
+      await runTransaction(db, async (t) => {
+        const transactionRef = doc(db, 'transactions', transactionId);
+        const userRef = doc(db, 'users', transaction.userId);
+        
+        if (action === 'approve') {
+          t.update(transactionRef, { status: 'APPROVED' });
+          // Increment user balance
+          const userDoc = users.find(u => u.id === transaction.userId || u.uid === transaction.userId);
+          const currentBalance = userDoc?.balance || 0;
+          t.update(userRef, { balance: currentBalance + transaction.amount });
+          
+          // Add notification
+          const notificationRef = doc(collection(db, 'notifications'));
+          t.set(notificationRef, {
+            userId: transaction.userId,
+            message: `Your deposit of $${transaction.amount} has been approved.`,
+            type: 'deposit',
+            read: false,
+            timestamp: serverTimestamp()
+          });
+        } else {
+          t.update(transactionRef, { status: 'REJECTED' });
+          // Add notification
+          const notificationRef = doc(collection(db, 'notifications'));
+          t.set(notificationRef, {
+            userId: transaction.userId,
+            message: `Your deposit of $${transaction.amount} has been rejected.`,
+            type: 'deposit',
+            read: false,
+            timestamp: serverTimestamp()
+          });
+        }
       });
+
       fetchData(); // Refresh data
     } catch (error) {
       console.error(`Failed to ${action} deposit`, error);
@@ -92,9 +163,7 @@ export default function AdminDashboardPage() {
 
   const handleInvestmentStatus = async (id: string, status: string) => {
     try {
-      await axios.post(`/api/admin/investments/${id}/status`, { status }, {
-        headers: { Authorization: `Bearer ${token}` }
-      });
+      await updateDoc(doc(db, 'investments', id), { status });
       fetchData(); // Refresh data
     } catch (error) {
       console.error('Failed to update investment status', error);
@@ -103,7 +172,7 @@ export default function AdminDashboardPage() {
   };
 
   const filteredUsers = users.filter(u => 
-    (u.full_name || '').toLowerCase().includes(searchQuery.toLowerCase()) ||
+    (u.full_name || u.fullName || '').toLowerCase().includes(searchQuery.toLowerCase()) ||
     (u.email || '').toLowerCase().includes(searchQuery.toLowerCase())
   );
 
@@ -197,7 +266,7 @@ export default function AdminDashboardPage() {
                 ) : (
                   filteredUsers.map((u) => (
                     <tr key={u.id} className="hover:bg-bg-tertiary transition-colors">
-                      <td className="p-4 font-medium">{u.full_name || 'N/A'}</td>
+                      <td className="p-4 font-medium">{u.full_name || u.fullName || 'N/A'}</td>
                       <td className="p-4 text-text-secondary">{u.email}</td>
                       <td className="p-4">
                         <span className={`inline-flex items-center px-2 py-1 rounded-md text-xs font-medium ${u.role === 'admin' ? 'bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400' : 'bg-bg-tertiary text-text-secondary'}`}>

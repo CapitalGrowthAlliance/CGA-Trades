@@ -1,29 +1,10 @@
 import express from 'express';
 import path from 'path';
 import { fileURLToPath } from 'url';
-import storageRoutes from './src/server/routes/storage';
-import userRoutes from './src/server/routes/user';
-import chatRoutes from './src/server/routes/chat';
 import aiRoutes from './src/server/routes/ai';
 import marketRoutes from './src/server/routes/markets';
-import adminRoutes from './src/server/routes/admin';
-import { initDb } from './src/server/db';
-import { adminDb } from './src/server/firebase-admin';
 import dotenv from 'dotenv';
 dotenv.config();
-
-const getEnv = (keys: string[]) => {
-  for (const key of keys) {
-    const value = process.env[key];
-    if (value && value !== '') return value;
-  }
-  return null;
-};
-
-const firebaseConfig = {
-  projectId: getEnv(['VITE_FIREBASE_PROJECT_ID', 'FIREBASE_PROJECT_ID']),
-  firestoreDatabaseId: getEnv(['VITE_FIREBASE_DATABASE_ID', 'FIREBASE_DATABASE_ID']),
-};
 
 // Handle __dirname in ESM
 const __filename = fileURLToPath(import.meta.url);
@@ -31,51 +12,19 @@ const __dirname = path.dirname(__filename);
 
 export const app = express();
 
-// Initialize Database before anything else
-initDb().catch((err) => {
-  console.error('Database initialization failed:', err);
-});
-
 // Middleware
 app.use(express.json());
 
-// API Routes
-app.use('/api/storage', storageRoutes);
-app.use('/api/user', userRoutes);
-app.use('/api/chat', chatRoutes);
+// API Routes (Non-Firebase dependent)
 app.use('/api/ai', aiRoutes);
 app.use('/api/markets', marketRoutes);
-app.use('/api/admin', adminRoutes);
 
 // Health check
-app.get('/api/health', async (req, res) => {
-  try {
-    const projectId = firebaseConfig.projectId;
-    const databaseId = firebaseConfig.firestoreDatabaseId || '(default)';
-    
-    // adminDb is a proxy, so this will trigger initialization only when called
-    const snapshot = await adminDb.collection('health').limit(1).get();
-    res.json({ 
-      status: 'ok', 
-      firestore: 'connected',
-      details: {
-        projectId,
-        databaseId,
-        empty: snapshot.empty
-      }
-    });
-  } catch (error: any) {
-    console.error('[HealthCheck] Firestore health check failed:', error.message || error);
-    res.status(500).json({ 
-      status: 'error', 
-      firestore: error instanceof Error ? error.message : String(error),
-      code: error.code,
-      details: {
-        projectId: firebaseConfig.projectId,
-        databaseId: firebaseConfig.firestoreDatabaseId || '(default)'
-      }
-    });
-  }
+app.get('/api/health', (req, res) => {
+  res.json({ 
+    status: 'ok', 
+    environment: process.env.NODE_ENV || 'development'
+  });
 });
 
 async function startServer() {
@@ -102,7 +51,7 @@ async function startServer() {
   }
 
   app.listen(PORT, '0.0.0.0', () => {
-    // Server started
+    console.log(`Server running on http://localhost:${PORT}`);
   });
 }
 

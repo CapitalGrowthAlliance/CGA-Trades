@@ -1,5 +1,5 @@
 {
   "name": "Capital Growth Alliance",
-  "description": "A modern full-stack authentication system with user-specific storage, built with React, Express, and SQLite.",
+  "description": "A modern full-stack investment platform built with React, Express, and Firebase Firestore.",
   "requestFramePermissions": []
 }
