@@ -40,7 +40,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
         <header className="sticky top-0 z-50 flex h-20 bg-bg-secondary/80 backdrop-blur-md border-b border-border-light items-center justify-between px-4 md:px-8 shrink-0">
           <div className="flex items-center gap-2 md:gap-8">
             <MobileMenu />
-            <Link to="/home" className="shrink-0">
+            <Link to="/" className="shrink-0">
               <img src={settings?.logoUrl || "https://i.imgur.com/jt4vAVS.png"} alt={settings?.siteName || "CGA Logo"} className="h-5 md:h-6 w-auto shrink-0 object-contain" referrerPolicy="no-referrer" />
             </Link>
             

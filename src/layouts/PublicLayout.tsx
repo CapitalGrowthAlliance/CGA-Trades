@@ -51,19 +51,9 @@ export default function PublicLayout({ children }: { children: React.ReactNode }
         <header className="h-20 border-b border-border-light flex items-center justify-between px-4 md:px-6 lg:px-12 shrink-0">
           <div className="flex items-center gap-1.5 md:gap-2 shrink-0">
             <MobileMenu />
-            <Link to="/home" className="flex items-center gap-2 shrink-0">
+            <Link to="/" className="flex items-center gap-2 shrink-0">
               <img src={settings?.logoUrl || "https://i.imgur.com/jt4vAVS.png"} alt={settings?.siteName || "CGA Logo"} className="h-5 md:h-6 w-auto shrink-0 object-contain" referrerPolicy="no-referrer" />
             </Link>
-            
-            {/* Mobile Search Bar - Moved next to logo and made smaller */}
-            <div className="flex md:hidden items-center bg-bg-secondary border border-border-light rounded-full px-2 py-1 gap-1 w-[80px] focus-within:w-[120px] focus-within:border-accent-primary/50 transition-all duration-300">
-              <Search className="w-2.5 h-2.5 text-text-secondary shrink-0" />
-              <input 
-                type="text" 
-                placeholder="Search..." 
-                className="bg-transparent border-none outline-none text-[9px] w-full placeholder:text-text-muted"
-              />
-            </div>
           </div>
 
           <nav className="hidden md:flex items-center gap-8">
@@ -225,7 +215,7 @@ export default function PublicLayout({ children }: { children: React.ReactNode }
           </div>
         </header>
         {location.pathname === '/invest' && <QuoteCarousel />}
-        {location.pathname === '/home' && <MarketTicker />}
+        {location.pathname === '/' && <MarketTicker />}
       </div>
       <main className="flex-1 flex flex-col overflow-x-hidden">
         {children}

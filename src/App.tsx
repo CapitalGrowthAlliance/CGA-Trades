@@ -40,6 +40,8 @@ const TeamPage = lazy(() => import('./pages/TeamPage'));
 const HelpGuidePage = lazy(() => import('./pages/HelpGuidePage'));
 const SecurityPage = lazy(() => import('./pages/SecurityPage'));
 const BlogPage = lazy(() => import('./pages/BlogPage'));
+const PrivacyPolicyPage = lazy(() => import('./pages/PrivacyPolicyPage'));
+const TermsOfServicePage = lazy(() => import('./pages/TermsOfServicePage'));
 const BlogPostPage = lazy(() => import('./pages/BlogPostPage'));
 const OurPartnersPage = lazy(() => import('./pages/OurPartnersPage'));
 const CGATokenPage = lazy(() => import('./pages/CGATokenPage'));
@@ -123,34 +125,34 @@ export default function App() {
               <Suspense fallback={<div className="flex items-center justify-center min-h-screen bg-[#0B1D3A]"><div className="w-8 h-8 border-4 border-accent-primary border-t-transparent rounded-full animate-spin"></div></div>}>
                 <Routes>
               {/* Public Routes */}
-            <Route path="/" element={<PublicRoute><LandingPage /></PublicRoute>} />
+            <Route path="/" element={<PublicLayout><HomePage /></PublicLayout>} />
+            <Route path="/home" element={<Navigate to="/" replace />} />
             
-            {/* Protected Public Layout Routes */}
-            <Route path="/home" element={
-              <ProtectedRoute><PublicLayout><HomePage /></PublicLayout></ProtectedRoute>
-            } />
-            <Route path="/about" element={<ProtectedRoute><PublicLayout><AboutPage /></PublicLayout></ProtectedRoute>} />
-            <Route path="/team" element={<ProtectedRoute><PublicLayout><TeamPage /></PublicLayout></ProtectedRoute>} />
-            <Route path="/faq" element={<ProtectedRoute><PublicLayout><FAQPage /></PublicLayout></ProtectedRoute>} />
+            {/* Public Layout Routes */}
+            <Route path="/about" element={<PublicLayout><AboutPage /></PublicLayout>} />
+            <Route path="/team" element={<PublicLayout><TeamPage /></PublicLayout>} />
+            <Route path="/faq" element={<PublicLayout><FAQPage /></PublicLayout>} />
             <Route path="/notifications" element={<ProtectedRoute><PublicLayout><NotificationsPage /></PublicLayout></ProtectedRoute>} />
-            <Route path="/top-investors" element={<ProtectedRoute><PublicLayout><TopInvestorsPage /></PublicLayout></ProtectedRoute>} />
-            <Route path="/how-it-works" element={<ProtectedRoute><PublicLayout><HowItWorksPage /></PublicLayout></ProtectedRoute>} />
-            <Route path="/support" element={<ProtectedRoute><PublicLayout><SupportPage /></PublicLayout></ProtectedRoute>} />
-            <Route path="/help-guide" element={<ProtectedRoute><PublicLayout><HelpGuidePage /></PublicLayout></ProtectedRoute>} />
-            <Route path="/security" element={<ProtectedRoute><PublicLayout><SecurityPage /></PublicLayout></ProtectedRoute>} />
-            <Route path="/blog" element={<ProtectedRoute><PublicLayout><BlogPage /></PublicLayout></ProtectedRoute>} />
-            <Route path="/blog/:id" element={<ProtectedRoute><PublicLayout><BlogPostPage /></PublicLayout></ProtectedRoute>} />
-            <Route path="/our-partners" element={<ProtectedRoute><PublicLayout><OurPartnersPage /></PublicLayout></ProtectedRoute>} />
-            <Route path="/cga-token" element={<ProtectedRoute><PublicLayout><CGATokenPage /></PublicLayout></ProtectedRoute>} />
-            <Route path="/gift-cards" element={<ProtectedRoute><PublicLayout><GiftCardExchangePage /></PublicLayout></ProtectedRoute>} />
+            <Route path="/top-investors" element={<PublicLayout><TopInvestorsPage /></PublicLayout>} />
+            <Route path="/how-it-works" element={<PublicLayout><HowItWorksPage /></PublicLayout>} />
+            <Route path="/support" element={<PublicLayout><SupportPage /></PublicLayout>} />
+            <Route path="/help-guide" element={<PublicLayout><HelpGuidePage /></PublicLayout>} />
+            <Route path="/security" element={<PublicLayout><SecurityPage /></PublicLayout>} />
+            <Route path="/privacy" element={<PublicLayout><PrivacyPolicyPage /></PublicLayout>} />
+            <Route path="/terms" element={<PublicLayout><TermsOfServicePage /></PublicLayout>} />
+            <Route path="/blog" element={<PublicLayout><BlogPage /></PublicLayout>} />
+            <Route path="/blog/:id" element={<PublicLayout><BlogPostPage /></PublicLayout>} />
+            <Route path="/our-partners" element={<PublicLayout><OurPartnersPage /></PublicLayout>} />
+            <Route path="/cga-token" element={<PublicLayout><CGATokenPage /></PublicLayout>} />
+            <Route path="/gift-cards" element={<PublicLayout><GiftCardExchangePage /></PublicLayout>} />
             <Route path="/invest" element={<ProtectedRoute><PublicLayout><InvestmentPlansPage /></PublicLayout></ProtectedRoute>} />
-            <Route path="/investment-guide" element={<ProtectedRoute><PublicLayout><InvestmentGuidePage /></PublicLayout></ProtectedRoute>} />
-            <Route path="/learn" element={<ProtectedRoute><PublicLayout><PlaceholderPage title="Mentorship" /></PublicLayout></ProtectedRoute>} />
-            <Route path="/signals" element={<ProtectedRoute><PublicLayout><PlaceholderPage title="Signal Services" /></PublicLayout></ProtectedRoute>} />
+            <Route path="/investment-guide" element={<PublicLayout><InvestmentGuidePage /></PublicLayout>} />
+            <Route path="/learn" element={<PublicLayout><PlaceholderPage title="Mentorship" /></PublicLayout>} />
+            <Route path="/signals" element={<PublicLayout><PlaceholderPage title="Signal Services" /></PublicLayout>} />
             
             {/* Auth Routes */}
-            <Route path="/signin" element={<Navigate to="/" replace />} />
-            <Route path="/signup" element={<Navigate to="/" replace />} />
+            <Route path="/signin" element={<PublicRoute><LandingPage initialMode="signin" /></PublicRoute>} />
+            <Route path="/signup" element={<PublicRoute><LandingPage initialMode="signup" /></PublicRoute>} />
             <Route path="/forgot-password" element={<PublicRoute><ForgotPasswordPage /></PublicRoute>} />
             <Route path="/complete-profile" element={<ProtectedRoute><CompleteProfilePage /></ProtectedRoute>} />
 

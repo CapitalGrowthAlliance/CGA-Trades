@@ -49,12 +49,12 @@ const CgaDashboardCards: React.FC = () => {
         }
 
         .cga-dashboard-card {
-          background: linear-gradient(135deg, #1a1c2e 0%, #0f101a 100%);
+          background: var(--bg-card);
           border-radius: 1.25rem;
           padding: 1.5rem;
           position: relative;
-          border: 1px solid rgba(255, 255, 255, 0.05);
-          box-shadow: 0 12px 35px rgba(0,0,0,0.55);
+          border: 1px solid var(--border-light);
+          box-shadow: var(--shadow-light);
           transition: transform 0.3s ease, box-shadow 0.3s ease;
           overflow: hidden;
           display: flex;
@@ -93,7 +93,7 @@ const CgaDashboardCards: React.FC = () => {
         }
 
         .cga-dashboard-title {
-          color: rgba(255, 255, 255, 0.6);
+          color: var(--text-secondary);
           font-size: 0.875rem;
           font-weight: 500;
           margin-bottom: 0.5rem;
@@ -102,7 +102,7 @@ const CgaDashboardCards: React.FC = () => {
         }
 
         .cga-dashboard-value {
-          color: #ffffff;
+          color: var(--text-primary);
           font-size: 1.75rem;
           font-weight: 700;
           margin-bottom: 1.25rem;
@@ -179,14 +179,14 @@ const CgaDashboardCards: React.FC = () => {
           display: flex;
           justify-content: space-between;
           font-size: 0.75rem;
-          color: rgba(255, 255, 255, 0.5);
+          color: var(--text-muted);
           margin-bottom: 0.5rem;
         }
 
         .cga-dashboard-progress-container {
           width: 100%;
           height: 6px;
-          background: rgba(255, 255, 255, 0.05);
+          background: var(--bg-hover);
           border-radius: 3px;
           margin-bottom: 1rem;
           overflow: hidden;
@@ -214,13 +214,13 @@ const CgaDashboardCards: React.FC = () => {
 
         .cga-dashboard-footer-label {
           font-size: 0.65rem;
-          color: rgba(255, 255, 255, 0.4);
+          color: var(--text-muted);
           text-transform: uppercase;
         }
 
         .cga-dashboard-footer-value {
           font-size: 0.875rem;
-          color: #ffffff;
+          color: var(--text-primary);
           font-weight: 600;
         }
 

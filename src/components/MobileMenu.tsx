@@ -4,6 +4,7 @@ import { Menu, X, TrendingUp, User, LayoutDashboard, Settings, LogOut, ChevronRi
 import { motion, AnimatePresence } from 'motion/react';
 import { useAuth } from '../context/AuthContext';
 import { auth } from '../firebase';
+import ThemeToggle from './ThemeToggle';
 
 export default function MobileMenu() {
   const [isOpen, setIsOpen] = useState(false);
@@ -64,6 +65,10 @@ export default function MobileMenu() {
             transition={{ duration: 0.2 }}
             className="absolute left-0 mt-2 w-56 rounded-xl bg-bg-secondary border border-border-color shadow-2xl py-1 z-[100] backdrop-blur-xl max-h-[60vh] overflow-y-auto"
           >
+            <div className="p-2 border-b border-border-light flex items-center justify-between">
+              <span className="text-[10px] font-bold text-text-muted uppercase tracking-wider">Appearance</span>
+              <ThemeToggle compact />
+            </div>
             {!user && (
               <div className="p-2 border-b border-border-light flex flex-col gap-2">
                 <Link

@@ -14,7 +14,7 @@ export default function TopInvestorsPage() {
       {/* Header */}
       <div className="flex items-center gap-4 mb-8">
         <button 
-          onClick={() => navigate('/home')}
+          onClick={() => navigate('/')}
           className="p-2 rounded-full hover:bg-bg-secondary transition-colors text-text-secondary hover:text-text-primary"
           aria-label="Back to Home"
         >

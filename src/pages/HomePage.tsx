@@ -5,6 +5,7 @@ import TestimonialsSection from '../components/TestimonialsSection';
 import HomeSearch from '../components/HomeSearch';
 import HomeDashboard from '../components/HomeDashboard';
 import TopInvestorsSection from '../components/TopInvestorsSection';
+import CgaDashboardCards from '../components/CgaDashboardCards';
 import { useAuth } from '../context/AuthContext';
 import { useSite } from '../context/SiteContext';
 
@@ -14,32 +15,11 @@ export default function HomePage() {
   const isAuthenticated = !!user;
   return (
     <div className="flex flex-col flex-1">
-      {isAuthenticated && <HomeDashboard />}
+      <HomeDashboard />
 
-      <div className="w-full max-w-2xl mx-auto hidden md:block mt-4 mb-0 relative z-10 px-6">
+      <div className="w-full max-w-2xl mx-auto mt-4 mb-8 relative z-10 px-6">
         <HomeSearch />
       </div>
-
-      {/* Original Hero Section */}
-      <section className="py-20 px-6 lg:px-12 flex flex-col items-center text-center max-w-5xl mx-auto flex-1 justify-center">
-        {uiContent?.scrollText && (
-          <div className="w-full overflow-hidden bg-accent-primary/10 text-accent-primary py-2 px-4 rounded-full mb-8">
-            <div className="animate-marquee whitespace-nowrap">
-              {uiContent.scrollText}
-            </div>
-          </div>
-        )}
-        <h1 className="text-3xl md:text-5xl font-bold tracking-tight mb-6">
-          {uiContent?.homepageBanner ? (
-            <span dangerouslySetInnerHTML={{ __html: uiContent.homepageBanner }} />
-          ) : (
-            <>Premium Investment <span className="text-accent-primary">Made Simple.</span></>
-          )}
-        </h1>
-        <p className="text-sm md:text-xl text-text-secondary mb-10 max-w-2xl leading-snug md:leading-normal px-2 md:px-0">
-          Institutional-grade investment strategies accessible to everyone. Grow your wealth with our secure, intelligent, and automated platform.
-        </p>
-      </section>
 
       {/* Testimonials Section */}
       <TestimonialsSection />

@@ -11,7 +11,7 @@ export default function CompleteProfilePage() {
   const location = useLocation();
   const { settings } = useSite();
   const fromLocation = location.state?.from;
-  const fromPath = fromLocation?.pathname || '/home';
+  const fromPath = fromLocation?.pathname || '/';
   const fromState = fromLocation?.state;
   const [username, setUsername] = useState('');
   const [phone, setPhone] = useState('');

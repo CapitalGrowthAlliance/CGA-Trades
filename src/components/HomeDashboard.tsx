@@ -19,7 +19,16 @@ export default function HomeDashboard() {
   const [activePlans, setActivePlans] = useState<any[]>([]);
 
   useEffect(() => {
-    if (!isAuthenticated || !authUser) return;
+    if (!isAuthenticated || !authUser) {
+      // Mock data for unauthenticated users to show $0.00
+      setInvestments([]);
+      setLiveROI(0);
+      setDailyTarget(0);
+      setProgress(0);
+      setTimeRemaining('00:00:00');
+      setActivePlans([]);
+      return;
+    }
 
     const q = query(collection(db, 'investments'), where('userId', '==', authUser.uid));
     const unsubscribe = onSnapshot(q, (querySnapshot) => {
@@ -89,8 +98,6 @@ export default function HomeDashboard() {
 
     return () => clearInterval(interval);
   }, [investments]);
-
-  if (!isAuthenticated) return null;
 
   const totalAssets = (user?.balance || 0) + (user?.totalInvestments || 0) + (user?.totalEarnings || 0) + liveROI;
 

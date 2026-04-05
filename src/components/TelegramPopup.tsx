@@ -9,7 +9,7 @@ export default function TelegramPopup() {
   const [hasShown, setHasShown] = useState(false);
 
   useEffect(() => {
-    const isHomepage = location.pathname === '/' || location.pathname === '/home';
+    const isHomepage = location.pathname === '/';
     
     if (!isHomepage) {
       setIsVisible(false);
@@ -35,13 +35,13 @@ export default function TelegramPopup() {
   // Reset hasShown when navigating back to home if we want it to show again, 
   // but user said "once per scroll trigger". I'll keep it simple for now.
   useEffect(() => {
-    const isHomepage = location.pathname === '/' || location.pathname === '/home';
+    const isHomepage = location.pathname === '/';
     if (!isHomepage) {
       setHasShown(false);
     }
   }, [location.pathname]);
 
-  if (location.pathname !== '/' && location.pathname !== '/home') return null;
+  if (location.pathname !== '/') return null;
 
   return (
     <AnimatePresence>

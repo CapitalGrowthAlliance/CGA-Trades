@@ -132,7 +132,7 @@ If the answer to a question is not in the FAQ, you MUST call the \`createSupport
   }, [isOpen, hasFetchedFaqs]);
 
   useEffect(() => {
-    const isHomepage = location.pathname === '/' || location.pathname === '/home';
+    const isHomepage = location.pathname === '/';
     
     if (!isHomepage) {
       setIsBubbleVisible(false);
@@ -158,7 +158,7 @@ If the answer to a question is not in the FAQ, you MUST call the \`createSupport
 
   // Reset hasShown when navigating back to home
   useEffect(() => {
-    const isHomepage = location.pathname === '/' || location.pathname === '/home';
+    const isHomepage = location.pathname === '/';
     if (!isHomepage) {
       setHasShown(false);
     }

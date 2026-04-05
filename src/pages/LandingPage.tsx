@@ -14,8 +14,8 @@ import { doc, setDoc, getDoc } from 'firebase/firestore';
 import PhoneInput from 'react-phone-input-2';
 import 'react-phone-input-2/lib/style.css';
 
-export default function LandingPage() {
-  const [isSignIn, setIsSignIn] = useState(true);
+export default function LandingPage({ initialMode = 'signin' }: { initialMode?: 'signin' | 'signup' }) {
+  const [isSignIn, setIsSignIn] = useState(initialMode === 'signin');
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
@@ -46,7 +46,7 @@ export default function LandingPage() {
           setLoading(false);
           return;
         }
-        navigate('/home');
+        navigate('/');
       } else {
         if (password !== confirmPassword) {
           throw new Error("Passwords do not match");
@@ -94,7 +94,7 @@ export default function LandingPage() {
           status: 'active'
         });
       }
-      navigate('/home');
+      navigate('/');
     } catch (err: any) {
       setError(err.message || 'Google authentication failed');
     } finally {

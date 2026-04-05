@@ -12,7 +12,7 @@ export default function MobileBottomNav() {
   }
 
   const navItems = [
-    { id: 'home', label: 'Home', icon: Home, path: '/home' },
+    { id: 'home', label: 'Home', icon: Home, path: '/' },
     { id: 'fund', label: 'Fund', icon: Wallet, path: '/fund' },
     { id: 'invest', label: 'Invest', icon: Bot, path: '/invest' },
     { id: 'support', label: 'Support', icon: MessageCircleQuestion, path: '/support', onClick: () => window.scrollTo({ top: 0, behavior: 'smooth' }) },

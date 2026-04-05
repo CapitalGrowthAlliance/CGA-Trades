@@ -1,19 +1,10 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Link } from 'react-router-dom';
 import { Phone, Mail, Clock, Bitcoin, CreditCard, ArrowRight } from 'lucide-react';
-import LegalModal from './LegalModal';
 import { useSite } from '../context/SiteContext';
 
 export default function Footer() {
   const { settings } = useSite();
-  const [legalModalConfig, setLegalModalConfig] = useState<{ isOpen: boolean; type: 'terms' | 'privacy' }>({
-    isOpen: false,
-    type: 'terms'
-  });
-
-  const openLegalModal = (type: 'terms' | 'privacy') => {
-    setLegalModalConfig({ isOpen: true, type });
-  };
 
   return (
     <footer className="bg-black text-[#F0F4FF] py-12 pb-28 lg:py-16 shrink-0 font-sans">
@@ -23,7 +14,7 @@ export default function Footer() {
           {/* A. Tagline & Social Media */}
           <div className="space-y-6">
             <div>
-              <Link to="/home" className="inline-block mb-4">
+              <Link to="/" className="inline-block mb-4">
                 {settings?.logoUrl ? (
                   <img src={settings.logoUrl} alt={settings.siteName || "Logo"} className="h-8 w-auto object-contain brightness-0 invert" referrerPolicy="no-referrer" />
                 ) : (
@@ -149,8 +140,8 @@ export default function Footer() {
 
           {/* G. Legal Links */}
           <div className="flex items-center gap-6 text-sm text-[#F0F4FF]/70">
-            <button onClick={() => openLegalModal('terms')} className="hover:text-accent-primary transition-colors">Terms of Service</button>
-            <button onClick={() => openLegalModal('privacy')} className="hover:text-accent-primary transition-colors">Privacy Policy</button>
+            <Link to="/terms" onClick={() => window.scrollTo(0,0)} className="hover:text-accent-primary transition-colors">Terms of Service</Link>
+            <Link to="/privacy" onClick={() => window.scrollTo(0,0)} className="hover:text-accent-primary transition-colors">Privacy Policy</Link>
           </div>
         </div>
         
@@ -158,12 +149,6 @@ export default function Footer() {
           <p>&copy; {new Date().getFullYear()} {settings?.siteName || 'CGA'}. All rights reserved.</p>
         </div>
       </div>
-
-      <LegalModal 
-        isOpen={legalModalConfig.isOpen} 
-        type={legalModalConfig.type} 
-        onClose={() => setLegalModalConfig(prev => ({ ...prev, isOpen: false }))} 
-      />
     </footer>
   );
 }
