@@ -137,7 +137,7 @@ export default function AIInsightsPage() {
         setChartData(generateChartData());
         setRefreshing(false);
       }, 500);
-    }, 5000);
+    }, 15000);
 
     return () => clearInterval(interval);
   }, []);

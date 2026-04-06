@@ -226,6 +226,7 @@ export default function HowItWorksPage() {
                   alt="Professional Monitoring" 
                   className="w-full h-full object-cover opacity-50"
                   referrerPolicy="no-referrer"
+                  loading="lazy"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-[#050505] to-transparent" />
                 <div className="absolute bottom-6 left-6">

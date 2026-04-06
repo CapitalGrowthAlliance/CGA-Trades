@@ -17,7 +17,7 @@ const INITIAL_ASSETS = [
   { symbol: 'TSLA', name: 'Tesla', type: 'stock', price: 175.20, change: 2.10, history: [170, 172, 171, 174, 175.2], logo: 'https://logo.clearbit.com/tesla.com' },
 ];
 
-const AssetIcon = ({ asset }: { asset: any }) => {
+const AssetIcon = React.memo(({ asset }: { asset: any }) => {
   const [error, setError] = useState(false);
   const [forexErrors, setForexErrors] = useState<boolean[]>([false, false]);
   
@@ -30,6 +30,7 @@ const AssetIcon = ({ asset }: { asset: any }) => {
               <img 
                 src={logo} 
                 alt="currency" 
+                loading="lazy"
                 className="w-full h-full object-cover" 
                 onError={() => {
                   const newErrors = [...forexErrors];
@@ -51,7 +52,7 @@ const AssetIcon = ({ asset }: { asset: any }) => {
   if (!error && asset.logo && asset.logo.startsWith('http')) {
     return (
       <div className="w-8 h-8 rounded-full bg-black/5 dark:bg-white/10 flex items-center justify-center overflow-hidden shrink-0 p-1.5">
-        <img src={asset.logo} alt={asset.symbol} className="w-full h-full object-contain" onError={() => setError(true)} />
+        <img src={asset.logo} alt={asset.symbol} loading="lazy" className="w-full h-full object-contain" onError={() => setError(true)} />
       </div>
     );
   }
@@ -73,9 +74,9 @@ const AssetIcon = ({ asset }: { asset: any }) => {
       {asset.symbol.charAt(0)}
     </div>
   );
-};
+});
 
-const Sparkline = ({ data, isPositive }: { data: number[], isPositive: boolean }) => {
+const Sparkline = React.memo(({ data, isPositive }: { data: number[], isPositive: boolean }) => {
   const min = Math.min(...data);
   const max = Math.max(...data);
   const range = max - min || 1;
@@ -102,7 +103,7 @@ const Sparkline = ({ data, isPositive }: { data: number[], isPositive: boolean }
       />
     </svg>
   );
-};
+});
 
 export default function MarketTicker() {
   const { theme } = useTheme();

@@ -20,6 +20,17 @@ interface Message {
   isTyping?: boolean;
 }
 
+// Initialize Gemini API outside component to avoid re-initialization on every render
+const getApiKey = () => {
+  try {
+    return (process.env as any).GEMINI_API_KEY || import.meta.env.VITE_GEMINI_API_KEY;
+  } catch (e) {
+    return import.meta.env.VITE_GEMINI_API_KEY;
+  }
+};
+
+const ai = new GoogleGenAI({ apiKey: getApiKey() });
+
 export default function Chatbot() {
   const { t } = useTranslation();
   const location = useLocation();
@@ -39,17 +50,6 @@ export default function Chatbot() {
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
   const [chatSession, setChatSession] = useState<any>(null);
-
-  // Initialize Gemini API
-  const getApiKey = () => {
-    try {
-      return (process.env as any).GEMINI_API_KEY || import.meta.env.VITE_GEMINI_API_KEY;
-    } catch (e) {
-      return import.meta.env.VITE_GEMINI_API_KEY;
-    }
-  };
-
-  const ai = new GoogleGenAI({ apiKey: getApiKey() });
 
   const fetchFaqs = async () => {
     try {

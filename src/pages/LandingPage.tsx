@@ -111,6 +111,8 @@ export default function LandingPage({ initialMode = 'signin' }: { initialMode?: 
           loop 
           muted 
           playsInline
+          preload="metadata"
+          poster="https://i.imgur.com/jt4vAVS.png"
           className="w-full h-full object-cover opacity-40"
         >
           <source src="https://cdn.dribbble.com/userupload/46332361/file/large-434d1e88ab0d05b064bd82726500259d.mp4" type="video/mp4" />

@@ -53,16 +53,14 @@ export default function HomeDashboard() {
       return;
     }
 
-    let totalDailyTarget = 0;
-    active.forEach(inv => {
-      const dailyProfit = inv.amount * (inv.roi / 100);
-      totalDailyTarget += dailyProfit;
-    });
+    // Memoize total daily target to avoid re-calculating every second
+    const totalDailyTarget = active.reduce((sum, inv) => sum + (inv.amount * (inv.roi / 100)), 0);
     setDailyTarget(totalDailyTarget);
 
     const interval = setInterval(() => {
+      const now = Date.now();
       let currentTotalROI = 0;
-      let earliestActivation = new Date().getTime();
+      let earliestActivation = now;
 
       active.forEach(inv => {
         const activationTime = new Date(inv.activationTime).getTime();
@@ -73,7 +71,6 @@ export default function HomeDashboard() {
         const dailyProfit = inv.amount * (inv.roi / 100);
         const profitPerSecond = dailyProfit / 86400;
         
-        const now = new Date().getTime();
         const elapsedSeconds = Math.floor((now - activationTime) / 1000);
         
         // Calculate ROI for current 24h cycle
@@ -82,10 +79,9 @@ export default function HomeDashboard() {
       });
 
       setLiveROI(currentTotalROI);
-      setProgress((currentTotalROI / totalDailyTarget) * 100);
+      setProgress(totalDailyTarget > 0 ? (currentTotalROI / totalDailyTarget) * 100 : 0);
 
       // Time remaining in the current 24h cycle based on earliest activation
-      const now = new Date().getTime();
       const elapsedSinceEarliest = Math.floor((now - earliestActivation) / 1000);
       const secondsRemaining = 86400 - (elapsedSinceEarliest % 86400);
       

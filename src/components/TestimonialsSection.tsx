@@ -137,7 +137,7 @@ const allReviews: Review[] = reviewers.map((reviewer, index) => ({
 const topRowReviews = allReviews.slice(0, 19);
 const bottomRowReviews = allReviews.slice(19, 38);
 
-const ReviewCard = ({ review }: { review: Review }) => {
+const ReviewCard = React.memo(({ review }: { review: Review }) => {
   return (
     <div className="w-[160px] sm:w-[200px] md:w-[240px] lg:w-[380px] shrink-0 bg-bg-card/40 backdrop-blur-md border border-border-light rounded-xl md:rounded-2xl p-2 sm:p-3 md:p-4 lg:p-6 shadow-sm hover:shadow-md transition-all duration-300 hover:-translate-y-1 group relative overflow-hidden">
       <div className="flex items-center gap-2 sm:gap-3 mb-2 sm:mb-3 md:mb-4">
@@ -173,7 +173,7 @@ const ReviewCard = ({ review }: { review: Review }) => {
       </div>
     </div>
   );
-};
+});
 
 const MarqueeRow = ({ reviews, direction }: { reviews: Review[], direction: 'left' | 'right' }) => {
   const animationClass = direction === 'left' ? 'animate-scroll-left' : 'animate-scroll-right';

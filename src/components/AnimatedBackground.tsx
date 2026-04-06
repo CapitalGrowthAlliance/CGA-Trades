@@ -64,42 +64,30 @@ const AnimatedBackground: React.FC<AnimatedBackgroundProps> = ({
         '--light': colors.light,
         '--accent': colors.accent,
         '--deep': colors.deep,
+        willChange: 'transform, opacity',
       } as React.CSSProperties}
     >
       {/* Layer 0: Forex Chart Background (Very Shallow) */}
       <div className="absolute inset-0 opacity-[0.03] dark:opacity-[0.05]">
         <svg width="100%" height="100%" preserveAspectRatio="none" viewBox="0 0 1000 1000">
-          {/* Grid lines */}
+          {/* Grid lines - Optimized by reducing count */}
           <g stroke="currentColor" strokeWidth="1" strokeDasharray="4 4" opacity="0.3">
-            {[...Array(11)].map((_, i) => (
-              <line key={`h-${i}`} x1="0" y1={i * 100} x2="1000" y2={i * 100} />
+            {[...Array(6)].map((_, i) => (
+              <line key={`h-${i}`} x1="0" y1={i * 200} x2="1000" y2={i * 200} />
             ))}
-            {[...Array(11)].map((_, i) => (
-              <line key={`v-${i}`} x1={i * 100} y1="0" x2={i * 100} y2="1000" />
+            {[...Array(6)].map((_, i) => (
+              <line key={`v-${i}`} x1={i * 200} y1="0" x2={i * 200} y2="1000" />
             ))}
           </g>
           
-          {/* Candlesticks */}
+          {/* Candlesticks - Optimized by reducing count */}
           <g stroke="currentColor" strokeWidth="2" opacity="0.6">
-            <line x1="50" y1="850" x2="50" y2="750" /><rect x="45" y="780" width="10" height="50" fill="currentColor" />
-            <line x1="100" y1="820" x2="100" y2="720" /><rect x="95" y="740" width="10" height="60" fill="transparent" />
-            <line x1="150" y1="800" x2="150" y2="650" /><rect x="145" y="680" width="10" height="100" fill="currentColor" />
-            <line x1="200" y1="720" x2="200" y2="620" /><rect x="195" y="640" width="10" height="60" fill="transparent" />
-            <line x1="250" y1="700" x2="250" y2="600" /><rect x="245" y="620" width="10" height="60" fill="transparent" />
-            <line x1="300" y1="680" x2="300" y2="580" /><rect x="295" y="600" width="10" height="60" fill="currentColor" />
-            <line x1="350" y1="650" x2="350" y2="500" /><rect x="345" y="520" width="10" height="110" fill="currentColor" />
-            <line x1="400" y1="580" x2="400" y2="480" /><rect x="395" y="500" width="10" height="60" fill="transparent" />
-            <line x1="450" y1="550" x2="450" y2="450" /><rect x="445" y="480" width="10" height="50" fill="transparent" />
-            <line x1="500" y1="520" x2="500" y2="420" /><rect x="495" y="440" width="10" height="60" fill="currentColor" />
-            <line x1="550" y1="500" x2="550" y2="350" /><rect x="545" y="380" width="10" height="90" fill="currentColor" />
-            <line x1="600" y1="450" x2="600" y2="350" /><rect x="595" y="370" width="10" height="60" fill="transparent" />
-            <line x1="650" y1="400" x2="650" y2="300" /><rect x="645" y="320" width="10" height="60" fill="transparent" />
-            <line x1="700" y1="380" x2="700" y2="280" /><rect x="695" y="300" width="10" height="60" fill="currentColor" />
-            <line x1="750" y1="350" x2="750" y2="200" /><rect x="745" y="220" width="10" height="110" fill="currentColor" />
-            <line x1="800" y1="280" x2="800" y2="180" /><rect x="795" y="200" width="10" height="60" fill="transparent" />
-            <line x1="850" y1="250" x2="850" y2="150" /><rect x="845" y="180" width="10" height="50" fill="transparent" />
-            <line x1="900" y1="220" x2="900" y2="120" /><rect x="895" y="140" width="10" height="60" fill="currentColor" />
-            <line x1="950" y1="200" x2="950" y2="50" /><rect x="945" y="80" width="10" height="100" fill="currentColor" />
+            {[50, 150, 250, 350, 450, 550, 650, 750, 850, 950].map((x, i) => (
+              <React.Fragment key={x}>
+                <line x1={x} y1={850 - i * 50} x2={x} y2={750 - i * 50} />
+                <rect x={x - 5} y={780 - i * 50} width="10" height={40 + (i % 3) * 20} fill={i % 2 === 0 ? "currentColor" : "transparent"} />
+              </React.Fragment>
+            ))}
           </g>
 
           {/* Moving Average Lines */}
@@ -109,6 +97,7 @@ const AnimatedBackground: React.FC<AnimatedBackgroundProps> = ({
             stroke="var(--primary)" 
             strokeWidth="4" 
             opacity="0.8"
+            style={{ willChange: 'transform' }}
           />
           <path 
             d="M0 850 Q 150 800 250 700 T 450 550 T 650 400 T 850 250 T 1000 150" 
@@ -116,12 +105,13 @@ const AnimatedBackground: React.FC<AnimatedBackgroundProps> = ({
             stroke="var(--accent)" 
             strokeWidth="2" 
             opacity="0.5"
+            style={{ willChange: 'transform' }}
           />
         </svg>
       </div>
 
       {/* Crisp Layered Gradients (No Blur) */}
-      <div className="absolute inset-0 animate-gradient-shift opacity-40 dark:opacity-20">
+      <div className="absolute inset-0 animate-gradient-shift opacity-40 dark:opacity-20" style={{ willChange: 'background-position' }}>
         <div 
           className="absolute inset-0"
           style={{
@@ -161,6 +151,7 @@ const AnimatedBackground: React.FC<AnimatedBackgroundProps> = ({
             WebkitMaskImage: 'url("data:image/svg+xml,%3Csvg width=\'1000\' height=\'1000\' xmlns=\'http://www.w3.org/2000/svg\'%3E%3Cpath d=\'M0 500 Q 250 200 500 500 T 1000 500 V 1000 H 0 Z\' fill=\'black\'/%3E%3C/svg%3E")',
             WebkitMaskRepeat: 'repeat-x',
             WebkitMaskSize: '100% 100%',
+            willChange: 'transform',
           }}
         />
 
@@ -171,6 +162,7 @@ const AnimatedBackground: React.FC<AnimatedBackgroundProps> = ({
               d="M0 600 Q 250 400 500 600 T 1000 600 V 1000 H 0 Z" 
               fill="currentColor" 
               className="animate-wave-path"
+              style={{ willChange: 'd' }}
             />
           </svg>
         </div>
@@ -179,11 +171,11 @@ const AnimatedBackground: React.FC<AnimatedBackgroundProps> = ({
       {/* UI Protection: Sharp Contrast Layers */}
       <div className="absolute inset-0 bg-gradient-to-b from-bg-primary/10 via-transparent to-bg-primary/30" />
       
-      {/* Subtle Grain (Sharp) */}
+      {/* Subtle Grain (Sharp) - Optimized by using a simpler noise pattern */}
       <div 
-        className="absolute inset-0 opacity-[0.02] mix-blend-overlay pointer-events-none"
+        className="absolute inset-0 opacity-[0.015] mix-blend-overlay pointer-events-none"
         style={{
-          backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E")`,
+          backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='1' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E")`,
         }}
       />
     </div>

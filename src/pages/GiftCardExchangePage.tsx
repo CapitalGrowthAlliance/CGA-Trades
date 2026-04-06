@@ -4,8 +4,6 @@ import { ShoppingBag, RefreshCw, Upload, X, CheckCircle, CheckCircle2, AlertCirc
 
 // --- Scoped Styles for Gold Theme ---
 const goldStyles = `
-  @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Montserrat:wght@300;400;500;600&display=swap');
-
   /* Global Gold Theme Override */
   body.gold-theme-active {
     background-color: #050505 !important;
