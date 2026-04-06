@@ -60,6 +60,7 @@ const ForgotPasswordPage = lazy(() => import('./pages/ForgotPasswordPage'));
 const CompleteProfilePage = lazy(() => import('./pages/CompleteProfilePage'));
 import ProtectedRoute from './components/ProtectedRoute';
 import PublicRoute from './components/PublicRoute';
+import Preloader from './components/Preloader';
 import { isDev } from './config/env';
 
 // Placeholder components for new routes
@@ -120,9 +121,10 @@ export default function App() {
         <AuthProvider>
           <SiteProvider>
             <BrowserRouter>
+              <Preloader />
               <ScrollAndRedirectHandler />
               <GlobalOverlays />
-              <Suspense fallback={<div className="flex items-center justify-center min-h-screen bg-[#0B1D3A]"><div className="w-8 h-8 border-4 border-accent-primary border-t-transparent rounded-full animate-spin"></div></div>}>
+              <Suspense fallback={null}>
                 <Routes>
               {/* Public Routes */}
             <Route path="/" element={<PublicLayout><HomePage /></PublicLayout>} />
