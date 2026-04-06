@@ -35,46 +35,6 @@
 }
 
 @keyframes logo-3d-rotate {
-  0% { transform: perspective(1000px) rotateY(0deg); }
-  100% { transform: perspective(1000px) rotateY(360deg); }
-}
-
-.animate-logo-3d {
-  animation: logo-3d-rotate 8s linear infinite;
-  transform-style: preserve-3d;
-}
-
-@keyframes gradient-shift {
-  0% { background-position: 0% 50%; }
-  50% { background-position: 100% 50%; }
-  100% { background-position: 0% 50%; }
-}
-
-@keyframes wave-shift {
-  0% { transform: translateX(0) translateY(0); }
-  50% { transform: translateX(-50px) translateY(20px); }
-  100% { transform: translateX(0) translateY(0); }
-}
-
-@keyframes wave-path {
-  0% { d: path("M0 600 Q 250 400 500 600 T 1000 600 V 1000 H 0 Z"); }
-  50% { d: path("M0 650 Q 250 450 500 650 T 1000 650 V 1000 H 0 Z"); }
-  100% { d: path("M0 600 Q 250 400 500 600 T 1000 600 V 1000 H 0 Z"); }
-}
-
-.animate-gradient-shift {
-  animation: gradient-shift 30s ease infinite;
-}
-
-.animate-wave-shift {
-  animation: wave-shift 20s ease-in-out infinite;
-}
-
-.animate-wave-path {
-  animation: wave-path 15s ease-in-out infinite;
-}
-
-.hide-scrollbar::-webkit-scrollbar {
   display: none;
 }
 .hide-scrollbar {
@@ -157,7 +117,7 @@
   }
 
   body {
-    @apply bg-transparent text-text-primary transition-colors duration-300;
+    @apply bg-bg-primary text-text-primary transition-colors duration-300;
     @apply text-foreground;
     top: 0 !important;
   }

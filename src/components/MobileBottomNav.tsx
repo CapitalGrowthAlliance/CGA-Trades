@@ -35,18 +35,7 @@ export default function MobileBottomNav() {
               className={`relative flex flex-col items-center justify-center w-16 h-14 rounded-full transition-transform active:scale-90 ${isInvest ? 'z-10' : ''}`}
             >
               {isInvest && (
-                <motion.div
-                  className="absolute inset-0 bg-accent-primary/20 dark:bg-accent-primary/10 rounded-full blur-md"
-                  animate={{
-                    scale: [1, 1.2, 1],
-                    opacity: [0.3, 0.6, 0.3],
-                  }}
-                  transition={{
-                    duration: 3,
-                    repeat: Infinity,
-                    ease: "easeInOut"
-                  }}
-                />
+                <div className="absolute inset-0 bg-accent-primary/20 dark:bg-accent-primary/10 rounded-full blur-md" />
               )}
               
               <div className="relative flex flex-col items-center justify-center">
@@ -59,12 +48,7 @@ export default function MobileBottomNav() {
                   transition={{ 
                     type: "spring", 
                     stiffness: 400, 
-                    damping: 25,
-                    scale: isInvest ? {
-                      duration: 2,
-                      repeat: Infinity,
-                      repeatType: "reverse"
-                    } : undefined
+                    damping: 25
                   }}
                   className={isInvest ? "text-[#c8ff00]" : (isActive ? "text-[#ff0000]" : "text-gray-500 dark:text-gray-400")}
                 >

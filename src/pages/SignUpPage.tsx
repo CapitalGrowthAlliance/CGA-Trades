@@ -211,15 +211,12 @@ export default function SignUpPage() {
       {/* Left Side - Visual Content (Hidden on mobile) */}
       <div className="hidden lg:flex lg:w-1/2 relative bg-[#050B14] items-center justify-center p-12">
         <div className="absolute inset-0 z-0 opacity-40">
-          <video 
-            autoPlay 
-            loop 
-            muted 
-            playsInline
+          <img 
+            src="https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?auto=format&fit=crop&q=80&w=2000" 
+            alt="Background" 
             className="w-full h-full object-cover"
-          >
-            <source src="https://cdn.dribbble.com/userupload/46332361/file/large-434d1e88ab0d05b064bd82726500259d.mp4" type="video/mp4" />
-          </video>
+            referrerPolicy="no-referrer"
+          />
           <div className="absolute inset-0 bg-gradient-to-r from-[#050B14] via-transparent to-transparent"></div>
         </div>
         

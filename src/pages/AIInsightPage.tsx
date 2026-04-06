@@ -344,7 +344,7 @@ export default function AIInsightPage() {
         
         <div className="flex items-center gap-4 bg-bg-secondary border border-border-light rounded-2xl p-4">
           <div className="flex items-center gap-3">
-            <div className="w-2 h-2 rounded-full bg-green-500 animate-pulse" />
+            <div className="w-2 h-2 rounded-full bg-green-500" />
             <span className="text-sm font-bold uppercase tracking-wider">Live Data Stream</span>
           </div>
           <div className="w-px h-6 bg-border-light" />

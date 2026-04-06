@@ -64,8 +64,8 @@ export default function HowItWorksPage() {
     <div className="min-h-screen bg-[#050505] relative overflow-hidden">
       {/* Futuristic Background Elements */}
       <div className="fixed inset-0 pointer-events-none overflow-hidden">
-        <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-accent-primary/10 blur-[120px] rounded-full animate-pulse" />
-        <div className="absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] bg-blue-500/10 blur-[120px] rounded-full animate-pulse" style={{ animationDelay: '2s' }} />
+        <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-accent-primary/10 blur-[120px] rounded-full" />
+        <div className="absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] bg-blue-500/10 blur-[120px] rounded-full" style={{ opacity: 0.1 }} />
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-full opacity-[0.03] pointer-events-none" 
              style={{ backgroundImage: 'radial-gradient(#fff 1px, transparent 1px)', backgroundSize: '40px 40px' }} />
       </div>
@@ -231,7 +231,7 @@ export default function HowItWorksPage() {
                 <div className="absolute inset-0 bg-gradient-to-t from-[#050505] to-transparent" />
                 <div className="absolute bottom-6 left-6">
                   <div className="flex items-center gap-2 text-accent-primary font-bold text-xs uppercase tracking-widest">
-                    <div className="w-2 h-2 rounded-full bg-accent-primary animate-ping" />
+                    <div className="w-2 h-2 rounded-full bg-accent-primary" />
                     Live Expert Oversight Active
                   </div>
                 </div>

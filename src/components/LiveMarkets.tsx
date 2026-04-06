@@ -63,7 +63,7 @@ const INITIAL_FOREX: ForexData[] = [
 // --- Components ---
 
 const Sparkline = ({ data, color }: { data: number[], color: string }) => {
-  if (!data || data.length === 0) return <div className="w-20 h-8 bg-white/5 rounded animate-pulse"></div>;
+  if (!data || data.length === 0) return <div className="w-20 h-8 bg-white/5 rounded"></div>;
   
   const min = Math.min(...data);
   const max = Math.max(...data);

@@ -423,7 +423,7 @@ export default function GiftCardExchangePage() {
           className="text-center mb-8 md:mb-20 mt-16 md:mt-10"
         >
           <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-[#D4AF37]/30 bg-[#D4AF37]/5 mb-2 md:mb-8">
-            <div className="w-2 h-2 rounded-full bg-[#D4AF37] animate-pulse"></div>
+            <div className="w-2 h-2 rounded-full bg-[#D4AF37]"></div>
             <span className="text-[10px] md:text-xs font-semibold tracking-widest uppercase text-[#D4AF37]">Premium Trading Desk</span>
           </div>
           

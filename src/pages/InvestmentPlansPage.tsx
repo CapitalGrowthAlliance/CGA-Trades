@@ -85,10 +85,10 @@ function CardFace({ plan, isNaira, amount, setAmount, onInvest, isMobileExpanded
         whileHover={{ scale: 1.05 }}
         className="absolute top-4 right-4 z-20"
       >
-        <div className="absolute inset-0 bg-accent-primary/20 blur-xl rounded-xl scale-150 animate-pulse"></div>
+        <div className="absolute inset-0 bg-accent-primary/20 blur-xl rounded-xl scale-150"></div>
         <TradingRobotImage 
           className="w-12 h-12 sm:w-14 sm:h-14 relative z-10" 
-          src={plan.videoUrl || (isNaira ? "https://i.imgur.com/ro9I5Jf.mp4" : "https://i.imgur.com/KdQWEqF.mp4")}
+          src={plan.imageUrl || (isNaira ? "https://images.unsplash.com/photo-1485827404703-89b55fcc595e?auto=format&fit=crop&q=80&w=800" : "https://images.unsplash.com/photo-1485827404703-89b55fcc595e?auto=format&fit=crop&q=80&w=800")}
         />
       </motion.div>
 
@@ -331,23 +331,23 @@ export default function InvestmentPlansPage() {
 
   useEffect(() => {
     // Fetch plans or use mock data
-    const fetchPlans = async () => {
-      try {
-        // Even if API succeeds or fails, use our new static plans for the preview to ensure the UI matches the requirements
-        // In a real app, the API would return these new values.
-        setPlans([
-          { id: 'plan_1', name: t('plans.regular', 'Regular'), roi: 2.5, duration: t('plans.duration_30', '30 Days'), minInvestment: 100, maxInvestment: 49999, nairaMin: 10000, nairaMax: 9000000, accent: 'from-accent-primary to-accent-secondary', glow: 'rgba(59, 130, 246, 0.6)', mobileImage: 'https://ngcbgroup.com/images/photos/3/42.png', videoUrl: 'https://cdn.dribbble.com/userupload/12700016/file/original-a077b23b3f9e3fd27f605e3d2849ed26.mp4' },
-          { id: 'plan_2', name: t('plans.premium', 'Premium'), roi: 2.7, duration: t('plans.duration_90', '90 Days'), minInvestment: 50000, maxInvestment: 999999, nairaMin: 10000000, nairaMax: 90000000, accent: 'from-accent-primary to-accent-secondary', glow: 'rgba(59, 130, 246, 0.6)', mobileImage: 'https://www.amarkets.com/wp-content/uploads/2024/06/forex-robots-TSS.jpg', videoUrl: 'https://cdn.dribbble.com/userupload/17957549/file/original-2ac0cc43509417f81fd0248660d699e8.mp4' },
-          { id: 'plan_3', name: t('plans.elite', 'Elite'), roi: 2.9, duration: t('plans.duration_180', '180 Days'), minInvestment: 1000000, maxInvestment: 10000000, nairaMin: 100000000, nairaMax: 10000000000, accent: 'from-accent-primary to-accent-secondary', glow: 'rgba(59, 130, 246, 0.6)', mobileImage: 'https://images.theengineeringprojects.com/image/main/2024/12/developing-forex-robot-software.jpg', videoUrl: 'https://cdn.dribbble.com/userupload/13584738/file/original-c7d93b4dd2d05fd4b987e44e9b0fea60.mp4' },
-        ]);
-      } catch (err) {
-        // Fallback to mock data for preview/demo
-        setPlans([
-          { id: 'plan_1', name: t('plans.regular', 'Regular'), roi: 2.5, duration: t('plans.duration_30', '30 Days'), minInvestment: 100, maxInvestment: 49999, nairaMin: 10000, nairaMax: 9000000, accent: 'from-accent-primary to-accent-secondary', glow: 'rgba(59, 130, 246, 0.6)', mobileImage: 'https://ngcbgroup.com/images/photos/3/42.png', videoUrl: 'https://cdn.dribbble.com/userupload/12700016/file/original-a077b23b3f9e3fd27f605e3d2849ed26.mp4' },
-          { id: 'plan_2', name: t('plans.premium', 'Premium'), roi: 2.7, duration: t('plans.duration_90', '90 Days'), minInvestment: 50000, maxInvestment: 999999, nairaMin: 10000000, nairaMax: 90000000, accent: 'from-accent-primary to-accent-secondary', glow: 'rgba(59, 130, 246, 0.6)', mobileImage: 'https://www.amarkets.com/wp-content/uploads/2024/06/forex-robots-TSS.jpg', videoUrl: 'https://cdn.dribbble.com/userupload/17957549/file/original-2ac0cc43509417f81fd0248660d699e8.mp4' },
-          { id: 'plan_3', name: t('plans.elite', 'Elite'), roi: 2.9, duration: t('plans.duration_180', '180 Days'), minInvestment: 1000000, maxInvestment: 10000000, nairaMin: 100000000, nairaMax: 10000000000, accent: 'from-accent-primary to-accent-secondary', glow: 'rgba(59, 130, 246, 0.6)', mobileImage: 'https://images.theengineeringprojects.com/image/main/2024/12/developing-forex-robot-software.jpg', videoUrl: 'https://cdn.dribbble.com/userupload/13584738/file/original-c7d93b4dd2d05fd4b987e44e9b0fea60.mp4' },
-        ]);
-      } finally {
+        const fetchPlans = async () => {
+          try {
+            // Even if API succeeds or fails, use our new static plans for the preview to ensure the UI matches the requirements
+            // In a real app, the API would return these new values.
+            setPlans([
+              { id: 'plan_1', name: t('plans.regular', 'Regular'), roi: 2.5, duration: t('plans.duration_30', '30 Days'), minInvestment: 100, maxInvestment: 49999, nairaMin: 10000, nairaMax: 9000000, accent: 'from-accent-primary to-accent-secondary', glow: 'rgba(59, 130, 246, 0.6)', mobileImage: 'https://ngcbgroup.com/images/photos/3/42.png', imageUrl: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&q=80&w=800' },
+              { id: 'plan_2', name: t('plans.premium', 'Premium'), roi: 2.7, duration: t('plans.duration_90', '90 Days'), minInvestment: 50000, maxInvestment: 999999, nairaMin: 10000000, nairaMax: 90000000, accent: 'from-accent-primary to-accent-secondary', glow: 'rgba(59, 130, 246, 0.6)', mobileImage: 'https://www.amarkets.com/wp-content/uploads/2024/06/forex-robots-TSS.jpg', imageUrl: 'https://images.unsplash.com/photo-1535320903710-d993d3d77d29?auto=format&fit=crop&q=80&w=800' },
+              { id: 'plan_3', name: t('plans.elite', 'Elite'), roi: 2.9, duration: t('plans.duration_180', '180 Days'), minInvestment: 1000000, maxInvestment: 10000000, nairaMin: 100000000, nairaMax: 10000000000, accent: 'from-accent-primary to-accent-secondary', glow: 'rgba(59, 130, 246, 0.6)', mobileImage: 'https://images.theengineeringprojects.com/image/main/2024/12/developing-forex-robot-software.jpg', imageUrl: 'https://images.unsplash.com/photo-1639762681485-074b7f938ba0?auto=format&fit=crop&q=80&w=800' },
+            ]);
+          } catch (err) {
+            // Fallback to mock data for preview/demo
+            setPlans([
+              { id: 'plan_1', name: t('plans.regular', 'Regular'), roi: 2.5, duration: t('plans.duration_30', '30 Days'), minInvestment: 100, maxInvestment: 49999, nairaMin: 10000, nairaMax: 9000000, accent: 'from-accent-primary to-accent-secondary', glow: 'rgba(59, 130, 246, 0.6)', mobileImage: 'https://ngcbgroup.com/images/photos/3/42.png', imageUrl: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&q=80&w=800' },
+              { id: 'plan_2', name: t('plans.premium', 'Premium'), roi: 2.7, duration: t('plans.duration_90', '90 Days'), minInvestment: 50000, maxInvestment: 999999, nairaMin: 10000000, nairaMax: 90000000, accent: 'from-accent-primary to-accent-secondary', glow: 'rgba(59, 130, 246, 0.6)', mobileImage: 'https://www.amarkets.com/wp-content/uploads/2024/06/forex-robots-TSS.jpg', imageUrl: 'https://images.unsplash.com/photo-1535320903710-d993d3d77d29?auto=format&fit=crop&q=80&w=800' },
+              { id: 'plan_3', name: t('plans.elite', 'Elite'), roi: 2.9, duration: t('plans.duration_180', '180 Days'), minInvestment: 1000000, maxInvestment: 10000000, nairaMin: 100000000, nairaMax: 10000000000, accent: 'from-accent-primary to-accent-secondary', glow: 'rgba(59, 130, 246, 0.6)', mobileImage: 'https://images.theengineeringprojects.com/image/main/2024/12/developing-forex-robot-software.jpg', imageUrl: 'https://images.unsplash.com/photo-1639762681485-074b7f938ba0?auto=format&fit=crop&q=80&w=800' },
+            ]);
+          } finally {
         setLoading(false);
       }
     };

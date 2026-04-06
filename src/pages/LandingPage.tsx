@@ -104,21 +104,8 @@ export default function LandingPage({ initialMode = 'signin' }: { initialMode?: 
 
   return (
     <div className="min-h-screen w-full bg-[#050B14] overflow-hidden relative flex items-center justify-center lg:justify-between px-4 lg:px-24 font-sans">
-      {/* Video Background */}
-      <div className="absolute inset-0 z-0">
-        <video 
-          autoPlay 
-          loop 
-          muted 
-          playsInline
-          preload="metadata"
-          poster="https://i.imgur.com/jt4vAVS.png"
-          className="w-full h-full object-cover opacity-40"
-        >
-          <source src="https://cdn.dribbble.com/userupload/46332361/file/large-434d1e88ab0d05b064bd82726500259d.mp4" type="video/mp4" />
-        </video>
-        <div className="absolute inset-0 bg-gradient-to-b from-[#050B14]/80 via-transparent to-[#050B14]/80"></div>
-      </div>
+      {/* Static Background Overlay */}
+      <div className="absolute inset-0 z-0 bg-gradient-to-b from-[#050B14]/80 via-transparent to-[#050B14]/80"></div>
 
       {/* Logo at Top Left */}
       <div className="absolute top-8 left-6 lg:left-12 z-20">
@@ -136,7 +123,7 @@ export default function LandingPage({ initialMode = 'signin' }: { initialMode?: 
             transition={{ duration: 0.3 }}
             className="absolute inset-0 flex flex-col justify-center"
           >
-            <h1 className="text-5xl xl:text-6xl font-bold leading-tight bg-clip-text text-transparent bg-gradient-to-r from-[#c8ff00] via-green-400 to-[#c8ff00] animate-gradient-x drop-shadow-[0_0_15px_rgba(200,255,0,0.4)] pb-4">
+            <h1 className="text-5xl xl:text-6xl font-bold leading-tight bg-clip-text text-transparent bg-gradient-to-r from-[#c8ff00] via-green-400 to-[#c8ff00] drop-shadow-[0_0_15px_rgba(200,255,0,0.4)] pb-4">
               {isSignIn 
                 ? "You are already in motion. Log in and keep building." 
                 : "You’re one step away from a smarter financial future. Welcome to CGA."}
@@ -370,18 +357,6 @@ export default function LandingPage({ initialMode = 'signin' }: { initialMode?: 
       </div>
 
       <style>{`
-        @keyframes gradient-x {
-          0%, 100% {
-            background-position: 0% 50%;
-          }
-          50% {
-            background-position: 100% 50%;
-          }
-        }
-        .animate-gradient-x {
-          animation: gradient-x 6s ease infinite;
-          background-size: 200% 200%;
-        }
         .phone-input-container .react-tel-input .flag-dropdown {
           background-color: transparent !important;
           border: none !important;

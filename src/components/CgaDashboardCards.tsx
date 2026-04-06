@@ -43,7 +43,6 @@ const CgaDashboardCards: React.FC = () => {
             onClick={() => navigate('/invest')}
             className="w-full p-3 rounded-xl font-semibold text-sm cursor-pointer transition-all duration-300 flex items-center justify-center no-underline backdrop-blur-md border border-white/10 relative overflow-hidden bg-gradient-to-br from-blue-500/10 to-blue-600/20 text-blue-400 shadow-[0_0_15px_rgba(37,99,235,0.1)] hover:from-blue-500/20 hover:to-blue-600/30 hover:shadow-[0_0_20px_rgba(37,99,235,0.2)] hover:-translate-y-0.5"
           >
-            <div className="absolute top-[-50%] left-[-50%] w-[200%] h-[200%] bg-gradient-to-r from-transparent via-white/5 to-transparent rotate-[45deg] animate-cga-shine pointer-events-none" />
             Start Investing
           </button>
         </div>
@@ -70,9 +69,8 @@ const CgaDashboardCards: React.FC = () => {
           </div>
           <button 
             onClick={() => navigate('/deposit')}
-            className="w-full p-3 rounded-xl font-semibold text-sm cursor-pointer transition-all duration-300 flex items-center justify-center no-underline backdrop-blur-md border border-white/10 relative overflow-hidden bg-gradient-to-br from-emerald-500/10 to-emerald-600/20 text-emerald-400 shadow-[0_0_15px_rgba(5,150,105,0.1)] hover:from-emerald-500/20 hover:to-emerald-600/30 hover:shadow-[0_0_20px_rgba(5,150,105,0.2)] hover:-translate-y-0.5 hover:animate-pulse"
+            className="w-full p-3 rounded-xl font-semibold text-sm cursor-pointer transition-all duration-300 flex items-center justify-center no-underline backdrop-blur-md border border-white/10 relative overflow-hidden bg-gradient-to-br from-emerald-500/10 to-emerald-600/20 text-emerald-400 shadow-[0_0_15px_rgba(5,150,105,0.1)] hover:from-emerald-500/20 hover:to-emerald-600/30 hover:shadow-[0_0_20px_rgba(5,150,105,0.2)] hover:-translate-y-0.5"
           >
-            <div className="absolute top-[-50%] left-[-50%] w-[200%] h-[200%] bg-gradient-to-r from-transparent via-white/5 to-transparent rotate-[45deg] animate-cga-shine pointer-events-none" />
             Fund Now
           </button>
         </div>

@@ -192,26 +192,23 @@ export default function HomeDashboard() {
           <div className="bg-[#1a1d24] text-white rounded-2xl border border-[#2a2d35] shadow-[0_10px_30px_rgba(0,0,0,0.8)] relative overflow-hidden group flex flex-col justify-between w-full aspect-square md:w-full md:max-w-[180px] md:min-w-[140px] md:aspect-auto p-0 transition-transform hover:scale-105">
             {/* Top Image Section */}
             <div className="relative w-full h-16 md:h-24 bg-gradient-to-b from-blue-900/40 to-transparent flex items-end justify-center overflow-hidden pt-2 md:pt-4">
-              {/* Candlesticks background */}
+              {/* Candlesticks background (Static) */}
               <div className="absolute bottom-0 left-0 w-full h-12 md:h-16 flex items-end justify-between px-2 opacity-40">
                 {[...Array(10)].map((_, i) => {
                   const isGreen = i % 2 === 0 || i % 3 === 0;
                   const color = isGreen ? 'bg-green-500' : 'bg-red-500';
+                  const height = 20 + (i * 3) % 30; // Static height variation
                   return (
-                    <motion.div 
+                    <div 
                       key={i}
                       className="relative flex flex-col items-center justify-center w-1.5 md:w-2"
-                      animate={{ 
-                        height: [20, Math.random() * 30 + 20, 20],
-                        y: [0, Math.random() * -5, 0]
-                      }}
-                      transition={{ repeat: Infinity, duration: Math.random() * 2 + 1.5, ease: "easeInOut" }}
+                      style={{ height: `${height}px` }}
                     >
                       {/* Wick */}
                       <div className={`absolute w-[1px] h-full ${color}`} />
                       {/* Body */}
-                      <div className={`relative w-full ${color} rounded-[1px]`} style={{ height: `${Math.random() * 40 + 30}%` }} />
-                    </motion.div>
+                      <div className={`relative w-full ${color} rounded-[1px]`} style={{ height: `${40 + (i % 3) * 20}%` }} />
+                    </div>
                   );
                 })}
               </div>

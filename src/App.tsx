@@ -52,7 +52,6 @@ const InvestmentGuidePage = lazy(() => import('./pages/InvestmentGuidePage'));
 const Chatbot = lazy(() => import('./components/Chatbot'));
 const TelegramPopup = lazy(() => import('./components/TelegramPopup'));
 const MobileBottomNav = lazy(() => import('./components/MobileBottomNav'));
-const AnimatedBackground = lazy(() => import('./components/AnimatedBackground'));
 const HomeActivityNotifications = lazy(() => import('./components/HomeActivityNotifications'));
 
 const LandingPage = lazy(() => import('./pages/LandingPage'));
@@ -60,7 +59,6 @@ const ForgotPasswordPage = lazy(() => import('./pages/ForgotPasswordPage'));
 const CompleteProfilePage = lazy(() => import('./pages/CompleteProfilePage'));
 import ProtectedRoute from './components/ProtectedRoute';
 import PublicRoute from './components/PublicRoute';
-import Preloader from './components/Preloader';
 import { isDev } from './config/env';
 
 // Placeholder components for new routes
@@ -94,7 +92,6 @@ const GlobalOverlays = () => {
 
   return (
     <Suspense fallback={null}>
-      <AnimatedBackground primaryColor="#c8ff00" />
       {user && (
         <>
           <HomeActivityNotifications />
@@ -121,10 +118,9 @@ export default function App() {
         <AuthProvider>
           <SiteProvider>
             <BrowserRouter>
-              <Preloader />
               <ScrollAndRedirectHandler />
               <GlobalOverlays />
-              <Suspense fallback={null}>
+              <Suspense fallback={<div className="flex items-center justify-center min-h-screen bg-[#0B1D3A]"><div className="w-8 h-8 border-4 border-accent-primary border-t-transparent rounded-full animate-spin"></div></div>}>
                 <Routes>
               {/* Public Routes */}
             <Route path="/" element={<PublicLayout><HomePage /></PublicLayout>} />

@@ -155,7 +155,7 @@ export default function DashboardPage() {
               <span>Profile Settings</span>
             </Link>
             <div className="px-4 py-2 rounded-xl bg-emerald-500/10 border border-emerald-500/20 text-emerald-500 flex items-center gap-2">
-              <div className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></div>
+              <div className="w-2 h-2 rounded-full bg-emerald-500"></div>
               <span className="text-sm font-semibold uppercase tracking-wider">Account Active</span>
             </div>
           </div>

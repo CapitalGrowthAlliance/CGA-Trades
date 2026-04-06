@@ -4,7 +4,7 @@ import { Bot } from 'lucide-react';
 
 export default function TradingRobotImage({ 
   className = "w-24 h-24 md:w-32 md:h-32",
-  src = "https://i.imgur.com/KdQWEqF.mp4"
+  src = "https://images.unsplash.com/photo-1485827404703-89b55fcc595e?auto=format&fit=crop&q=80&w=800"
 }: { 
   className?: string;
   src?: string;

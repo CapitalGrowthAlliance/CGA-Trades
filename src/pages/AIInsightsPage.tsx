@@ -114,7 +114,7 @@ const GlassPanel = ({ children, title, icon: Icon, className = "" }: any) => (
           {Icon && <Icon className="w-5 h-5 text-accent-primary" />}
           <h3 className="text-lg font-bold text-white tracking-tight">{title}</h3>
         </div>
-        <div className="w-2 h-2 rounded-full bg-accent-primary animate-pulse" />
+        <div className="w-2 h-2 rounded-full bg-accent-primary" />
       </div>
     )}
     {children}
@@ -197,7 +197,7 @@ export default function AIInsightsPage() {
                     </div>
                     <div className="flex items-center justify-between">
                       <div className="flex items-center gap-2">
-                        <div className="w-1.5 h-1.5 rounded-full bg-accent-primary animate-pulse" />
+                        <div className="w-1.5 h-1.5 rounded-full bg-accent-primary" />
                         <span className="text-xs text-slate-500">{item.status}...</span>
                       </div>
                       <div className="text-xs font-mono text-accent-primary">{item.confidence}% Conf.</div>
@@ -318,7 +318,7 @@ export default function AIInsightsPage() {
                 {generateVolatilityAlerts().map((alert, i) => (
                   <div key={i} className="flex items-center justify-between p-3 rounded-2xl bg-white/5 border border-white/5">
                     <div className="flex items-center gap-3">
-                      <div className={`w-2 h-2 rounded-full ${alert.impact === 'Extreme' ? 'bg-red-500 animate-ping' : alert.impact === 'High' ? 'bg-orange-500' : 'bg-yellow-500'}`} />
+                      <div className={`w-2 h-2 rounded-full ${alert.impact === 'Extreme' ? 'bg-red-500' : alert.impact === 'High' ? 'bg-orange-500' : 'bg-yellow-500'}`} />
                       <div>
                         <div className="text-sm font-bold text-white">{alert.asset}</div>
                         <div className="text-[10px] text-slate-500">{alert.time}</div>
@@ -359,7 +359,7 @@ export default function AIInsightsPage() {
                 {Array.from({ length: 9 }).map((_, i) => (
                   <div 
                     key={i} 
-                    className={`aspect-square rounded-lg ${i % 3 === 0 ? 'bg-emerald-500/40' : i % 2 === 0 ? 'bg-red-500/40' : 'bg-slate-700/40'} border border-white/5 animate-pulse`}
+                    className={`aspect-square rounded-lg ${i % 3 === 0 ? 'bg-emerald-500/40' : i % 2 === 0 ? 'bg-red-500/40' : 'bg-slate-700/40'} border border-white/5`}
                     style={{ animationDelay: `${i * 0.1}s` }}
                   />
                 ))}

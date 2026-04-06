@@ -84,7 +84,7 @@ export default function PlanHistoryPage() {
                 <div className="relative z-10 flex-1 flex flex-col">
                   <div className="flex items-center justify-between mb-3">
                     <div className="flex items-center gap-2">
-                      <Cpu className={`w-5 h-5 ${isActive ? 'text-accent-primary animate-pulse' : 'text-gray-500'}`} />
+                      <Cpu className={`w-5 h-5 ${isActive ? 'text-accent-primary' : 'text-gray-500'}`} />
                       <h3 className="text-base font-bold tracking-wider">{inv.planName}</h3>
                     </div>
                     <BarChart2 className={`w-4 h-4 ${isActive ? 'text-accent-primary' : 'text-gray-500'}`} />
@@ -126,7 +126,7 @@ export default function PlanHistoryPage() {
                     </button>
                   ) : (
                     <div className="w-full py-2.5 text-sm bg-[#111] border border-[#333] text-accent-primary font-bold rounded-xl flex items-center justify-center gap-2">
-                      <div className="w-1.5 h-1.5 rounded-full bg-accent-primary animate-ping"></div>
+                      <div className="w-1.5 h-1.5 rounded-full bg-accent-primary"></div>
                       AI Trading Active
                     </div>
                   )}

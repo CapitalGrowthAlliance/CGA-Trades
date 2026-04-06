@@ -240,7 +240,7 @@ export default function CGATokenPage() {
         >
           {/* Token Logo Container */}
           <div className="relative w-32 h-32 mb-8">
-            <div className="absolute inset-0 bg-gradient-to-tr from-[#D4AF37] via-[#F7F57C] to-[#B48EFC] rounded-full blur-xl opacity-40 animate-pulse"></div>
+            <div className="absolute inset-0 bg-gradient-to-tr from-[#D4AF37] via-[#F7F57C] to-[#B48EFC] rounded-full blur-xl opacity-40"></div>
             <div className="relative w-full h-full bg-bg-card border-2 border-[#D4AF37]/30 rounded-full flex items-center justify-center shadow-[0_0_40px_rgba(212,175,55,0.2)] backdrop-blur-sm overflow-hidden">
               <img 
                 src="https://is1-ssl.mzstatic.com/image/thumb/PurpleSource211/v4/ad/83/5c/ad835c66-801d-9220-8ec7-d0fe7293e065/Placeholder.mill/1200x630wa.jpg" 
