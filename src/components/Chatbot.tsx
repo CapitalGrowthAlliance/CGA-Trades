@@ -141,14 +141,9 @@ If the answer to a question is not in the FAQ, you MUST call the \`createSupport
     }
 
     const handleScroll = () => {
-      if (window.scrollY > 100 && !hasShown) {
+      if (window.scrollY > 0 && !hasShown) {
         setIsBubbleVisible(true);
         setHasShown(true);
-        
-        // Auto-hide after 5 seconds
-        setTimeout(() => {
-          setIsBubbleVisible(false);
-        }, 5000);
       }
     };
 

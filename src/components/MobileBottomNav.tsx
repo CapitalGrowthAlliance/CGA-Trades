@@ -7,7 +7,7 @@ export default function MobileBottomNav() {
   const location = useLocation();
   const path = location.pathname;
 
-  if (path === '/' || path === '/admin-login' || path === '/investment/pending') {
+  if (path === '/admin-login' || path === '/investment/pending') {
     return null;
   }
 
@@ -16,6 +16,7 @@ export default function MobileBottomNav() {
     { id: 'fund', label: 'Fund', icon: Wallet, path: '/fund' },
     { id: 'invest', label: 'Invest', icon: Bot, path: '/invest' },
     { id: 'support', label: 'Support', icon: MessageCircleQuestion, path: '/support', onClick: () => window.scrollTo({ top: 0, behavior: 'smooth' }) },
+    { id: 'you', label: 'You', icon: User, path: '/dashboard', hasNotification: true },
   ];
 
   return (
@@ -52,7 +53,7 @@ export default function MobileBottomNav() {
                 <motion.div
                   animate={{ 
                     scale: isInvest ? (isActive ? 1.3 : 1.2) : (isActive ? 1.1 : 1),
-                    color: isInvest ? '#c8ff00' : (isActive ? '#ff4000' : 'currentColor'),
+                    color: isInvest ? '#c8ff00' : (isActive ? '#ff0000' : 'currentColor'),
                     filter: isInvest ? 'drop-shadow(0 0 8px rgba(200,255,0,0.6))' : 'none'
                   }}
                   transition={{ 
@@ -65,15 +66,18 @@ export default function MobileBottomNav() {
                       repeatType: "reverse"
                     } : undefined
                   }}
-                  className={isInvest ? "text-[#c8ff00]" : (isActive ? "text-[#ff4000]" : "text-gray-500 dark:text-gray-400")}
+                  className={isInvest ? "text-[#c8ff00]" : (isActive ? "text-[#ff0000]" : "text-gray-500 dark:text-gray-400")}
                 >
                   <Icon className={isInvest ? "w-7 h-7" : "w-6 h-6"} strokeWidth={isActive || isInvest ? 2.5 : 2} />
                 </motion.div>
+                {item.hasNotification && (
+                  <span className="absolute -top-1 -right-1 w-2.5 h-2.5 bg-[#ff0000] rounded-full border-2 border-white dark:border-[#121212]"></span>
+                )}
               </div>
               
               <span 
                 className={`text-[10px] mt-1 font-medium transition-colors duration-300 ${
-                  isInvest ? 'text-[#c8ff00]' : (isActive ? 'text-[#ff4000]' : 'text-gray-500 dark:text-gray-400')
+                  isInvest ? 'text-[#c8ff00]' : (isActive ? 'text-[#ff0000]' : 'text-gray-500 dark:text-gray-400')
                 }`}
               >
                 {item.label}
@@ -82,7 +86,7 @@ export default function MobileBottomNav() {
               {isActive && !isInvest && (
                 <motion.div 
                   layoutId="bottomNavIndicator"
-                  className="absolute -bottom-1 w-1 h-1 bg-[#ff4000] rounded-full"
+                  className="absolute -bottom-1 w-1 h-1 bg-[#ff0000] rounded-full"
                   transition={{ type: "spring", stiffness: 500, damping: 30 }}
                 />
               )}
@@ -97,24 +101,6 @@ export default function MobileBottomNav() {
             </Link>
           );
         })}
-
-        <Link
-          to="/dashboard"
-          className={`relative flex flex-col items-center justify-center w-16 h-14 rounded-full transition-transform active:scale-90 ${path === '/dashboard' ? 'text-[#ff4000]' : 'text-gray-500 dark:text-gray-400'}`}
-        >
-          <div className="relative flex flex-col items-center justify-center">
-            <motion.div
-              animate={{ 
-                scale: path === '/dashboard' ? 1.1 : 1,
-                color: path === '/dashboard' ? '#ff4000' : 'currentColor'
-              }}
-            >
-              <User className="w-6 h-6" strokeWidth={path === '/dashboard' ? 2.5 : 2} />
-            </motion.div>
-            <span className="absolute -top-1 -right-1 w-2.5 h-2.5 bg-[#ff4000] rounded-full border-2 border-white dark:border-[#121212]"></span>
-          </div>
-          <span className={`text-[10px] mt-1 font-medium ${path === '/dashboard' ? 'text-[#ff4000]' : 'text-gray-500 dark:text-gray-400'}`}>You</span>
-        </Link>
       </div>
     </div>
   );

@@ -17,14 +17,9 @@ export default function TelegramPopup() {
     }
 
     const handleScroll = () => {
-      if (window.scrollY > 100 && !hasShown) {
+      if (window.scrollY > 0 && !hasShown) {
         setIsVisible(true);
         setHasShown(true);
-        
-        // Auto-hide after 5 seconds
-        setTimeout(() => {
-          setIsVisible(false);
-        }, 5000);
       }
     };
 

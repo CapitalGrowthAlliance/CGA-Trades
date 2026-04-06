@@ -1,11 +1,22 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import { motion } from 'motion/react';
-import { Shield, Lock, Eye, FileText, Globe, UserCheck, Bell, HelpCircle } from 'lucide-react';
+import { Shield, Lock, Eye, FileText, Globe, UserCheck, Bell, HelpCircle, Home } from 'lucide-react';
 
 const PrivacyPolicyPage = () => {
   return (
     <div className="min-h-screen bg-background pt-24 pb-16 px-6 lg:px-12 font-sans">
       <div className="max-w-4xl mx-auto">
+        <div className="mb-8">
+          <Link 
+            to="/" 
+            onClick={() => window.scrollTo(0, 0)}
+            className="inline-flex items-center gap-2 text-accent-primary hover:text-accent-hover transition-colors font-medium"
+          >
+            <Home className="w-4 h-4" />
+            Back to Home
+          </Link>
+        </div>
         <motion.div 
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}

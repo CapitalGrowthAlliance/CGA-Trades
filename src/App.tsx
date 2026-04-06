@@ -87,7 +87,7 @@ const GlobalOverlays = () => {
   const { pathname } = useLocation();
   const { user } = useAuth();
   
-  if (pathname === '/' || pathname === '/forgot-password') {
+  if (pathname === '/forgot-password') {
     return null;
   }
 
@@ -97,9 +97,9 @@ const GlobalOverlays = () => {
       {user && (
         <>
           <HomeActivityNotifications />
-          <MobileBottomNav />
         </>
       )}
+      <MobileBottomNav />
       <TelegramPopup />
       <Chatbot />
     </Suspense>
