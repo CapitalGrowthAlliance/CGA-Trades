@@ -32,6 +32,11 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     console.log("AuthContext: Setting up onAuthStateChanged");
     let unsubscribeSnapshot: (() => void) | null = null;
 
+    // Prevent infinite loading if Firebase connection fails or is slow
+    const timeoutId = setTimeout(() => {
+      setLoading(false);
+    }, 2000);
+
     const unsubscribeAuth = onAuthStateChanged(auth, (currentUser) => {
       console.log("AuthContext: Auth state changed", currentUser?.uid || "No user");
       setUser(currentUser);
@@ -63,6 +68,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     });
 
     return () => {
+      clearTimeout(timeoutId);
       unsubscribeAuth();
       if (unsubscribeSnapshot) unsubscribeSnapshot();
     };

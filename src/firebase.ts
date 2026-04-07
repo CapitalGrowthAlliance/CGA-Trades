@@ -1,4 +1,4 @@
-import { initializeApp } from 'firebase/app';
+import { initializeApp, getApps, getApp } from 'firebase/app';
 import { getFirestore, doc, getDocFromServer, enableIndexedDbPersistence } from 'firebase/firestore';
 import { getStorage } from 'firebase/storage';
 import { getAuth } from 'firebase/auth';
@@ -42,12 +42,21 @@ console.log("Firebase: Initializing with config:", {
 
 let app;
 try {
-  app = initializeApp(firebaseConfig);
-  console.log("Firebase: App initialized successfully");
+  if (!getApps().length) {
+    app = initializeApp(firebaseConfig);
+    console.log("Firebase: App initialized successfully");
+  } else {
+    app = getApp();
+    console.log("Firebase: App already initialized");
+  }
 } catch (error) {
   console.error("Firebase: Failed to initialize app:", error);
   // Create a dummy app to prevent further crashes, though the app will likely fail
-  app = initializeApp({ apiKey: 'dummy', projectId: 'dummy' }, 'dummy-fallback');
+  if (!getApps().length) {
+    app = initializeApp({ apiKey: 'dummy', projectId: 'dummy' }, 'dummy-fallback');
+  } else {
+    app = getApp('dummy-fallback');
+  }
 }
 
 // Initialize Firestore with the correct database ID
@@ -92,4 +101,11 @@ async function testConnection() {
   }
 }
 
-testConnection();
+// Defer the connection test to avoid blocking the main thread during startup
+if (typeof window !== 'undefined') {
+  window.addEventListener('load', () => {
+    setTimeout(testConnection, 1000);
+  });
+} else {
+  testConnection();
+}
