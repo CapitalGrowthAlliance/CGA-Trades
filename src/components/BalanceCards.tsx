@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import { motion } from 'motion/react';
 import { Wallet, TrendingUp, DollarSign, Percent } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 
@@ -44,11 +43,8 @@ export default function BalanceCards({ data }: { data: BalanceData | null }) {
   return (
     <div className="flex flex-wrap justify-around md:grid md:grid-cols-3 lg:grid-cols-5 gap-4 md:gap-6 mb-8">
       {cards.map((card, index) => (
-        <motion.div
+        <div
           key={index}
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: index * 0.1, duration: 0.5 }}
           className="w-[40%] h-auto p-[10px] md:w-auto md:p-6 bg-bg-card border border-border-light rounded-2xl shadow-light hover:bg-bg-hover transition-colors group"
         >
           <div className="flex items-center justify-between mb-4">
@@ -59,16 +55,12 @@ export default function BalanceCards({ data }: { data: BalanceData | null }) {
           <h4 className="text-text-secondary text-sm font-medium mb-1">{card.title}</h4>
           <div className="text-2xl font-bold text-text-primary flex items-baseline gap-1">
             {card.prefix && <span className="text-lg text-text-muted">{card.prefix}</span>}
-            <motion.span
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              key={card.value}
-            >
+            <span>
               {card.value.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
-            </motion.span>
+            </span>
             {card.suffix && <span className="text-lg text-text-muted">{card.suffix}</span>}
           </div>
-        </motion.div>
+        </div>
       ))}
     </div>
   );

@@ -504,63 +504,55 @@ export default function LiveMarkets() {
       </div>
 
       {/* Full Chart Modal */}
-      <AnimatePresence>
-        {selectedAsset && (
-          <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 sm:p-6">
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              className="absolute inset-0 bg-black/80 backdrop-blur-sm"
-              onClick={() => setSelectedAsset(null)}
-            />
-            <motion.div
-              initial={{ opacity: 0, scale: 0.95, y: 20 }}
-              animate={{ opacity: 1, scale: 1, y: 0 }}
-              exit={{ opacity: 0, scale: 0.95, y: 20 }}
-              className={`relative bg-bg-card border border-border-light shadow-2xl overflow-hidden flex flex-col transition-all duration-300 ${
-                isChartFullscreen 
-                  ? 'w-screen h-screen max-w-none rounded-none' 
-                  : 'w-full max-w-6xl h-[80vh] rounded-2xl'
-              }`}
-            >
-              <div className="flex items-center justify-between p-4 border-b border-border-light bg-bg-secondary">
-                <div className="flex items-center gap-3">
-                  <h3 className="text-xl font-bold text-text-primary">{selectedAsset.split(':')[1]}</h3>
-                  <span className="px-2 py-1 rounded bg-bg-hover text-xs font-medium text-text-secondary">{selectedAsset.split(':')[0]}</span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <button 
-                    onClick={() => setIsChartFullscreen(!isChartFullscreen)}
-                    className="p-2 text-text-muted hover:text-text-primary transition-colors rounded-lg hover:bg-bg-hover"
-                    title={isChartFullscreen ? "Exit Fullscreen" : "Expand to Fullscreen"}
-                  >
-                    {isChartFullscreen ? <Minimize2 className="w-5 h-5" /> : <Maximize2 className="w-5 h-5" />}
-                  </button>
-                  <button 
-                    onClick={() => {
-                      setSelectedAsset(null);
-                      setIsChartFullscreen(false);
-                    }}
-                    className="p-2 text-text-muted hover:text-text-primary transition-colors rounded-lg hover:bg-bg-hover"
-                  >
-                    <X className="w-5 h-5" />
-                  </button>
-                </div>
+      {selectedAsset && (
+        <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 sm:p-6">
+          <div
+            className="absolute inset-0 bg-black/80 backdrop-blur-sm"
+            onClick={() => setSelectedAsset(null)}
+          />
+          <div
+            className={`relative bg-bg-card border border-border-light shadow-2xl overflow-hidden flex flex-col transition-all duration-300 ${
+              isChartFullscreen 
+                ? 'w-screen h-screen max-w-none rounded-none' 
+                : 'w-full max-w-6xl h-[80vh] rounded-2xl'
+            }`}
+          >
+            <div className="flex items-center justify-between p-4 border-b border-border-light bg-bg-secondary">
+              <div className="flex items-center gap-3">
+                <h3 className="text-xl font-bold text-text-primary">{selectedAsset.split(':')[1]}</h3>
+                <span className="px-2 py-1 rounded bg-bg-hover text-xs font-medium text-text-secondary">{selectedAsset.split(':')[0]}</span>
               </div>
-              <div className="flex-1 w-full bg-[#131722]">
-                {/* TradingView Widget */}
-                <iframe
-                  title="TradingView Chart"
-                  src={`https://s.tradingview.com/widgetembed/?frameElementId=tradingview_chart&symbol=${selectedAsset}&interval=D&hidesidetoolbar=0&symboledit=1&saveimage=1&toolbarbg=f1f3f6&studies=%5B%5D&theme=dark&style=1&timezone=Etc%2FUTC&studies_overrides=%7B%7D&overrides=%7B%7D&enabled_features=%5B%5D&disabled_features=%5B%5D&locale=en&utm_source=localhost&utm_medium=widget&utm_campaign=chart&utm_term=${selectedAsset}`}
-                  className="w-full h-full border-0"
-                  allowFullScreen
-                />
+              <div className="flex items-center gap-2">
+                <button 
+                  onClick={() => setIsChartFullscreen(!isChartFullscreen)}
+                  className="p-2 text-text-muted hover:text-text-primary transition-colors rounded-lg hover:bg-bg-hover"
+                  title={isChartFullscreen ? "Exit Fullscreen" : "Expand to Fullscreen"}
+                >
+                  {isChartFullscreen ? <Minimize2 className="w-5 h-5" /> : <Maximize2 className="w-5 h-5" />}
+                </button>
+                <button 
+                  onClick={() => {
+                    setSelectedAsset(null);
+                    setIsChartFullscreen(false);
+                  }}
+                  className="p-2 text-text-muted hover:text-text-primary transition-colors rounded-lg hover:bg-bg-hover"
+                >
+                  <X className="w-5 h-5" />
+                </button>
               </div>
-            </motion.div>
+            </div>
+            <div className="flex-1 w-full bg-[#131722]">
+              {/* TradingView Widget */}
+              <iframe
+                title="TradingView Chart"
+                src={`https://s.tradingview.com/widgetembed/?frameElementId=tradingview_chart&symbol=${selectedAsset}&interval=D&hidesidetoolbar=0&symboledit=1&saveimage=1&toolbarbg=f1f3f6&studies=%5B%5D&theme=dark&style=1&timezone=Etc%2FUTC&studies_overrides=%7B%7D&overrides=%7B%7D&enabled_features=%5B%5D&disabled_features=%5B%5D&locale=en&utm_source=localhost&utm_medium=widget&utm_campaign=chart&utm_term=${selectedAsset}`}
+                className="w-full h-full border-0"
+                allowFullScreen
+              />
+            </div>
           </div>
-        )}
-      </AnimatePresence>
+        </div>
+      )}
     </section>
   );
 }

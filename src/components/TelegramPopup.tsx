@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
-import { motion, AnimatePresence } from 'motion/react';
 import { X } from 'lucide-react';
 
 export default function TelegramPopup() {
@@ -27,8 +26,6 @@ export default function TelegramPopup() {
     return () => window.removeEventListener('scroll', handleScroll);
   }, [location.pathname, hasShown]);
 
-  // Reset hasShown when navigating back to home if we want it to show again, 
-  // but user said "once per scroll trigger". I'll keep it simple for now.
   useEffect(() => {
     const isHomepage = location.pathname === '/';
     if (!isHomepage) {
@@ -39,19 +36,14 @@ export default function TelegramPopup() {
   if (location.pathname !== '/') return null;
 
   return (
-    <AnimatePresence>
+    <>
       {isVisible && (
-        <motion.div
-          initial={{ x: -100, opacity: 0 }}
-          animate={{ x: 0, opacity: 1 }}
-          exit={{ x: -100, opacity: 0 }}
-          className="fixed bottom-[calc(env(safe-area-inset-bottom)+110px)] lg:bottom-6 left-6 z-[60] flex items-center gap-3"
-        >
+        <div className="fixed bottom-[calc(env(safe-area-inset-bottom)+110px)] lg:bottom-6 left-6 z-[60] flex items-center gap-3">
           <a
             href="https://t.me/+L7-YdHtkM09iZWNk"
             target="_blank"
             rel="noopener noreferrer"
-            className="flex items-center gap-3 bg-bg-secondary border border-border-light rounded-full p-1 sm:pr-4 shadow-lg hover:scale-105 transition-transform group"
+            className="flex items-center gap-3 bg-bg-secondary border border-border-light rounded-full p-1 sm:pr-4 shadow-lg group"
           >
             <div className="w-12 h-12 bg-[#0088cc] rounded-full flex items-center justify-center shadow-md shadow-[#0088cc]/20">
               <svg className="w-6 h-6 fill-white" viewBox="0 0 24 24">
@@ -69,8 +61,8 @@ export default function TelegramPopup() {
           >
             <X className="w-3 h-3" />
           </button>
-        </motion.div>
+        </div>
       )}
-    </AnimatePresence>
+    </>
   );
 }

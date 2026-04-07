@@ -1,8 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { motion, AnimatePresence } from 'motion/react';
-import { Bell, CheckCircle2, AlertCircle, Info, ArrowDownCircle, ArrowUpCircle, Gift } from 'lucide-react';
+import { Bell, Info, ArrowDownCircle, ArrowUpCircle, Gift } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
-import { useNavigate } from 'react-router-dom';
 import { collection, query, where, orderBy, onSnapshot, doc, updateDoc, writeBatch } from 'firebase/firestore';
 import { db } from '../firebase';
 import { useAuth } from '../context/AuthContext';
@@ -27,7 +25,6 @@ const renderWithNoTranslate = (text: string) => {
 
 export default function NotificationDropdown() {
   const { t } = useTranslation();
-  const navigate = useNavigate();
   const { user } = useAuth();
   const [isOpen, setIsOpen] = useState(false);
   const [notifications, setNotifications] = useState<AppNotification[]>([]);
@@ -112,71 +109,64 @@ export default function NotificationDropdown() {
         )}
       </button>
 
-      <AnimatePresence>
-        {isOpen && (
-          <>
-            <div className="fixed inset-0 z-40" onClick={() => setIsOpen(false)}></div>
-            <motion.div
-              initial={{ opacity: 0, y: 10, scale: 0.95 }}
-              animate={{ opacity: 1, y: 0, scale: 1 }}
-              exit={{ opacity: 0, y: 10, scale: 0.95 }}
-              transition={{ duration: 0.2 }}
-              className="absolute right-0 mt-2 w-72 rounded-xl bg-bg-secondary border border-border-light shadow-2xl z-50 overflow-hidden backdrop-blur-xl"
-            >
-              <div className="flex items-center justify-between px-4 py-3 border-b border-border-light bg-bg-hover">
-                <h3 className="text-sm font-bold text-text-primary">{t('notifications.title', 'Notifications')}</h3>
-                {unreadCount > 0 && (
-                  <button onClick={markAllAsRead} className="text-xs text-accent-primary hover:text-accent-hover transition-colors font-medium">
-                    {t('notifications.mark_all_read', 'Mark all as read')}
-                  </button>
-                )}
-              </div>
+      {isOpen && (
+        <>
+          <div className="fixed inset-0 z-40" onClick={() => setIsOpen(false)}></div>
+          <div
+            className="absolute right-0 mt-2 w-72 rounded-xl bg-bg-secondary border border-border-light shadow-2xl z-50 overflow-hidden backdrop-blur-xl"
+          >
+            <div className="flex items-center justify-between px-4 py-3 border-b border-border-light bg-bg-hover">
+              <h3 className="text-sm font-bold text-text-primary">{t('notifications.title', 'Notifications')}</h3>
+              {unreadCount > 0 && (
+                <button onClick={markAllAsRead} className="text-xs text-accent-primary hover:text-accent-hover transition-colors font-medium">
+                  {t('notifications.mark_all_read', 'Mark all as read')}
+                </button>
+              )}
+            </div>
 
-              <div className="max-h-[350px] overflow-y-auto">
-                {notifications.length === 0 ? (
-                  <div className="p-6 text-center text-text-muted text-sm">
-                    {t('notifications.empty', 'No new notifications')}
-                  </div>
-                ) : (
-                  <div className="divide-y divide-border-light">
-                    {notifications.map(notification => (
-                      <div 
-                        key={notification.id} 
-                        className={`px-4 py-3 hover:bg-bg-hover transition-colors cursor-pointer flex items-start gap-3 ${!notification.read ? 'bg-accent-primary/5' : ''}`}
-                        onClick={() => {
-                          if (!notification.read) markAsRead(notification.id);
-                          setIsOpen(false);
-                          // navigate('/notifications'); // Optional: navigate to a full notifications page if it exists
-                        }}
-                      >
-                        <div className="shrink-0 mt-0.5">
-                          {getIcon(notification.type)}
-                        </div>
-                        <div className="flex-1 min-w-0">
-                          <p className={`text-sm font-semibold truncate ${!notification.read ? 'text-text-primary' : 'text-text-secondary'}`}>
-                            {getTitle(notification.type)}
+            <div className="max-h-[350px] overflow-y-auto">
+              {notifications.length === 0 ? (
+                <div className="p-6 text-center text-text-muted text-sm">
+                  {t('notifications.empty', 'No new notifications')}
+                </div>
+              ) : (
+                <div className="divide-y divide-border-light">
+                  {notifications.map(notification => (
+                    <div 
+                      key={notification.id} 
+                      className={`px-4 py-3 hover:bg-bg-hover transition-colors cursor-pointer flex items-start gap-3 ${!notification.read ? 'bg-accent-primary/5' : ''}`}
+                      onClick={() => {
+                        if (!notification.read) markAsRead(notification.id);
+                        setIsOpen(false);
+                      }}
+                    >
+                      <div className="shrink-0 mt-0.5">
+                        {getIcon(notification.type)}
+                      </div>
+                      <div className="flex-1 min-w-0">
+                        <p className={`text-sm font-semibold truncate ${!notification.read ? 'text-text-primary' : 'text-text-secondary'}`}>
+                          {getTitle(notification.type)}
+                        </p>
+                        <p className={`text-xs mt-0.5 line-clamp-2 ${!notification.read ? 'text-text-primary/80' : 'text-text-muted'}`}>
+                          {renderWithNoTranslate(notification.message)}
+                        </p>
+                        {notification.timestamp && (
+                          <p className="text-[10px] text-text-muted mt-1">
+                            {notification.timestamp?.toDate ? new Date(notification.timestamp.toDate()).toLocaleString() : ''}
                           </p>
-                          <p className={`text-xs mt-0.5 line-clamp-2 ${!notification.read ? 'text-text-primary/80' : 'text-text-muted'}`}>
-                            {renderWithNoTranslate(notification.message)}
-                          </p>
-                          {notification.timestamp && (
-                            <p className="text-[10px] text-text-muted mt-1">
-                              {notification.timestamp?.toDate ? new Date(notification.timestamp.toDate()).toLocaleString() : ''}
-                            </p>
-                          )}
-                        </div>
-                        {!notification.read && (
-                          <div className="shrink-0 w-2 h-2 bg-accent-primary rounded-full mt-1.5"></div>
                         )}
                       </div>
-                    ))}
-                  </div>
-                )}
-              </div>
-            </motion.div>
-          </>
-        )}
-      </AnimatePresence>
+                      {!notification.read && (
+                        <div className="shrink-0 w-2 h-2 bg-accent-primary rounded-full mt-1.5"></div>
+                      )}
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+          </div>
+        </>
+      )}
     </div>
   );
 }

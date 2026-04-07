@@ -216,18 +216,6 @@ export default function Testimonials() {
         </p>
       </div>
 
-      {/* 
-        Infinite Loop Logic:
-        We use two identical sets of cards in a flex container.
-        The container is animated to translate from 0 to -50%.
-        Because the two sets are identical, when it reaches -50%, 
-        it seamlessly jumps back to 0 without any visual flicker.
-        
-        Hover Pause Logic:
-        The 'hover:[&>div]:!animate-play-state-paused' class pauses the animation
-        on desktop when hovering over the container.
-      */}
-      
       <div className="flex flex-col gap-4 relative overflow-hidden">
         {/* Left Fading Gradient */}
         <div className="absolute left-0 top-0 bottom-0 w-12 sm:w-24 bg-gradient-to-r from-bg-primary to-transparent z-10 pointer-events-none"></div>
@@ -235,20 +223,22 @@ export default function Testimonials() {
         {/* Right Fading Gradient */}
         <div className="absolute right-0 top-0 bottom-0 w-12 sm:w-24 bg-gradient-to-l from-bg-primary to-transparent z-10 pointer-events-none"></div>
 
-        {/* Upper Row - Scrolls Left */}
-        <div className="flex w-max animate-scroll-left hover:[animation-play-state:paused] md:hover:[animation-play-state:paused]">
-          {/* Duplicate the row for seamless loop */}
-          {[...row1, ...row1].map((t, idx) => (
-            <TestimonialCard key={`r1-${idx}`} testimonial={t} />
-          ))}
+        {/* Upper Row */}
+        <div className="flex overflow-x-auto w-full no-scrollbar">
+          <div className="flex w-max">
+            {row1.map((t, idx) => (
+              <TestimonialCard key={`r1-${idx}`} testimonial={t} />
+            ))}
+          </div>
         </div>
 
-        {/* Lower Row - Scrolls Right */}
-        <div className="flex w-max animate-scroll-right hover:[animation-play-state:paused] md:hover:[animation-play-state:paused]">
-          {/* Duplicate the row for seamless loop */}
-          {[...row2, ...row2].map((t, idx) => (
-            <TestimonialCard key={`r2-${idx}`} testimonial={t} />
-          ))}
+        {/* Lower Row */}
+        <div className="flex overflow-x-auto w-full no-scrollbar">
+          <div className="flex w-max">
+            {row2.map((t, idx) => (
+              <TestimonialCard key={`r2-${idx}`} testimonial={t} />
+            ))}
+          </div>
         </div>
       </div>
     </section>

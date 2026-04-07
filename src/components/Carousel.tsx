@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import { motion, AnimatePresence } from 'motion/react';
 
 const quotes = [
   "If you don't find a way to make money while you sleep, you will work until you die.",
@@ -25,18 +24,9 @@ export default function Carousel() {
       onMouseLeave={() => setIsHovered(false)}
     >
       <div className="flex items-center justify-center h-8">
-        <AnimatePresence mode="wait">
-          <motion.p
-            key={currentIndex}
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -10 }}
-            transition={{ duration: 0.6, ease: "easeInOut" }}
-            className="text-text-secondary text-center font-medium text-xs md:text-sm italic tracking-wide"
-          >
-            "{quotes[currentIndex]}"
-          </motion.p>
-        </AnimatePresence>
+        <p key={currentIndex} className="text-text-secondary text-center font-medium text-xs md:text-sm italic tracking-wide">
+          "{quotes[currentIndex]}"
+        </p>
       </div>
     </div>
   );

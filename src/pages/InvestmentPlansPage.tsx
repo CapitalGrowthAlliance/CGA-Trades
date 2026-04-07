@@ -1,5 +1,4 @@
 import React, { useEffect, useState, useRef } from 'react';
-import { motion, AnimatePresence } from 'motion/react';
 import { TrendingUp, Clock, DollarSign, ArrowRight, ArrowLeft, BookOpen, X, MapPin } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
@@ -78,19 +77,13 @@ function CardFace({ plan, isNaira, amount, setAmount, onInvest, isMobileExpanded
       <div className={`absolute -inset-[1px] bg-gradient-to-b ${plan.accent} opacity-0 group-hover:opacity-20 rounded-3xl transition-opacity duration-500 pointer-events-none blur-[2px]`}></div>
 
       {/* Robot Image */}
-      <motion.div 
-        initial={{ scale: 0, opacity: 0 }}
-        animate={{ scale: 1, opacity: 1 }}
-        transition={{ type: "spring", stiffness: 200, damping: 20, delay: 0.2 }}
-        whileHover={{ scale: 1.05 }}
-        className="absolute top-4 right-4 z-20"
-      >
+      <div className="absolute top-4 right-4 z-20">
         <div className="absolute inset-0 bg-accent-primary/20 blur-xl rounded-xl scale-150"></div>
         <TradingRobotImage 
           className="w-12 h-12 sm:w-14 sm:h-14 relative z-10" 
           src={plan.imageUrl || (isNaira ? "https://images.unsplash.com/photo-1485827404703-89b55fcc595e?auto=format&fit=crop&q=80&w=800" : "https://images.unsplash.com/photo-1485827404703-89b55fcc595e?auto=format&fit=crop&q=80&w=800")}
         />
-      </motion.div>
+      </div>
 
       <div className="relative z-10 flex-1 flex flex-col">
         <div className="flex flex-col items-start gap-1 mb-2 sm:mb-4 pr-14 sm:pr-16">
@@ -209,22 +202,15 @@ function PlanCard({ plan, index, onInvest, isExpanded, onToggle }: {
   }, [isExpanded]);
 
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 40 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ delay: index * 0.2, duration: 0.7, ease: "easeOut" }}
-      whileHover={{ y: isExpanded ? 0 : -10 }}
+    <div
       className={`relative flex flex-col md:pt-6 snap-start transition-all duration-500 max-w-sm md:max-w-none mx-auto w-full ${
         isExpanded ? 'h-auto sm:h-full' : 'h-auto sm:h-full'
       }`}
-      style={{ perspective: '2000px' }}
     >
       {/* Mobile Collapsed View */}
       <div className="md:hidden">
         {!isExpanded && (
-          <motion.div 
-            initial={{ opacity: 0, scale: 0.95 }}
-            animate={{ opacity: 1, scale: 1 }}
+          <div 
             onClick={onToggle}
             className="flex justify-between items-center py-6 px-4 bg-bg-card/80 backdrop-blur-xl border border-border-light rounded-2xl shadow-xl cursor-pointer active:scale-[0.98] transition-transform"
           >
@@ -245,7 +231,7 @@ function PlanCard({ plan, index, onInvest, isExpanded, onToggle }: {
              >
                Invest Now
              </button>
-          </motion.div>
+          </div>
         )}
       </div>
 
@@ -256,11 +242,9 @@ function PlanCard({ plan, index, onInvest, isExpanded, onToggle }: {
           <CurrencyToggle isNaira={isNaira} onToggle={() => setIsNaira(!isNaira)} />
         </div>
 
-        <motion.div
+        <div
           className="relative w-full h-full flex-1 flex flex-col"
-          style={{ transformStyle: 'preserve-3d' }}
-          animate={{ rotateY: isNaira ? 180 : 0 }}
-          transition={{ duration: 0.5, ease: "easeInOut" }}
+          style={{ transform: isNaira ? 'rotateY(180deg)' : 'rotateY(0deg)', transformStyle: 'preserve-3d', transition: 'transform 0.5s ease-in-out' }}
         >
           {/* Front (USD) */}
           <div 
@@ -293,9 +277,9 @@ function PlanCard({ plan, index, onInvest, isExpanded, onToggle }: {
               onSwitch={onToggle}
             />
           </div>
-        </motion.div>
+        </div>
       </div>
-    </motion.div>
+    </div>
   );
 }
 
@@ -438,67 +422,59 @@ export default function InvestmentPlansPage() {
       </div>
 
       {/* Region Selection Modal */}
-      <AnimatePresence>
-        {showRegionModal && (
-          <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 pt-[env(safe-area-inset-top)] pb-[calc(env(safe-area-inset-bottom)+20px)]">
-            <motion.div 
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              className="absolute inset-0 bg-black/80 backdrop-blur-md"
-              onClick={() => setShowRegionModal(false)}
-            />
-            
-            <motion.div 
-              initial={{ opacity: 0, scale: 0.95, y: 20 }}
-              animate={{ opacity: 1, scale: 1, y: -10 }}
-              exit={{ opacity: 0, scale: 0.95, y: 20 }}
-              className="bg-bg-card/80 backdrop-blur-xl border border-border-light w-[90%] max-w-[360px] rounded-[16px] relative z-10 overflow-hidden max-h-[75vh] flex flex-col mb-5 shadow-2xl"
-            >
-              <div className="p-4 border-b border-border-light flex justify-between items-center bg-bg-secondary shrink-0">
-                <h3 className="text-lg font-bold text-text-primary flex items-center gap-2">
-                  <MapPin className="w-5 h-5 text-accent-primary" />
-                  Select Region
-                </h3>
-                <button 
-                  onClick={() => setShowRegionModal(false)}
-                  className="text-text-secondary hover:text-text-primary transition-colors p-1"
-                >
-                  <X className="w-5 h-5" />
-                </button>
-              </div>
+      {showRegionModal && (
+        <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 pt-[env(safe-area-inset-top)] pb-[calc(env(safe-area-inset-bottom)+20px)]">
+          <div 
+            className="absolute inset-0 bg-black/80 backdrop-blur-md"
+            onClick={() => setShowRegionModal(false)}
+          />
+          
+          <div 
+            className="bg-bg-card/80 backdrop-blur-xl border border-border-light w-[90%] max-w-[360px] rounded-[16px] relative z-10 overflow-hidden max-h-[75vh] flex flex-col mb-5 shadow-2xl"
+          >
+            <div className="p-4 border-b border-border-light flex justify-between items-center bg-bg-secondary shrink-0">
+              <h3 className="text-lg font-bold text-text-primary flex items-center gap-2">
+                <MapPin className="w-5 h-5 text-accent-primary" />
+                Select Region
+              </h3>
+              <button 
+                onClick={() => setShowRegionModal(false)}
+                className="text-text-secondary hover:text-text-primary transition-colors p-1"
+              >
+                <X className="w-5 h-5" />
+              </button>
+            </div>
 
-              <div className="p-4 overflow-y-auto custom-scrollbar bg-black/20 space-y-2">
-                {regionError && (
-                  <div className="p-3 mb-2 border border-red-500/30 bg-red-500/10 rounded-lg text-red-400 text-xs text-center font-medium">
-                    {regionError}
-                  </div>
-                )}
-                
-                <div className="grid grid-cols-1 gap-2">
-                  {regions.map((region) => {
-                    const isNigeria = region === 'Nigeria';
-                    return (
-                      <button
-                        key={region}
-                        onClick={() => handleRegionSelect(region)}
-                        className={`p-3 border rounded-xl text-sm font-medium transition-all text-left flex items-center justify-between group ${
-                          isNigeria 
-                            ? 'bg-accent-primary hover:bg-accent-hover text-bg-primary border-transparent' 
-                            : 'bg-bg-secondary border-border-light text-text-secondary hover:bg-bg-secondary/80 hover:text-text-primary'
-                        }`}
-                      >
-                        {region}
-                        <ArrowRight className={`w-4 h-4 transition-transform ${isNigeria ? 'opacity-100 translate-x-1' : 'opacity-0 group-hover:opacity-100 group-hover:translate-x-1'}`} />
-                      </button>
-                    );
-                  })}
+            <div className="p-4 overflow-y-auto custom-scrollbar bg-black/20 space-y-2">
+              {regionError && (
+                <div className="p-3 mb-2 border border-red-500/30 bg-red-500/10 rounded-lg text-red-400 text-xs text-center font-medium">
+                  {regionError}
                 </div>
+              )}
+              
+              <div className="grid grid-cols-1 gap-2">
+                {regions.map((region) => {
+                  const isNigeria = region === 'Nigeria';
+                  return (
+                    <button
+                      key={region}
+                      onClick={() => handleRegionSelect(region)}
+                      className={`p-3 border rounded-xl text-sm font-medium transition-all text-left flex items-center justify-between group ${
+                        isNigeria 
+                          ? 'bg-accent-primary hover:bg-accent-hover text-bg-primary border-transparent' 
+                          : 'bg-bg-secondary border-border-light text-text-secondary hover:bg-bg-secondary/80 hover:text-text-primary'
+                      }`}
+                    >
+                      {region}
+                      <ArrowRight className={`w-4 h-4 transition-transform ${isNigeria ? 'opacity-100 translate-x-1' : 'opacity-0 group-hover:opacity-100 group-hover:translate-x-1'}`} />
+                    </button>
+                  );
+                })}
               </div>
-            </motion.div>
+            </div>
           </div>
-        )}
-      </AnimatePresence>
+        </div>
+      )}
     </div>
   );
 }

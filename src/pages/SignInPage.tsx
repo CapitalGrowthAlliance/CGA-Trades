@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
-import { motion } from 'motion/react';
 import { Mail, Lock, AlertCircle, ArrowRight, Loader2 } from 'lucide-react';
 import { auth, db } from '../firebase';
 import { signInWithEmailAndPassword, signInWithPopup, GoogleAuthProvider, sendEmailVerification } from 'firebase/auth';
@@ -135,11 +134,7 @@ export default function SignInPage() {
         </div>
         
         <div className="relative z-10 max-w-lg">
-          <motion.div
-            initial={{ opacity: 0, x: -20 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.8 }}
-          >
+          <div>
             <Link to="/" className="inline-block mb-12">
               <img src="https://i.imgur.com/jt4vAVS.png" alt="CGA Logo" className="h-12 object-contain" />
             </Link>
@@ -159,7 +154,7 @@ export default function SignInPage() {
               </div>
               <span>Trusted by 10,000+ active investors</span>
             </div>
-          </motion.div>
+          </div>
         </div>
       </div>
 
@@ -173,11 +168,7 @@ export default function SignInPage() {
         </div>
 
         <div className="sm:mx-auto sm:w-full sm:max-w-md">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5 }}
-          >
+          <div>
             <h2 className="text-3xl font-extrabold text-text-primary mb-2">
               Welcome back
             </h2>
@@ -193,14 +184,12 @@ export default function SignInPage() {
               <div className="absolute inset-0 bg-gradient-to-br from-accent-primary/5 to-transparent pointer-events-none"></div>
 
               {error && (
-                <motion.div 
-                  initial={{ opacity: 0, y: -10 }}
-                  animate={{ opacity: 1, y: 0 }}
+                <div 
                   className="mb-6 bg-red-500/10 border border-red-500/20 rounded-xl p-4 flex items-start gap-3"
                 >
                   <AlertCircle className="w-5 h-5 text-red-500 shrink-0 mt-0.5" />
                   <p className="text-sm text-red-500">{error}</p>
-                </motion.div>
+                </div>
               )}
 
               <form className="space-y-5" onSubmit={handleEmailSignIn}>
@@ -326,7 +315,7 @@ export default function SignInPage() {
                 </div>
               </div>
             </div>
-          </motion.div>
+          </div>
         </div>
       </div>
     </div>

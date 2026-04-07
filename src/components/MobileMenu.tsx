@@ -1,7 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { Menu, X, TrendingUp, User, LayoutDashboard, Settings, LogOut, ChevronRight, Globe, Package, Briefcase, Award, Zap, Brain, BarChart3, History, Wallet, MessageCircleQuestion, LogIn, UserPlus } from 'lucide-react';
-import { motion, AnimatePresence } from 'motion/react';
+import { Menu, X, TrendingUp, User, LayoutDashboard, Settings, LogOut, Award, Zap, Brain, BarChart3, History, Wallet, MessageCircleQuestion, LogIn, UserPlus, Package, Briefcase } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import { auth } from '../firebase';
 import ThemeToggle from './ThemeToggle';
@@ -56,69 +55,63 @@ export default function MobileMenu() {
         {isOpen ? <X className="w-5 h-5 md:w-6 md:h-6" /> : <Menu className="w-5 h-5 md:w-6 md:h-6" />}
       </button>
 
-      <AnimatePresence>
-        {isOpen && (
-          <motion.div
-            initial={{ opacity: 0, scale: 0.95, y: 10 }}
-            animate={{ opacity: 1, scale: 1, y: 0 }}
-            exit={{ opacity: 0, scale: 0.95, y: 10 }}
-            transition={{ duration: 0.2 }}
-            className="absolute left-0 mt-2 w-56 rounded-xl bg-bg-secondary border border-border-color shadow-2xl py-1 z-[100] backdrop-blur-xl max-h-[60vh] overflow-y-auto"
-          >
-            <div className="p-2 border-b border-border-light flex items-center justify-between">
-              <span className="text-[10px] font-bold text-text-muted uppercase tracking-wider">Appearance</span>
-              <ThemeToggle compact />
-            </div>
-            {!user && (
-              <div className="p-2 border-b border-border-light flex flex-col gap-2">
-                <Link
-                  to="/signin"
-                  onClick={() => setIsOpen(false)}
-                  className="w-full flex items-center justify-center gap-2 px-3 py-2 rounded-lg text-sm font-medium text-text-primary bg-bg-hover transition-colors"
-                >
-                  <LogIn className="w-4 h-4" /> Sign In
-                </Link>
-                <Link
-                  to="/signup"
-                  onClick={() => setIsOpen(false)}
-                  className="w-full flex items-center justify-center gap-2 px-3 py-2 rounded-lg text-sm font-medium text-bg-primary bg-accent-primary hover:bg-accent-primary/90 transition-colors"
-                >
-                  <UserPlus className="w-4 h-4" /> Sign Up
-                </Link>
-              </div>
-            )}
-            {menuItems.map((item) => (
+      {isOpen && (
+        <div
+          className="absolute left-0 mt-2 w-56 rounded-xl bg-bg-secondary border border-border-color shadow-2xl py-1 z-[100] backdrop-blur-xl max-h-[60vh] overflow-y-auto"
+        >
+          <div className="p-2 border-b border-border-light flex items-center justify-between">
+            <span className="text-[10px] font-bold text-text-muted uppercase tracking-wider">Appearance</span>
+            <ThemeToggle compact />
+          </div>
+          {!user && (
+            <div className="p-2 border-b border-border-light flex flex-col gap-2">
               <Link
-                key={item.label}
-                to={item.path}
-                onClick={() => {
-                  setIsOpen(false);
-                  if (item.path === '/support') {
-                    window.scrollTo({ top: 0, behavior: 'smooth' });
-                  }
-                }}
-                className="flex items-center gap-2.5 px-3 py-2 text-xs text-text-secondary hover:bg-black/5 dark:hover:bg-white/5 hover:text-text-primary transition-colors border-b border-border-light last:border-0"
+                to="/signin"
+                onClick={() => setIsOpen(false)}
+                className="w-full flex items-center justify-center gap-2 px-3 py-2 rounded-lg text-sm font-medium text-text-primary bg-bg-hover transition-colors"
               >
-                <item.icon className="w-3.5 h-3.5" />
-                {item.label}
+                <LogIn className="w-4 h-4" /> Sign In
               </Link>
-            ))}
-            {user && (
-              <button
-                onClick={async () => {
-                  setIsOpen(false);
-                  await auth.signOut();
-                  navigate('/signin');
-                }}
-                className="w-full flex items-center gap-2.5 px-3 py-2 text-xs text-red-500 hover:bg-red-500/10 transition-colors"
+              <Link
+                to="/signup"
+                onClick={() => setIsOpen(false)}
+                className="w-full flex items-center justify-center gap-2 px-3 py-2 rounded-lg text-sm font-medium text-bg-primary bg-accent-primary hover:bg-accent-primary/90 transition-colors"
               >
-                <LogOut className="w-3.5 h-3.5" />
-                Logout
-              </button>
-            )}
-          </motion.div>
-        )}
-      </AnimatePresence>
+                <UserPlus className="w-4 h-4" /> Sign Up
+              </Link>
+            </div>
+          )}
+          {menuItems.map((item) => (
+            <Link
+              key={item.label}
+              to={item.path}
+              onClick={() => {
+                setIsOpen(false);
+                if (item.path === '/support') {
+                  window.scrollTo({ top: 0, behavior: 'smooth' });
+                }
+              }}
+              className="flex items-center gap-2.5 px-3 py-2 text-xs text-text-secondary hover:bg-black/5 dark:hover:bg-white/5 hover:text-text-primary transition-colors border-b border-border-light last:border-0"
+            >
+              <item.icon className="w-3.5 h-3.5" />
+              {item.label}
+            </Link>
+          ))}
+          {user && (
+            <button
+              onClick={async () => {
+                setIsOpen(false);
+                await auth.signOut();
+                navigate('/signin');
+              }}
+              className="w-full flex items-center gap-2.5 px-3 py-2 text-xs text-red-500 hover:bg-red-500/10 transition-colors"
+            >
+              <LogOut className="w-3.5 h-3.5" />
+              Logout
+            </button>
+          )}
+        </div>
+      )}
     </div>
   );
 }

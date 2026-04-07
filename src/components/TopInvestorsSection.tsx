@@ -2,7 +2,6 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { TrendingUp, Users, ArrowRight } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
-import { motion } from 'motion/react';
 import { MOCK_INVESTORS } from '../constants/investors';
 
 export default function TopInvestorsSection() {

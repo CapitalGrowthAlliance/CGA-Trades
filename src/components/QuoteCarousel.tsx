@@ -1,5 +1,4 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { motion, AnimatePresence } from 'motion/react';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 
 interface Quote {
@@ -48,40 +47,19 @@ export default function QuoteCarousel() {
       onMouseLeave={() => setIsPaused(false)}
     >
       <div className="max-w-7xl w-full h-full flex items-center justify-center relative">
-        <AnimatePresence mode="wait">
-          <motion.div
-            key={currentIndex}
-            className="flex flex-row items-center justify-center gap-2 sm:gap-4 w-full text-center"
-          >
-            {/* Quote Section */}
-            <motion.p
-              initial={{ x: -10, opacity: 0 }}
-              animate={{ x: 0, opacity: 1 }}
-              exit={{ x: 10, opacity: 0 }}
-              transition={{ duration: 0.5, ease: "easeInOut" }}
-              className="text-[10px] sm:text-sm text-[#000000] font-medium truncate sm:whitespace-normal"
-            >
-              "{quotes[currentIndex].text}"
-            </motion.p>
+        <div key={currentIndex} className="flex flex-row items-center justify-center gap-2 sm:gap-4 w-full text-center">
+          {/* Quote Section */}
+          <p className="text-[10px] sm:text-sm text-[#000000] font-medium truncate sm:whitespace-normal">
+            "{quotes[currentIndex].text}"
+          </p>
 
-            {/* Author Section */}
-            <motion.div 
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{ 
-                duration: 0.5, 
-                ease: "easeInOut",
-                delay: 0.2 
-              }}
-              className="shrink-0"
-            >
-              <span className="text-[10px] sm:text-sm italic text-[#a3a3a3] whitespace-nowrap">
-                — {quotes[currentIndex].author}
-              </span>
-            </motion.div>
-          </motion.div>
-        </AnimatePresence>
+          {/* Author Section */}
+          <div className="shrink-0">
+            <span className="text-[10px] sm:text-sm italic text-[#a3a3a3] whitespace-nowrap">
+              — {quotes[currentIndex].author}
+            </span>
+          </div>
+        </div>
       </div>
     </div>
   );

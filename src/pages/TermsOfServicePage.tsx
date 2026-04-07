@@ -1,6 +1,5 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { motion } from 'motion/react';
 import { FileText, Scale, AlertTriangle, UserPlus, CreditCard, ShieldCheck, HelpCircle, Globe, Home } from 'lucide-react';
 
 const TermsOfServicePage = () => {
@@ -17,10 +16,7 @@ const TermsOfServicePage = () => {
             Back to Home
           </Link>
         </div>
-        <motion.div 
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5 }}
+        <div 
           className="mb-12 text-center"
         >
           <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-accent-primary/10 text-accent-primary mb-6">
@@ -28,7 +24,7 @@ const TermsOfServicePage = () => {
           </div>
           <h1 className="text-4xl md:text-5xl font-bold text-text-primary mb-4">Terms of Service</h1>
           <p className="text-text-secondary text-lg">Last Updated: April 5, 2026</p>
-        </motion.div>
+        </div>
 
         <div className="bg-card border border-border rounded-3xl p-8 md:p-12 shadow-sm space-y-10 text-text-secondary leading-relaxed">
           <section>

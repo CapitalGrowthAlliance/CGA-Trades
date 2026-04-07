@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
-import { motion } from 'motion/react';
 import { Mail, Lock, User, Phone, AlertCircle, ArrowRight, Loader2 } from 'lucide-react';
 import { auth, db } from '../firebase';
 import { createUserWithEmailAndPassword, sendEmailVerification, signInWithPopup, GoogleAuthProvider } from 'firebase/auth';
@@ -183,9 +182,7 @@ export default function SignUpPage() {
   if (success) {
     return (
       <div className="min-h-screen bg-bg-primary flex items-center justify-center p-4">
-        <motion.div 
-          initial={{ opacity: 0, scale: 0.9 }}
-          animate={{ opacity: 1, scale: 1 }}
+        <div 
           className="max-w-md w-full bg-bg-secondary p-8 rounded-3xl border border-border-light shadow-2xl text-center"
         >
           <div className="mx-auto flex items-center justify-center h-16 w-16 rounded-full bg-green-500/10 mb-6">
@@ -201,7 +198,7 @@ export default function SignUpPage() {
           >
             Return to Sign In
           </Link>
-        </motion.div>
+        </div>
       </div>
     );
   }
@@ -221,11 +218,7 @@ export default function SignUpPage() {
         </div>
         
         <div className="relative z-10 max-w-lg">
-          <motion.div
-            initial={{ opacity: 0, x: -20 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.8 }}
-          >
+          <div>
             <Link to="/" className="inline-block mb-12">
               <img src="https://i.imgur.com/jt4vAVS.png" alt="CGA Logo" className="h-12 object-contain" />
             </Link>
@@ -253,7 +246,7 @@ export default function SignUpPage() {
                 </div>
               ))}
             </div>
-          </motion.div>
+          </div>
         </div>
       </div>
 
@@ -267,11 +260,7 @@ export default function SignUpPage() {
         </div>
 
         <div className="sm:mx-auto sm:w-full sm:max-w-md py-8">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5 }}
-          >
+          <div>
             <h2 className="text-3xl font-extrabold text-text-primary mb-2">
               Create your account
             </h2>
@@ -287,14 +276,12 @@ export default function SignUpPage() {
               <div className="absolute inset-0 bg-gradient-to-br from-accent-primary/5 to-transparent pointer-events-none"></div>
 
               {error && (
-                <motion.div 
-                  initial={{ opacity: 0, y: -10 }}
-                  animate={{ opacity: 1, y: 0 }}
+                <div 
                   className="mb-6 bg-red-500/10 border border-red-500/20 rounded-xl p-4 flex items-start gap-3"
                 >
                   <AlertCircle className="w-5 h-5 text-red-500 shrink-0 mt-0.5" />
                   <p className="text-sm text-red-500">{error}</p>
-                </motion.div>
+                </div>
               )}
 
               <form className="space-y-5" onSubmit={handleEmailSignUp}>
@@ -496,7 +483,7 @@ export default function SignUpPage() {
                 </div>
               </div>
             </div>
-          </motion.div>
+          </div>
         </div>
       </div>
       <style>{`

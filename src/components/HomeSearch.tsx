@@ -1,9 +1,8 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { Search, ChevronDown, Loader2, Send, X, MessageSquare, Sparkles } from 'lucide-react';
+import { Search, ChevronDown, Loader2, Send, X, Sparkles } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import Markdown from 'react-markdown';
-import { motion, AnimatePresence } from 'motion/react';
 import { GoogleGenAI } from '@google/genai';
 
 export const MARKET_DATA = {
@@ -226,15 +225,11 @@ export default function HomeSearch({ variant = 'default' }: { variant?: 'default
       </form>
 
       {/* AI Search Modal/Panel */}
-      <AnimatePresence>
-        {showAiModal && (
-          <motion.div
-            initial={{ opacity: 0, scale: 0.95, y: 20 }}
-            animate={{ opacity: 1, scale: 1, y: 0 }}
-            exit={{ opacity: 0, scale: 0.95, y: 20 }}
-            className="fixed inset-0 sm:inset-auto sm:absolute sm:top-full sm:left-0 sm:mt-4 w-full sm:max-w-3xl bg-bg-secondary border border-border-light shadow-2xl z-[100] flex flex-col overflow-hidden"
-            style={{ borderRadius: '12px', height: 'min(600px, 80vh)' }}
-          >
+      {showAiModal && (
+        <div
+          className="fixed inset-0 sm:inset-auto sm:absolute sm:top-full sm:left-0 sm:mt-4 w-full sm:max-w-3xl bg-bg-secondary border border-border-light shadow-2xl z-[100] flex flex-col overflow-hidden"
+          style={{ borderRadius: '12px', height: 'min(600px, 80vh)' }}
+        >
             {/* Header */}
             <div className="flex items-center justify-between p-4 border-b border-border-light bg-bg-hover/50">
               <div className="flex items-center gap-2">
@@ -281,12 +276,12 @@ export default function HomeSearch({ variant = 'default' }: { variant?: 'default
                     <div className="flex flex-col gap-4">
                       <div className="flex items-center gap-3 text-text-muted">
                         <Loader2 className="w-5 h-5 animate-spin text-accent-primary" />
-                        <span className="text-sm font-medium animate-pulse">Analyzing your request...</span>
+                        <span className="text-sm font-medium">Analyzing your request...</span>
                       </div>
                       <div className="space-y-2">
-                        <div className="h-2 w-full bg-bg-hover rounded animate-pulse" />
-                        <div className="h-2 w-3/4 bg-bg-hover rounded animate-pulse" />
-                        <div className="h-2 w-1/2 bg-bg-hover rounded animate-pulse" />
+                        <div className="h-2 w-full bg-bg-hover rounded" />
+                        <div className="h-2 w-3/4 bg-bg-hover rounded" />
+                        <div className="h-2 w-1/2 bg-bg-hover rounded" />
                       </div>
                     </div>
                   ) : error ? (
@@ -394,9 +389,8 @@ export default function HomeSearch({ variant = 'default' }: { variant?: 'default
                 </button>
               </form>
             </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
+          </div>
+      )}
 
       {/* Dropdown Panel - Only show in default variant or if explicitly allowed */}
       {!isHeader && isPanelOpen && (

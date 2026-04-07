@@ -1,7 +1,6 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Home, Wallet, User, Brain, BarChart3, LayoutDashboard, Settings, LogOut, ChevronUp, Bot, MessageCircleQuestion } from 'lucide-react';
-import { motion, AnimatePresence } from 'motion/react';
+import { Home, Wallet, User, Bot, MessageCircleQuestion } from 'lucide-react';
 
 export default function MobileBottomNav() {
   const location = useLocation();
@@ -39,21 +38,11 @@ export default function MobileBottomNav() {
               )}
               
               <div className="relative flex flex-col items-center justify-center">
-                <motion.div
-                  animate={{ 
-                    scale: isInvest ? (isActive ? 1.3 : 1.2) : (isActive ? 1.1 : 1),
-                    color: isInvest ? '#c8ff00' : (isActive ? '#ff0000' : 'currentColor'),
-                    filter: isInvest ? 'drop-shadow(0 0 8px rgba(200,255,0,0.6))' : 'none'
-                  }}
-                  transition={{ 
-                    type: "spring", 
-                    stiffness: 400, 
-                    damping: 25
-                  }}
-                  className={isInvest ? "text-[#c8ff00]" : (isActive ? "text-[#ff0000]" : "text-gray-500 dark:text-gray-400")}
+                <div
+                  className={`${isInvest ? "text-[#c8ff00]" : (isActive ? "text-[#ff0000]" : "text-gray-500 dark:text-gray-400")} ${isInvest ? "scale-125" : (isActive ? "scale-110" : "scale-100")}`}
                 >
                   <Icon className={isInvest ? "w-7 h-7" : "w-6 h-6"} strokeWidth={isActive || isInvest ? 2.5 : 2} />
-                </motion.div>
+                </div>
                 {item.hasNotification && (
                   <span className="absolute -top-1 -right-1 w-2.5 h-2.5 bg-[#ff0000] rounded-full border-2 border-white dark:border-[#121212]"></span>
                 )}
@@ -68,18 +57,14 @@ export default function MobileBottomNav() {
               </span>
               
               {isActive && !isInvest && (
-                <motion.div 
-                  layoutId="bottomNavIndicator"
+                <div 
                   className="absolute -bottom-1 w-1 h-1 bg-[#ff0000] rounded-full"
-                  transition={{ type: "spring", stiffness: 500, damping: 30 }}
                 />
               )}
 
               {isInvest && isActive && (
-                <motion.div 
-                  layoutId="bottomNavIndicator"
+                <div 
                   className="absolute -bottom-1 w-1 h-1 bg-[#c8ff00] rounded-full shadow-[0_0_5px_#c8ff00]"
-                  transition={{ type: "spring", stiffness: 500, damping: 30 }}
                 />
               )}
             </Link>

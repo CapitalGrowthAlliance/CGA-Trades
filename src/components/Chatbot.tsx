@@ -1,5 +1,4 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { motion, AnimatePresence } from 'motion/react';
 import { MessageSquare, X, Send, User, Bot, Loader2, RefreshCw } from 'lucide-react';
 import { GoogleGenAI, Type, FunctionDeclaration } from '@google/genai';
 import { useTranslation } from 'react-i18next';
@@ -300,123 +299,104 @@ If the answer to a question is not in the FAQ, you MUST call the \`createSupport
   return (
     <>
       {/* Chat Bubble Button */}
-      <AnimatePresence>
-        {(isBubbleVisible || isOpen) && (
-          <motion.button
-            initial={{ x: 100, opacity: 0 }}
-            animate={{ x: 0, opacity: 1 }}
-            exit={{ x: 100, opacity: 0 }}
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-            onClick={() => {
-              setIsOpen(true);
-              setIsBubbleVisible(false);
-            }}
-            className={`fixed bottom-[calc(env(safe-area-inset-bottom)+110px)] lg:bottom-6 right-6 w-14 h-14 bg-accent-primary rounded-full flex items-center justify-center shadow-lg shadow-accent-primary/30 text-slate-900 z-[60] transition-transform ${isOpen ? 'scale-0 opacity-0 pointer-events-none' : 'scale-100 opacity-100'}`}
-          >
-            <MessageSquare className="w-6 h-6" />
-          </motion.button>
-        )}
-      </AnimatePresence>
+      {(isBubbleVisible || isOpen) && (
+        <button
+          onClick={() => {
+            setIsOpen(true);
+            setIsBubbleVisible(false);
+          }}
+          className={`fixed bottom-[calc(env(safe-area-inset-bottom)+110px)] lg:bottom-6 right-6 w-14 h-14 bg-accent-primary rounded-full flex items-center justify-center shadow-lg shadow-accent-primary/30 text-slate-900 z-[60] transition-transform ${isOpen ? 'scale-0 opacity-0 pointer-events-none' : 'scale-100 opacity-100'}`}
+        >
+          <MessageSquare className="w-6 h-6" />
+        </button>
+      )}
 
       {/* Chat Window */}
-      <AnimatePresence>
-        {isOpen && (
-          <motion.div
-            initial={{ opacity: 0, y: 20, scale: 0.95 }}
-            animate={{ opacity: 1, y: 0, scale: 1 }}
-            exit={{ opacity: 0, y: 20, scale: 0.95 }}
-            transition={{ duration: 0.2 }}
-            className="fixed bottom-[calc(env(safe-area-inset-bottom)+110px)] lg:bottom-6 right-6 w-[350px] max-w-[calc(100vw-3rem)] h-[500px] max-h-[calc(100vh-env(safe-area-inset-bottom)-140px)] lg:max-h-[calc(100vh-6rem)] bg-bg-secondary border border-border-light rounded-2xl shadow-2xl z-[60] flex flex-col overflow-hidden"
-          >
-            {/* Header */}
-            <div className="bg-accent-primary p-4 flex items-center justify-between shrink-0">
-              <div className="flex items-center gap-3">
-                <div className="w-8 h-8 rounded-full bg-black/10 flex items-center justify-center">
-                  <Bot className="w-5 h-5 text-slate-900" />
-                </div>
-                <div>
-                  <h3 className="text-slate-900 font-medium text-sm"><span className="notranslate">CGA</span> Support</h3>
-                  <p className="text-slate-800 text-xs">{t('chatbot.status', 'Online')}</p>
-                </div>
+      {isOpen && (
+        <div
+          className="fixed bottom-[calc(env(safe-area-inset-bottom)+110px)] lg:bottom-6 right-6 w-[350px] max-w-[calc(100vw-3rem)] h-[500px] max-h-[calc(100vh-env(safe-area-inset-bottom)-140px)] lg:max-h-[calc(100vh-6rem)] bg-bg-secondary border border-border-light rounded-2xl shadow-2xl z-[60] flex flex-col overflow-hidden"
+        >
+          {/* Header */}
+          <div className="bg-accent-primary p-4 flex items-center justify-between shrink-0">
+            <div className="flex items-center gap-3">
+              <div className="w-8 h-8 rounded-full bg-black/10 flex items-center justify-center">
+                <Bot className="w-5 h-5 text-slate-900" />
               </div>
-              <div className="flex items-center gap-2">
-                <button 
-                  onClick={fetchFaqs}
-                  title={t('chatbot.refresh', 'Refresh FAQ Knowledge Base')}
-                  className="text-slate-800 hover:text-slate-900 transition-colors p-1 rounded-md hover:bg-black/5"
-                >
-                  <RefreshCw className="w-4 h-4" />
-                </button>
-                <button 
-                  onClick={() => setIsOpen(false)}
-                  className="text-slate-800 hover:text-slate-900 transition-colors p-1 rounded-md hover:bg-black/5"
-                >
-                  <X className="w-5 h-5" />
-                </button>
+              <div>
+                <h3 className="text-slate-900 font-medium text-sm"><span className="notranslate">CGA</span> Support</h3>
+                <p className="text-slate-800 text-xs">{t('chatbot.status', 'Online')}</p>
               </div>
             </div>
+            <div className="flex items-center gap-2">
+              <button 
+                onClick={fetchFaqs}
+                title={t('chatbot.refresh', 'Refresh FAQ Knowledge Base')}
+                className="text-slate-800 hover:text-slate-900 transition-colors p-1 rounded-md hover:bg-black/5"
+              >
+                <RefreshCw className="w-4 h-4" />
+              </button>
+              <button 
+                onClick={() => setIsOpen(false)}
+                className="text-slate-800 hover:text-slate-900 transition-colors p-1 rounded-md hover:bg-black/5"
+              >
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+          </div>
 
-            {/* Messages Area */}
-            <div className="flex-1 overflow-y-auto p-4 space-y-4 bg-bg-primary">
-              {messages.map((msg) => (
-                <motion.div 
-                  key={msg.id}
-                  initial={{ opacity: 0, y: 5 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  className={`flex ${msg.sender === 'user' ? 'justify-end' : 'justify-start'}`}
-                >
-                  <div className={`max-w-[80%] rounded-2xl px-4 py-2.5 text-sm ${
-                    msg.sender === 'user' 
-                      ? 'bg-accent-primary text-slate-900 rounded-br-sm' 
-                      : 'bg-bg-card text-text-primary border border-border-light rounded-bl-sm shadow-sm'
-                  }`}>
-                    {msg.text}
-                  </div>
-                </motion.div>
-              ))}
-              
-              {/* Typing Indicator */}
-              {isTyping && (
-                <motion.div 
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  className="flex justify-start"
-                >
-                  <div className="bg-bg-card border border-border-light rounded-2xl rounded-bl-sm px-4 py-3 flex items-center gap-1 shadow-sm">
-                    <motion.div animate={{ y: [0, -5, 0] }} transition={{ repeat: Infinity, duration: 0.6, delay: 0 }} className="w-1.5 h-1.5 bg-text-muted rounded-full" />
-                    <motion.div animate={{ y: [0, -5, 0] }} transition={{ repeat: Infinity, duration: 0.6, delay: 0.2 }} className="w-1.5 h-1.5 bg-text-muted rounded-full" />
-                    <motion.div animate={{ y: [0, -5, 0] }} transition={{ repeat: Infinity, duration: 0.6, delay: 0.4 }} className="w-1.5 h-1.5 bg-text-muted rounded-full" />
-                  </div>
-                </motion.div>
-              )}
-              <div ref={messagesEndRef} />
-            </div>
-
-            {/* Input Area */}
-            <div className="p-4 bg-bg-secondary border-t border-border-light shrink-0">
-              <div className="relative flex items-center">
-                <input
-                  type="text"
-                  value={inputValue}
-                  onChange={(e) => setInputValue(e.target.value)}
-                  onKeyPress={handleKeyPress}
-                  placeholder={mode === 'collect_info' ? t('chatbot.type_answer', "Type your answer...") : t('chatbot.type_message', "Type your message...")}
-                  className="w-full bg-bg-primary border border-border-light rounded-full pl-4 pr-12 py-3 text-sm text-text-primary focus:outline-none focus:border-accent-primary transition-colors placeholder:text-text-muted"
-                  disabled={isTyping}
-                />
-                <button
-                  onClick={handleSendMessage}
-                  disabled={!inputValue.trim() || isTyping}
-                  className="absolute right-2 w-8 h-8 bg-accent-primary rounded-full flex items-center justify-center text-slate-900 hover:bg-accent-hover transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
-                >
-                  <Send className="w-4 h-4 ml-0.5" />
-                </button>
+          {/* Messages Area */}
+          <div className="flex-1 overflow-y-auto p-4 space-y-4 bg-bg-primary">
+            {messages.map((msg) => (
+              <div 
+                key={msg.id}
+                className={`flex ${msg.sender === 'user' ? 'justify-end' : 'justify-start'}`}
+              >
+                <div className={`max-w-[80%] rounded-2xl px-4 py-2.5 text-sm ${
+                  msg.sender === 'user' 
+                    ? 'bg-accent-primary text-slate-900 rounded-br-sm' 
+                    : 'bg-bg-card text-text-primary border border-border-light rounded-bl-sm shadow-sm'
+                }`}>
+                  {msg.text}
+                </div>
               </div>
+            ))}
+            
+            {/* Typing Indicator */}
+            {isTyping && (
+              <div className="flex justify-start">
+                <div className="bg-bg-card border border-border-light rounded-2xl rounded-bl-sm px-4 py-3 flex items-center gap-1 shadow-sm">
+                  <div className="w-1.5 h-1.5 bg-text-muted rounded-full" />
+                  <div className="w-1.5 h-1.5 bg-text-muted rounded-full" />
+                  <div className="w-1.5 h-1.5 bg-text-muted rounded-full" />
+                </div>
+              </div>
+            )}
+            <div ref={messagesEndRef} />
+          </div>
+
+          {/* Input Area */}
+          <div className="p-4 bg-bg-secondary border-t border-border-light shrink-0">
+            <div className="relative flex items-center">
+              <input
+                type="text"
+                value={inputValue}
+                onChange={(e) => setInputValue(e.target.value)}
+                onKeyPress={handleKeyPress}
+                placeholder={mode === 'collect_info' ? t('chatbot.type_answer', "Type your answer...") : t('chatbot.type_message', "Type your message...")}
+                className="w-full bg-bg-primary border border-border-light rounded-full pl-4 pr-12 py-3 text-sm text-text-primary focus:outline-none focus:border-accent-primary transition-colors placeholder:text-text-muted"
+                disabled={isTyping}
+              />
+              <button
+                onClick={handleSendMessage}
+                disabled={!inputValue.trim() || isTyping}
+                className="absolute right-2 w-8 h-8 bg-accent-primary rounded-full flex items-center justify-center text-slate-900 hover:bg-accent-hover transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+              >
+                <Send className="w-4 h-4 ml-0.5" />
+              </button>
             </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
+          </div>
+        </div>
+      )}
     </>
   );
 }

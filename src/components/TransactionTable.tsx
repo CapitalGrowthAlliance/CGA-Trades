@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import { motion } from 'motion/react';
 import { ArrowUpRight, ArrowDownLeft, RefreshCcw, Gift } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 
@@ -114,11 +113,8 @@ export default function TransactionTable({ previewMode = false }: { previewMode?
               </tr>
             ) : (
               transactions.map((tx, index) => (
-                <motion.tr
+                <tr
                   key={tx.id}
-                  initial={{ opacity: 0, y: 10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: index * 0.05, duration: 0.3 }}
                   className="border-b border-border-light hover:bg-bg-hover transition-colors group"
                 >
                   <td className="py-4">
@@ -140,7 +136,7 @@ export default function TransactionTable({ previewMode = false }: { previewMode?
                       {t(`transactions.statuses.${tx.status}`, tx.status.charAt(0).toUpperCase() + tx.status.slice(1))}
                     </span>
                   </td>
-                </motion.tr>
+                </tr>
               ))
             )}
           </tbody>

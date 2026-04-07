@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import { motion, AnimatePresence } from 'motion/react';
 import { ArrowDownRight, ArrowUpRight, UserPlus, Gift } from 'lucide-react';
 
 interface Notification {
@@ -149,39 +148,33 @@ export default function HomeActivityNotifications() {
 
   return (
     <div className="fixed top-24 left-1/2 -translate-x-1/2 z-[100] pointer-events-none w-full flex justify-center px-4">
-      <AnimatePresence mode="wait">
-        {currentNotification && (
-          <motion.div
-            key={currentNotification.id}
-            initial={{ opacity: 0, scale: 0.95 }}
-            animate={{ opacity: 1, scale: 1 }}
-            exit={{ opacity: 0, scale: 0.95 }}
-            transition={{ duration: 0.4, ease: "easeInOut" }}
-            className="flex items-center gap-3 py-2 px-4 rounded-full bg-white/[0.03] backdrop-blur-md border border-white/5 shadow-[0_4px_20px_rgba(0,0,0,0.1)]"
-          >
-            <div className="flex items-center justify-center w-8 h-8 rounded-full bg-white/5">
-              {getIcon(currentNotification.type)}
+      {currentNotification && (
+        <div
+          key={currentNotification.id}
+          className="flex items-center gap-3 py-2 px-4 rounded-full bg-white/[0.03] backdrop-blur-md border border-white/5 shadow-[0_4px_20px_rgba(0,0,0,0.1)]"
+        >
+          <div className="flex items-center justify-center w-8 h-8 rounded-full bg-white/5">
+            {getIcon(currentNotification.type)}
+          </div>
+          <div className="flex flex-col">
+            <div className="flex items-center gap-1.5">
+              <span className="text-xs font-medium text-gray-200">{currentNotification.name}</span>
+              <span className="text-[10px] text-gray-500">from {currentNotification.country}</span>
             </div>
-            <div className="flex flex-col">
-              <div className="flex items-center gap-1.5">
-                <span className="text-xs font-medium text-gray-200">{currentNotification.name}</span>
-                <span className="text-[10px] text-gray-500">from {currentNotification.country}</span>
-              </div>
-              <div className="flex items-center gap-1">
-                <span className="text-[11px] text-gray-400">{currentNotification.type}</span>
-                {currentNotification.amount && (
-                  <span className={`text-[11px] font-semibold ${
-                    currentNotification.type === 'Withdrawal' ? 'text-red-400' : 
-                    currentNotification.type === 'Received Bonus' ? 'text-yellow-400' : 'text-green-400'
-                  }`}>
-                    {currentNotification.amount}
-                  </span>
-                )}
-              </div>
+            <div className="flex items-center gap-1">
+              <span className="text-[11px] text-gray-400">{currentNotification.type}</span>
+              {currentNotification.amount && (
+                <span className={`text-[11px] font-semibold ${
+                  currentNotification.type === 'Withdrawal' ? 'text-red-400' : 
+                  currentNotification.type === 'Received Bonus' ? 'text-yellow-400' : 'text-green-400'
+                }`}>
+                  {currentNotification.amount}
+                </span>
+              )}
             </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

@@ -175,14 +175,12 @@ const ReviewCard = React.memo(({ review }: { review: Review }) => {
   );
 });
 
-const MarqueeRow = ({ reviews, direction }: { reviews: Review[], direction: 'left' | 'right' }) => {
-  const animationClass = direction === 'left' ? 'animate-scroll-left' : 'animate-scroll-right';
-  
+const MarqueeRow = ({ reviews }: { reviews: Review[] }) => {
   return (
-    <div className="flex overflow-hidden w-full group py-1 md:py-2">
-      <div className={`flex gap-4 md:gap-8 px-4 ${animationClass} md:group-hover:[animation-play-state:paused]`} style={{ width: "max-content" }}>
-        {[...reviews, ...reviews].map((review, index) => (
-          <ReviewCard key={`${review.id}-${index}`} review={review} />
+    <div className="flex overflow-x-auto w-full py-1 md:py-2 no-scrollbar">
+      <div className="flex gap-4 md:gap-8 px-4" style={{ width: "max-content" }}>
+        {reviews.map((review) => (
+          <ReviewCard key={review.id} review={review} />
         ))}
       </div>
     </div>
@@ -202,16 +200,16 @@ export default function TestimonialsSection() {
         </p>
       </div>
 
-      {/* Marquee Container */}
+      {/* Container */}
       <div className="relative w-full space-y-0 py-4 md:py-8 flex flex-col justify-center">
         {/* Background Track Card - Spans end to end */}
         <div className="absolute inset-y-0 left-0 right-0 bg-bg-card/40 border-y border-border-light/60 backdrop-blur-[4px]" />
 
-        {/* Top Row - Scrolls Left */}
-        <MarqueeRow reviews={topRowReviews} direction="left" />
+        {/* Top Row */}
+        <MarqueeRow reviews={topRowReviews} />
 
-        {/* Bottom Row - Scrolls Right */}
-        <MarqueeRow reviews={bottomRowReviews} direction="right" />
+        {/* Bottom Row */}
+        <MarqueeRow reviews={bottomRowReviews} />
       </div>
     </section>
   );

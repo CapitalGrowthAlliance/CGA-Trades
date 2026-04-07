@@ -1,5 +1,4 @@
 import React from 'react';
-import { motion } from 'motion/react';
 import { TrendingUp, Clock, DollarSign } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { useSite } from '../context/SiteContext';
@@ -15,11 +14,8 @@ export default function InvestmentPlans({ onInvest }: { onInvest: (planId: strin
   return (
     <div className="grid grid-cols-2 md:grid-cols-3 gap-3 md:gap-6 my-8">
       {investmentPlans.map((plan, index) => (
-        <motion.div
+        <div
           key={plan.id}
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: index * 0.1, duration: 0.5 }}
           className="bg-bg-card border border-border-light rounded-2xl p-3 md:p-6 shadow-light hover:bg-bg-hover transition-all duration-300 hover:scale-105 group relative overflow-hidden flex flex-col justify-between aspect-[4/5] md:aspect-auto"
         >
           <div className="absolute inset-0 bg-accent-primary/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
@@ -53,7 +49,7 @@ export default function InvestmentPlans({ onInvest }: { onInvest: (planId: strin
           >
             {t('plans.invest_now', 'Invest Now')}
           </button>
-        </motion.div>
+        </div>
       ))}
     </div>
   );

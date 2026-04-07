@@ -154,8 +154,8 @@ export default function MarketTicker() {
         borderColor: theme === 'dark' ? 'rgba(255,255,255,0.08)' : 'rgba(0,0,0,0.06)'
       }}
     >
-      <div className="flex animate-[ticker-scroll_60s_linear_infinite] hover:[animation-play-state:paused] w-max">
-        {tickerItems.map((asset, index) => {
+      <div className="flex w-max">
+        {assets.map((asset, index) => {
           const isPositive = asset.change >= 0;
           return (
             <div key={`${asset.symbol}-${index}`} className="flex items-center gap-4 px-6 border-r border-black/5 dark:border-white/5 shrink-0">

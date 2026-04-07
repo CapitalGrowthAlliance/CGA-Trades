@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import { motion } from 'motion/react';
 import { Wallet, DollarSign, TrendingUp, Bot, CheckCircle2, Coins, Landmark } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
@@ -103,7 +102,7 @@ export default function HomeDashboard() {
         <div className="grid grid-cols-2 md:flex md:flex-nowrap justify-center gap-3 md:gap-6 w-full max-w-5xl">
           
           {/* Total Assets */}
-          <div className="bg-[#1a1d24] rounded-2xl border border-[#2a2d35] shadow-[0_10px_30px_rgba(0,0,0,0.8)] flex flex-col items-center justify-center w-full p-3 md:w-full md:max-w-[180px] md:min-w-[140px] md:p-4 md:aspect-auto text-center transition-transform hover:scale-105">
+          <div className="bg-[#1a1d24] rounded-2xl border border-[#2a2d35] shadow-[0_10px_30px_rgba(0,0,0,0.8)] flex flex-col items-center justify-center w-full p-3 md:w-full md:max-w-[180px] md:min-w-[140px] md:p-4 md:aspect-auto text-center">
             <div className="flex flex-col items-center w-full">
               <div className="w-10 h-10 md:w-12 md:h-12 text-yellow-500 flex items-center justify-center mb-1 md:mb-2 drop-shadow-[0_0_10px_rgba(234,179,8,0.5)]">
                 <Coins className="w-8 h-8 md:w-10 md:h-10" />
@@ -112,21 +111,13 @@ export default function HomeDashboard() {
               <div className="w-full h-px bg-gray-700 mb-2 md:mb-3"></div>
               <h2 className="text-sm md:text-lg font-bold text-white mb-3">${totalAssets.toFixed(2)}</h2>
               
-              <motion.div
-                animate={{ scale: [1, 1.05, 1] }}
-                transition={{ repeat: Infinity, duration: 2, ease: "easeInOut" }}
-                className="w-full"
-              >
+              <div className="w-full">
                 <Link 
                   to="/invest" 
-                  className="w-full py-2 px-2 rounded-lg text-[10px] md:text-xs font-bold text-white flex items-center justify-center relative overflow-hidden bg-slate-900 shadow-[0_0_15px_rgba(59,130,246,0.4)] hover:shadow-[0_0_20px_rgba(59,130,246,0.6)] hover:brightness-110 active:scale-95 group"
+                  className="w-full py-2 px-2 rounded-lg text-[10px] md:text-xs font-bold text-white flex items-center justify-center relative overflow-hidden bg-slate-900 shadow-[0_0_15px_rgba(59,130,246,0.4)] hover:brightness-110 active:scale-95 group"
                 >
-                  {/* Rotating Gradient Lights */}
-                  <motion.div 
-                    className="absolute inset-[-150%] bg-[conic-gradient(from_0deg,#3b82f6_0%,#60a5fa_25%,#93c5fd_50%,#60a5fa_75%,#3b82f6_100%)] opacity-80"
-                    animate={{ rotate: 360 }}
-                    transition={{ repeat: Infinity, duration: 3, ease: "linear" }}
-                  />
+                  {/* Static Gradient Background */}
+                  <div className="absolute inset-0 bg-blue-600 opacity-80" />
                   
                   {/* Inner Button Surface */}
                   <div className="absolute inset-[1.5px] bg-gradient-to-b from-blue-500 to-blue-700 rounded-[7px] z-0" />
@@ -135,12 +126,12 @@ export default function HomeDashboard() {
                   {/* Glossy Overlay */}
                   <div className="absolute inset-0 bg-gradient-to-t from-transparent via-white/5 to-white/20 pointer-events-none z-20"></div>
                 </Link>
-              </motion.div>
+              </div>
             </div>
           </div>
 
           {/* Available Balance */}
-          <div className="bg-[#1a1d24] rounded-2xl border border-[#2a2d35] shadow-[0_10px_30px_rgba(0,0,0,0.8)] flex flex-col items-center justify-center w-full aspect-square p-3 md:w-full md:max-w-[180px] md:min-w-[140px] md:p-4 md:aspect-auto text-center transition-transform hover:scale-105">
+          <div className="bg-[#1a1d24] rounded-2xl border border-[#2a2d35] shadow-[0_10px_30px_rgba(0,0,0,0.8)] flex flex-col items-center justify-center w-full aspect-square p-3 md:w-full md:max-w-[180px] md:min-w-[140px] md:p-4 md:aspect-auto text-center">
             <div className="flex flex-col items-center w-full">
               <div className="w-10 h-10 md:w-12 md:h-12 text-green-500 flex items-center justify-center mb-1 md:mb-2 drop-shadow-[0_0_10px_rgba(34,197,94,0.5)]">
                 <Wallet className="w-8 h-8 md:w-10 md:h-10" />
@@ -152,7 +143,7 @@ export default function HomeDashboard() {
           </div>
 
           {/* Funding */}
-          <div className="bg-[#1a1d24] rounded-2xl border border-[#2a2d35] shadow-[0_10px_30px_rgba(0,0,0,0.8)] flex flex-col items-center justify-center w-full p-3 md:w-full md:max-w-[180px] md:min-w-[140px] md:p-4 md:aspect-auto text-center transition-transform hover:scale-105">
+          <div className="bg-[#1a1d24] rounded-2xl border border-[#2a2d35] shadow-[0_10px_30px_rgba(0,0,0,0.8)] flex flex-col items-center justify-center w-full p-3 md:w-full md:max-w-[180px] md:min-w-[140px] md:p-4 md:aspect-auto text-center">
             <div className="flex flex-col items-center w-full">
               <div className="w-10 h-10 md:w-12 md:h-12 text-blue-400 flex items-center justify-center mb-1 md:mb-2 drop-shadow-[0_0_10px_rgba(96,165,250,0.5)]">
                 <Landmark className="w-8 h-8 md:w-10 md:h-10" />
@@ -161,21 +152,13 @@ export default function HomeDashboard() {
               <div className="w-full h-px bg-gray-700 mb-2 md:mb-3"></div>
               <h2 className="text-sm md:text-lg font-bold text-white mb-3">${(user?.totalInvestments || 0).toFixed(2)}</h2>
 
-              <motion.div
-                animate={{ scale: [1, 1.05, 1] }}
-                transition={{ repeat: Infinity, duration: 2, ease: "easeInOut", delay: 1 }}
-                className="w-full"
-              >
+              <div className="w-full">
                 <Link 
                   to="/fund" 
-                  className="w-full py-2 px-2 rounded-lg text-[10px] md:text-xs font-bold text-white flex items-center justify-center relative overflow-hidden bg-slate-900 shadow-[0_0_15px_rgba(34,197,94,0.4)] hover:shadow-[0_0_20px_rgba(34,197,94,0.6)] hover:brightness-110 active:scale-95 group"
+                  className="w-full py-2 px-2 rounded-lg text-[10px] md:text-xs font-bold text-white flex items-center justify-center relative overflow-hidden bg-slate-900 shadow-[0_0_15px_rgba(34,197,94,0.4)] hover:brightness-110 active:scale-95 group"
                 >
-                  {/* Rotating Gradient Lights */}
-                  <motion.div 
-                    className="absolute inset-[-150%] bg-[conic-gradient(from_0deg,#22c55e_0%,#4ade80_25%,#86efac_50%,#4ade80_75%,#22c55e_100%)] opacity-80"
-                    animate={{ rotate: 360 }}
-                    transition={{ repeat: Infinity, duration: 3, ease: "linear", delay: 1.5 }}
-                  />
+                  {/* Static Gradient Background */}
+                  <div className="absolute inset-0 bg-green-600 opacity-80" />
                   
                   {/* Inner Button Surface */}
                   <div className="absolute inset-[1.5px] bg-gradient-to-b from-green-500 to-green-700 rounded-[7px] z-0" />
@@ -184,12 +167,12 @@ export default function HomeDashboard() {
                   {/* Glossy Overlay */}
                   <div className="absolute inset-0 bg-gradient-to-t from-transparent via-white/5 to-white/20 pointer-events-none z-20"></div>
                 </Link>
-              </motion.div>
+              </div>
             </div>
           </div>
 
           {/* Daily ROI AI Engine */}
-          <div className="bg-[#1a1d24] text-white rounded-2xl border border-[#2a2d35] shadow-[0_10px_30px_rgba(0,0,0,0.8)] relative overflow-hidden group flex flex-col justify-between w-full aspect-square md:w-full md:max-w-[180px] md:min-w-[140px] md:aspect-auto p-0 transition-transform hover:scale-105">
+          <div className="bg-[#1a1d24] text-white rounded-2xl border border-[#2a2d35] shadow-[0_10px_30px_rgba(0,0,0,0.8)] relative overflow-hidden group flex flex-col justify-between w-full aspect-square md:w-full md:max-w-[180px] md:min-w-[140px] md:aspect-auto p-0 text-center">
             {/* Top Image Section */}
             <div className="relative w-full h-16 md:h-24 bg-gradient-to-b from-blue-900/40 to-transparent flex items-end justify-center overflow-hidden pt-2 md:pt-4">
               {/* Candlesticks background (Static) */}
@@ -213,29 +196,17 @@ export default function HomeDashboard() {
                 })}
               </div>
               
-              <motion.div
-                className="relative z-10 w-12 h-12 md:w-20 md:h-20 drop-shadow-[0_0_15px_rgba(59,130,246,0.8)]"
-                animate={{ y: [0, -5, 0] }}
-                transition={{ repeat: Infinity, duration: 4, ease: "easeInOut" }}
-              >
+              <div className="relative z-10 w-12 h-12 md:w-20 md:h-20 drop-shadow-[0_0_15px_rgba(59,130,246,0.8)]">
                 <img 
                   src="https://api.dicebear.com/7.x/bottts/svg?seed=Felix&backgroundColor=transparent" 
                   alt="AI Robot" 
                   className="w-full h-full object-cover"
                   referrerPolicy="no-referrer"
                 />
-                {/* Blinking eyes overlay */}
-                <motion.div 
-                  className="absolute top-[58.6%] left-[39.4%] -translate-x-1/2 -translate-y-1/2 w-[12%] h-[18%] bg-accent-primary rounded-sm shadow-[0_0_12px_rgba(200,255,0,0.9)]"
-                  animate={{ scaleY: [1, 0, 1] }}
-                  transition={{ duration: 0.15, repeat: Infinity, repeatDelay: 2.35, ease: "easeInOut" }}
-                />
-                <motion.div 
-                  className="absolute top-[58.6%] left-[60.6%] -translate-x-1/2 -translate-y-1/2 w-[12%] h-[18%] bg-accent-primary rounded-sm shadow-[0_0_12px_rgba(200,255,0,0.9)]"
-                  animate={{ scaleY: [1, 0, 1] }}
-                  transition={{ duration: 0.15, repeat: Infinity, repeatDelay: 2.35, ease: "easeInOut" }}
-                />
-              </motion.div>
+                {/* Static eyes overlay */}
+                <div className="absolute top-[58.6%] left-[39.4%] -translate-x-1/2 -translate-y-1/2 w-[12%] h-[18%] bg-accent-primary rounded-sm shadow-[0_0_12px_rgba(200,255,0,0.9)]" />
+                <div className="absolute top-[58.6%] left-[60.6%] -translate-x-1/2 -translate-y-1/2 w-[12%] h-[18%] bg-accent-primary rounded-sm shadow-[0_0_12px_rgba(200,255,0,0.9)]" />
+              </div>
             </div>
             
             <div className="flex flex-col px-2 md:px-4 pb-2 md:pb-4 pt-1 md:pt-2 w-full">
@@ -249,11 +220,9 @@ export default function HomeDashboard() {
 
               {/* Progress Bar */}
               <div className="w-full h-1 md:h-1.5 bg-gray-800 rounded-full overflow-hidden mb-1.5 md:mb-3 border border-gray-700">
-                <motion.div 
+                <div 
                   className="h-full bg-gradient-to-r from-green-500 to-yellow-400"
-                  initial={{ width: 0 }}
-                  animate={{ width: `${Math.min(progress, 100)}%` }}
-                  transition={{ duration: 0.5 }}
+                  style={{ width: `${Math.min(progress, 100)}%` }}
                 />
               </div>
 

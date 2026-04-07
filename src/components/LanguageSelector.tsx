@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Globe, ChevronDown } from 'lucide-react';
-import { motion, AnimatePresence } from 'motion/react';
 
 const languages = [
   { code: 'en', name: 'English' },
@@ -82,31 +81,25 @@ export default function LanguageSelector({ compact }: { compact?: boolean }) {
         <ChevronDown className={compact ? 'w-3 h-3' : 'w-4 h-4'} />
       </button>
 
-      <AnimatePresence>
-        {isOpen && (
-          <motion.div
-            initial={{ opacity: 0, y: 10, scale: 0.95 }}
-            animate={{ opacity: 1, y: 0, scale: 1 }}
-            exit={{ opacity: 0, y: 10, scale: 0.95 }}
-            transition={{ duration: 0.2 }}
-            className="absolute left-1/2 -translate-x-1/2 sm:left-auto sm:right-0 sm:translate-x-0 mt-2 w-48 max-h-64 overflow-y-auto rounded-2xl bg-bg-secondary border border-border-color shadow-2xl py-2 z-50 backdrop-blur-xl"
-          >
-            {languages.map((lang) => (
-              <button
-                key={lang.code}
-                onClick={() => handleLanguageChange(lang.code)}
-                className={`w-full text-left px-4 py-2 text-sm transition-colors ${
-                  currentLang === lang.code
-                    ? 'bg-accent-primary/10 text-accent-primary font-medium'
-                    : 'text-text-secondary hover:bg-black/5 dark:hover:bg-white/5 hover:text-text-primary'
-                }`}
-              >
-                {lang.name}
-              </button>
-            ))}
-          </motion.div>
-        )}
-      </AnimatePresence>
+      {isOpen && (
+        <div
+          className="absolute left-1/2 -translate-x-1/2 sm:left-auto sm:right-0 sm:translate-x-0 mt-2 w-48 max-h-64 overflow-y-auto rounded-2xl bg-bg-secondary border border-border-color shadow-2xl py-2 z-50 backdrop-blur-xl"
+        >
+          {languages.map((lang) => (
+            <button
+              key={lang.code}
+              onClick={() => handleLanguageChange(lang.code)}
+              className={`w-full text-left px-4 py-2 text-sm transition-colors ${
+                currentLang === lang.code
+                  ? 'bg-accent-primary/10 text-accent-primary font-medium'
+                  : 'text-text-secondary hover:bg-black/5 dark:hover:bg-white/5 hover:text-text-primary'
+              }`}
+            >
+              {lang.name}
+            </button>
+          ))}
+        </div>
+      )}
     </div>
   );
 }

@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { ethers } from 'ethers';
 import { Wallet, Copy, ExternalLink, TrendingUp, Activity, Droplets, CheckCircle2, AlertCircle, Loader2 } from 'lucide-react';
-import { motion } from 'motion/react';
 
 declare global {
   interface Window {
@@ -230,14 +229,8 @@ export default function CGATokenPage() {
         <div className="absolute inset-0 opacity-[0.015] mix-blend-overlay" style={{ backgroundImage: 'repeating-linear-gradient(0deg, #4A3B2C 0px, #4A3B2C 1px, transparent 1px, transparent 20px)' }}></div>
       </div>
 
-      {/* Hero Section */}
       <section className="py-20 px-6 lg:px-12 flex flex-col items-center text-center max-w-5xl mx-auto justify-center relative z-10">
-        <motion.div
-          initial={{ opacity: 0, scale: 0.9 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 0.7, ease: "easeOut" }}
-          className="relative z-10 flex flex-col items-center w-full"
-        >
+        <div className="relative z-10 flex flex-col items-center w-full">
           {/* Token Logo Container */}
           <div className="relative w-32 h-32 mb-8">
             <div className="absolute inset-0 bg-gradient-to-tr from-[#D4AF37] via-[#F7F57C] to-[#B48EFC] rounded-full blur-xl opacity-40"></div>
@@ -269,7 +262,6 @@ export default function CGATokenPage() {
               disabled={isConnecting}
               className="relative group overflow-hidden bg-bg-card text-text-primary border border-[#D4AF37]/30 px-8 py-4 rounded-xl font-bold text-lg transition-all flex items-center gap-3 mx-auto shadow-[0_8px_32px_rgba(212,175,55,0.1)] hover:shadow-[0_8px_32px_rgba(212,175,55,0.2)] hover:-translate-y-1 disabled:opacity-70"
             >
-              <div className="absolute inset-0 bg-gradient-to-r from-[#D4AF37]/0 via-[#D4AF37]/10 to-[#D4AF37]/0 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-1000"></div>
               {isConnecting ? <Loader2 className="w-5 h-5 text-[#D4AF37] animate-spin" /> : <Wallet className="w-5 h-5 text-[#D4AF37]" />}
               {isConnecting ? "Connecting..." : "Connect Wallet"}
             </button>
@@ -294,19 +286,14 @@ export default function CGATokenPage() {
               {error}
             </div>
           )}
-        </motion.div>
+        </div>
       </section>
 
       <div className="max-w-7xl mx-auto px-6 lg:px-12 w-full pb-24 space-y-8 relative z-10">
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           
           {/* Wallet Panel */}
-          <motion.div 
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.1 }}
-            className="lg:col-span-1 bg-bg-card/80 backdrop-blur-md p-6 md:p-8 rounded-2xl border border-[#D4AF37]/20 shadow-[0_8px_32px_rgba(0,0,0,0.04)] relative overflow-hidden group"
-          >
+          <div className="lg:col-span-1 bg-bg-card/80 backdrop-blur-md p-6 md:p-8 rounded-2xl border border-[#D4AF37]/20 shadow-[0_8px_32px_rgba(0,0,0,0.04)] relative overflow-hidden group">
             <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-[#D4AF37] via-[#F7F57C] to-[#B48EFC] opacity-50 group-hover:opacity-100 transition-opacity"></div>
             <h2 className="text-xl font-bold mb-6 flex items-center gap-2">
               <Wallet className="w-5 h-5 text-[#D4AF37]" />
@@ -357,7 +344,6 @@ export default function CGATokenPage() {
                 rel="noopener noreferrer"
                 className="w-full relative group overflow-hidden bg-bg-card text-text-primary border border-[#D4AF37]/30 px-4 py-3 rounded-xl font-bold hover:-translate-y-0.5 transition-all flex items-center justify-center gap-2 shadow-[0_4px_12px_rgba(212,175,55,0.1)]"
               >
-                <div className="absolute inset-0 bg-gradient-to-r from-[#D4AF37]/0 via-[#D4AF37]/10 to-[#D4AF37]/0 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-1000"></div>
                 Buy CGA Token
                 <ExternalLink className="w-4 h-4 text-[#D4AF37]" />
               </a>
@@ -371,15 +357,10 @@ export default function CGATokenPage() {
                 <TrendingUp className="w-4 h-4" />
               </a>
             </div>
-          </motion.div>
+          </div>
 
           {/* Analytics Section */}
-          <motion.div 
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.2 }}
-            className="lg:col-span-2 space-y-8"
-          >
+          <div className="lg:col-span-2 space-y-8">
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
               <div className="bg-bg-card/80 backdrop-blur-md p-6 rounded-2xl border border-[#D4AF37]/20 shadow-[0_8px_32px_rgba(0,0,0,0.04)] relative overflow-hidden group hover:-translate-y-1 transition-transform">
                  <div className="absolute -right-4 -top-4 w-24 h-24 bg-[#D4AF37]/5 rounded-full blur-2xl group-hover:bg-[#D4AF37]/10 transition-colors"></div>
@@ -441,7 +422,7 @@ export default function CGATokenPage() {
                 </div>
               </div>
             </div>
-          </motion.div>
+          </div>
         </div>
       </div>
     </div>
